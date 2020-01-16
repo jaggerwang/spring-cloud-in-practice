@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>OAuth Logout</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <h1>Do you wish to log out?</h1>
+
+    <form action="" method="POST">
+        <input type="hidden" name="challenge" th:value="${challenge}" />
+        <input type="submit" id="accept" name="submit" value="Yes" />
+        <input type="submit" id="reject" name="submit" value="No" />
+    </form>
+</body>
+</html>

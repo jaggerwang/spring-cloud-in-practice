@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    consul:
+      host: ${SCIP_SPRING_CLOUD_CONSUL_HOST:localhost}
+      port: ${SCIP_SPRING_CLOUD_CONSUL_PORT:8500}
+      config:
+        enabled: true
+        default-context: spring-cloud-in-practice

@@ -1,0 +1,52 @@
+debug: ${SCIP_DEBUG:false}
+
+logging:
+    file:
+        path: ${SCIP_LOGGING_FILE_PATH:/tmp}
+    level:
+        org:
+         springframework:
+            web:
+                filter:
+                    CommonsRequestLoggingFilter: ${SCIP_LOGGING_LEVEL_REQUEST:DEBUG}
+
+server:
+    address: 0.0.0.0
+    port: 8083
+
+spring:
+    application:
+        name: spring-cloud-in-practice-file
+    servlet:
+        multipart:
+            file-size-threshold: 10MB
+            location: ${SCIP_SPRING_SERVLET_MULTIPART_LOCATION:/tmp}
+            max-file-size: 100MB
+            max-request-size: 100MB
+    datasource:
+        url: ${SCIP_SPRING_DATASOURCE_URL:jdbc:mysql://localhost/scip_file}
+        username: ${SCIP_SPRING_DATASOURCE_USERNAME:root}
+        password: ${SCIP_SPRING_DATASOURCE_PASSWORD:}
+    flyway:
+        enabled: true
+        clean-disabled: true
+        baseline-on-migrate: true
+    jpa:
+        open-in-view: false
+    security:
+        oauth2:
+            resourceserver:
+                jwt:
+                    jwk-set-uri: ${SCIP_SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI:http://localhost:4444/.well-known/jwks.json}
+    cloud:
+        loadbalancer:
+            ribbon:
+                enabled: false
+        consul:
+            discovery:
+                enabled: true
+                register: true
+                healthCheckPath: /actuator/health
+
+file:
+    upload-dir: ${SCIP_FILE_UPLOAD_DIR:/tmp}
