@@ -1,12 +1,9 @@
 package net.jaggerwang.scip.user.adapter.controller;
 
+import net.jaggerwang.scip.common.usecase.port.service.dto.auth.*;
+import net.jaggerwang.scip.common.usecase.port.service.sync.HydraService;
 import net.jaggerwang.scip.user.entity.UserEntity;
 import net.jaggerwang.scip.user.usecase.UserUsecases;
-import net.jaggerwang.scip.user.usecase.service.HydraService;
-import net.jaggerwang.scip.user.usecase.service.dto.auth.ConsentAcceptDto;
-import net.jaggerwang.scip.user.usecase.service.dto.auth.ConsentRejectDto;
-import net.jaggerwang.scip.user.usecase.service.dto.auth.LoginAcceptDto;
-import net.jaggerwang.scip.user.usecase.service.dto.auth.LoginRejectDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import net.jaggerwang.scip.common.adapter.controller.dto.RootDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
 import net.jaggerwang.scip.common.usecase.exception.*;
 import net.jaggerwang.scip.post.adapter.controller.dto.PostDto;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import net.jaggerwang.scip.common.adapter.controller.dto.RootDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
 import net.jaggerwang.scip.common.usecase.exception.*;
 import net.jaggerwang.scip.user.adapter.controller.dto.UserDto;
 import net.jaggerwang.scip.user.entity.UserEntity;

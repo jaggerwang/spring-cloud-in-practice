@@ -1,6 +1,6 @@
 package net.jaggerwang.scip.common.adapter.controller;
 
-import net.jaggerwang.scip.common.adapter.controller.dto.RootDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
 import net.jaggerwang.scip.common.usecase.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

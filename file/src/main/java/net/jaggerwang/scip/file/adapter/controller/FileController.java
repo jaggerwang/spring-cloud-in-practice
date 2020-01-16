@@ -1,6 +1,6 @@
 package net.jaggerwang.scip.file.adapter.controller;
 
-import net.jaggerwang.scip.common.adapter.controller.dto.RootDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
 import net.jaggerwang.scip.common.usecase.exception.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

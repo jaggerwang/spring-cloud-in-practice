@@ -1,10 +1,10 @@
 package net.jaggerwang.scip.gateway.adapter.graphql;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.jaggerwang.scip.gateway.usecase.port.service.FileService;
-import net.jaggerwang.scip.gateway.usecase.port.service.PostService;
-import net.jaggerwang.scip.gateway.usecase.port.service.StatService;
-import net.jaggerwang.scip.gateway.usecase.port.service.UserService;
+import net.jaggerwang.scip.common.usecase.port.service.async.FileService;
+import net.jaggerwang.scip.common.usecase.port.service.async.PostService;
+import net.jaggerwang.scip.common.usecase.port.service.async.StatService;
+import net.jaggerwang.scip.common.usecase.port.service.async.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

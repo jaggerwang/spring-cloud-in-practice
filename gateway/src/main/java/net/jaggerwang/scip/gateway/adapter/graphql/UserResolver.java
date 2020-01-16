@@ -1,9 +1,9 @@
 package net.jaggerwang.scip.gateway.adapter.graphql;
 
 import com.coxautodev.graphql.tools.GraphQLResolver;
-import net.jaggerwang.scip.gateway.usecase.port.service.dto.FileDto;
-import net.jaggerwang.scip.gateway.usecase.port.service.dto.UserDto;
-import net.jaggerwang.scip.gateway.usecase.port.service.dto.UserStatDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.FileDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.UserStatDto;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 

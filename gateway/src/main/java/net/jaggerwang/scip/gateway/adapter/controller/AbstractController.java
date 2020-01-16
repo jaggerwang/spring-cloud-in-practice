@@ -1,8 +1,8 @@
 package net.jaggerwang.scip.gateway.adapter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.jaggerwang.scip.gateway.usecase.port.service.HydraService;
-import net.jaggerwang.scip.gateway.usecase.port.service.UserService;
+import net.jaggerwang.scip.common.usecase.port.service.async.HydraService;
+import net.jaggerwang.scip.common.usecase.port.service.async.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

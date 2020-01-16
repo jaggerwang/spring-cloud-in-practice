@@ -1,10 +1,7 @@
 package net.jaggerwang.scip.gateway.adapter.controller;
 
-import net.jaggerwang.scip.gateway.usecase.port.service.dto.auth.ConsentAcceptDto;
-import net.jaggerwang.scip.gateway.usecase.port.service.dto.auth.ConsentRejectDto;
-import net.jaggerwang.scip.gateway.usecase.port.service.dto.auth.LoginAcceptDto;
-import net.jaggerwang.scip.gateway.usecase.port.service.dto.auth.LoginRejectDto;
-import net.jaggerwang.scip.gateway.usecase.port.service.dto.UserDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.auth.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

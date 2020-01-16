@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import net.jaggerwang.scip.common.usecase.port.service.sync.UserService;
 import net.jaggerwang.scip.post.entity.PostEntity;
 import net.jaggerwang.scip.post.usecase.port.repository.PostRepository;
-import net.jaggerwang.scip.post.usecase.port.service.UserService;
 
 public class PostUsecases {
     private PostRepository postRepository;
