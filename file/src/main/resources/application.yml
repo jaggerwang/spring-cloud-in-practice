@@ -15,8 +15,6 @@ server:
     port: 8083
 
 spring:
-    application:
-        name: spring-cloud-in-practice-file
     servlet:
         multipart:
             file-size-threshold: 10MB

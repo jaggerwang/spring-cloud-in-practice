@@ -15,8 +15,6 @@ server:
     port: 8084
 
 spring:
-    application:
-        name: spring-cloud-in-practice-stat
     datasource:
         url: ${SCIP_SPRING_DATASOURCE_URL:jdbc:mysql://localhost/scip_stat}
         username: ${SCIP_SPRING_DATASOURCE_USERNAME:root}

@@ -15,8 +15,6 @@ server:
     port: 8082
 
 spring:
-    application:
-        name: spring-cloud-in-practice-post
     datasource:
         url: ${SCIP_SPRING_DATASOURCE_URL:jdbc:mysql://localhost/scip_post}
         username: ${SCIP_SPRING_DATASOURCE_USERNAME:root}

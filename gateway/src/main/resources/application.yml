@@ -15,8 +15,6 @@ server:
     port: 8080
 
 spring:
-    application:
-        name: spring-cloud-in-practice-gateway
     security:
         oauth2:
             client:

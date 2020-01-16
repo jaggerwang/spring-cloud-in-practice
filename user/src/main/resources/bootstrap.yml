@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: spring-cloud-in-practice-user
   cloud:
     consul:
       host: ${SCIP_SPRING_CLOUD_CONSUL_HOST:localhost}
