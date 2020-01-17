@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
+// TODO: GraphQL not working with webflux now, so disable it's auto configuration.
 @SpringBootApplication(scanBasePackages = "net.jaggerwang.scip.gateway",
 		exclude = {GraphQLJavaToolsAutoConfiguration.class, GraphQLSpringWebfluxAutoConfiguration.class})
 @EnableDiscoveryClient

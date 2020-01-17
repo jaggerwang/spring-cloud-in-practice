@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class RouteConfig {
     private TokenRelayGatewayFilterFactory tokenRelayGatewayFilterFactory;
 
-    public  RouteConfig(TokenRelayGatewayFilterFactory tokenRelayGatewayFilterFactory) {
+    public RouteConfig(TokenRelayGatewayFilterFactory tokenRelayGatewayFilterFactory) {
         this.tokenRelayGatewayFilterFactory = tokenRelayGatewayFilterFactory;
     }
 

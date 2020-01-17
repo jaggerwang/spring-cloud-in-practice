@@ -13,6 +13,8 @@ services:
     command: agent -dev -client 0.0.0.0 -log-level INFO
     environment:
       TZ: Asia/Shanghai
+    ports:
+      - 9500:8500
     volumes:
       - ~/data/spring-cloud-in-practice/consul:/consul/data
   hydra-migrate:
