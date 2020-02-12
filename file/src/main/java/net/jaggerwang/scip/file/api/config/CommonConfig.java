@@ -14,7 +14,7 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 import java.time.Duration;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class CommonConfig {
     @Bean
     public ObjectMapper objectMapper() {

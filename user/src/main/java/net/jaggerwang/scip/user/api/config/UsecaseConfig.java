@@ -5,7 +5,7 @@ import net.jaggerwang.scip.user.usecase.port.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class UsecaseConfig {
     @Bean
     public UserUsecases userUsecases(UserRepository userRepository) {

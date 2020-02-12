@@ -6,7 +6,7 @@ import net.jaggerwang.scip.file.usecase.port.service.StorageService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class UsecaseConfig {
     @Bean
     public FileUsecases fileUsecases(FileRepository fileRepository, StorageService storageService) {

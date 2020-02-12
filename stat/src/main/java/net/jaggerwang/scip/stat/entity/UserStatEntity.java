@@ -9,25 +9,18 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserStatEntity {
-    @NonNull
     private Long id;
 
-    @NonNull
     private Long userId;
 
-    @NonNull
     private Long postCount;
 
-    @NonNull
     private Long likeCount;
 
-    @NonNull
     private Long followingCount;
 
-    @NonNull
     private Long followerCount;
 
-    @NonNull
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

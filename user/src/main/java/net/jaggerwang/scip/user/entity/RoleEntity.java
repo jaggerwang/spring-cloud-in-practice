@@ -9,13 +9,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoleEntity {
-    @NonNull
     private Long id;
 
-    @NonNull
     private String name;
 
-    @NonNull
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

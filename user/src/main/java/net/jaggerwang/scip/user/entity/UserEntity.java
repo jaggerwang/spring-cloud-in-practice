@@ -9,13 +9,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserEntity {
-    @NonNull
     private Long id;
 
-    @NonNull
     private String username;
 
-    @NonNull
     private String password;
 
     private String mobile;
@@ -24,10 +21,8 @@ public class UserEntity {
 
     private Long avatarId;
 
-    @NonNull
     private String intro;
 
-    @NonNull
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

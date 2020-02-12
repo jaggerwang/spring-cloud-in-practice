@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class GraphQLConfig {
     @Bean
     public SchemaParserOptions schemaParserOptions(ObjectMapper objectMapper) {

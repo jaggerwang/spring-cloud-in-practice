@@ -117,7 +117,7 @@ Then we can use `hydra` command to prepare database and run a OAuth 2.0 Provider
 ```bash
 DSN=mysql://root:@tcp(localhost:3306)/scip_auth hydra migrate sql -e --yes
 
-STRATEGIES_ACCESS_TOKEN=jwt LOG_LEVEL=info SECRETS_SYSTEM=a2N4m0XL659TIrB2V3fJBxUED5Zv5zUQ DSN=mysql://root:@tcp(localhost:3306)/scip_auth URLS_SELF_ISSUER=http://localhost:4444/ URLS_LOGIN=http://localhost:8081/hydra/login URLS_CONSENT=http://localhost:8081/hydra/consent URLS_LOGOUT=http://localhost:8081/hydra/logout hydra serve all --dangerous-force-http --dangerous-allow-insecure-redirect-urls 'http://localhost:8081/hydra/login,http://localhost:8081/hydra/consent,http://localhost:8081/hydra/logout'
+STRATEGIES_ACCESS_TOKEN=jwt LOG_LEVEL=info SECRETS_SYSTEM=a2N4m0XL659TIrB2V3fJBxUED5Zv5zUQ DSN=mysql://root:@tcp(localhost:3306)/scip_auth URLS_SELF_ISSUER=http://localhost:4444/ URLS_LOGIN=http://localhost:8080/hydra/login URLS_CONSENT=http://localhost:8080/hydra/consent URLS_LOGOUT=http://localhost:8080/hydra/logout hydra serve all --dangerous-force-http --dangerous-allow-insecure-redirect-urls 'http://localhost:8080/hydra/login,http://localhost:8080/hydra/consent,http://localhost:8080/hydra/logout'
 ```
 
 #### Create test and scip oauth client application

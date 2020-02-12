@@ -9,16 +9,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostStatEntity {
-    @NonNull
     private Long id;
 
-    @NonNull
     private Long postId;
 
-    @NonNull
     private Long likeCount;
 
-    @NonNull
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

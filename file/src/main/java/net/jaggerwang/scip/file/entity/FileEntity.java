@@ -29,25 +29,18 @@ public class FileEntity {
         private String type;
     }
 
-    @NonNull
     private Long id;
 
-    @NonNull
     private Long userId;
 
-    @NonNull
     private Region region;
 
-    @NonNull
     private String bucket;
 
-    @NonNull
     private String path;
 
-    @NonNull
     private Meta meta;
 
-    @NonNull
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

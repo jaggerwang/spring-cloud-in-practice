@@ -25,13 +25,15 @@ public abstract class AsyncService {
     abstract public Optional<String> getCircuitBreakerName(URI uri);
 
     public Mono<ClientResponse> get(URI uri) {
-        var u = new DefaultUriBuilderFactory().builder()
-                .path(uri.getPath())
-                .query(uri.getQuery())
-                .build();
-        var response = webClient.get().uri(u).exchange();
+        var response = webClient
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(uri.getPath())
+                        .query(uri.getQuery())
+                        .build())
+                .exchange();
 
-        var cbName = getCircuitBreakerName(u);
+        var cbName = getCircuitBreakerName(uri);
         if (cbName.isPresent()) {
             return response.transform(it -> cbFactory.create(cbName.get()).run(it));
         } else {
@@ -61,13 +63,16 @@ public abstract class AsyncService {
     }
 
     public <T> Mono<ClientResponse> post(URI uri, @Nullable T body) {
-        var u = new DefaultUriBuilderFactory().builder()
-                .path(uri.getPath())
-                .query(uri.getQuery())
-                .build();
-        var response = webClient.post().uri(u).bodyValue(body).exchange();
+        var response = webClient
+                .post()
+                .uri(uriBuilder -> uriBuilder
+                        .path(uri.getPath())
+                        .query(uri.getQuery())
+                        .build())
+                .bodyValue(body)
+                .exchange();
 
-        var cbName = getCircuitBreakerName(u);
+        var cbName = getCircuitBreakerName(uri);
         if (cbName.isPresent()) {
             return response.transform(it -> cbFactory.create(cbName.get()).run(it));
         } else {
@@ -99,13 +104,16 @@ public abstract class AsyncService {
     }
 
     public <T> Mono<ClientResponse> put(URI uri, @Nullable T body) {
-        var u = new DefaultUriBuilderFactory().builder()
-                .path(uri.getPath())
-                .query(uri.getQuery())
-                .build();
-        var response = webClient.put().uri(u).bodyValue(body).exchange();
+        var response = webClient
+                .put()
+                .uri(uriBuilder -> uriBuilder
+                        .path(uri.getPath())
+                        .query(uri.getQuery())
+                        .build())
+                .bodyValue(body)
+                .exchange();
 
-        var cbName = getCircuitBreakerName(u);
+        var cbName = getCircuitBreakerName(uri);
         if (cbName.isPresent()) {
             return response.transform(it -> cbFactory.create(cbName.get()).run(it));
         } else {

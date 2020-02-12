@@ -15,24 +15,18 @@ public class PostEntity {
         TEXT, IMAGE, VIDEO
     }
 
-    @NonNull
     private Long id;
 
-    @NonNull
     private Long userId;
 
-    @NonNull
     private Type type;
 
-    @NonNull
     private String text;
 
-    @NonNull
     private List<Long> imageIds;
 
     private Long videoId;
 
-    @NonNull
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

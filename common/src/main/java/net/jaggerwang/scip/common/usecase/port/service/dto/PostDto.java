@@ -21,7 +21,8 @@ public class PostDto {
 
     private String text;
 
-    private List<Long> imageIds;
+    @Builder.Default
+    private List<Long> imageIds = List.of();
 
     private Long videoId;
 

@@ -30,8 +30,10 @@ public abstract class SyncService {
         var u = restTemplate.getUriTemplateHandler().expand(uri.toString());
         var cbName = getCircuitBreakerName(u);
         if (cbName.isPresent()) {
-            return cbFactory.create(cbName.get()).run(() -> restTemplate
-                    .exchange(u, HttpMethod.GET, null, responseType));
+            return cbFactory
+                    .create(cbName.get())
+                    .run(() -> restTemplate
+                            .exchange(u, HttpMethod.GET, null, responseType));
         } else {
             return restTemplate.exchange(u, HttpMethod.GET, null, responseType);
         }
@@ -64,8 +66,10 @@ public abstract class SyncService {
         var u = restTemplate.getUriTemplateHandler().expand(uri.toString());
         var cbName = getCircuitBreakerName(u);
         if (cbName.isPresent()) {
-            return cbFactory.create(cbName.get()).run(() -> restTemplate
-                    .exchange(u, HttpMethod.GET, null, responseType));
+            return cbFactory
+                    .create(cbName.get())
+                    .run(() -> restTemplate
+                            .exchange(u, HttpMethod.GET, null, responseType));
         } else {
             return restTemplate.exchange(u, HttpMethod.GET, null, responseType);
         }
@@ -98,8 +102,10 @@ public abstract class SyncService {
         var u = restTemplate.getUriTemplateHandler().expand(uri.toString());
         var cbName = getCircuitBreakerName(u);
         if (cbName.isPresent()) {
-            return cbFactory.create(cbName.get()).run(() -> restTemplate
-                    .exchange(u, HttpMethod.POST, new HttpEntity(body), responseType));
+            return cbFactory
+                    .create(cbName.get())
+                    .run(() -> restTemplate
+                            .exchange(u, HttpMethod.POST, new HttpEntity(body), responseType));
         } else {
             return restTemplate.exchange(u, HttpMethod.POST, new HttpEntity(body), responseType);
         }
@@ -133,8 +139,10 @@ public abstract class SyncService {
         var u = restTemplate.getUriTemplateHandler().expand(uri.toString());
         var cbName = getCircuitBreakerName(u);
         if (cbName.isPresent()) {
-            return cbFactory.create(cbName.get()).run(() -> restTemplate
-                    .exchange(u, HttpMethod.POST, new HttpEntity(body), responseType));
+            return cbFactory
+                    .create(cbName.get())
+                    .run(() -> restTemplate
+                            .exchange(u, HttpMethod.POST, new HttpEntity(body), responseType));
         } else {
             return restTemplate.exchange(u, HttpMethod.POST, new HttpEntity(body), responseType);
         }
@@ -170,8 +178,10 @@ public abstract class SyncService {
         var u = restTemplate.getUriTemplateHandler().expand(uri.toString());
         var cbName = getCircuitBreakerName(u);
         if (cbName.isPresent()) {
-            return cbFactory.create(cbName.get()).run(() -> restTemplate
-                    .exchange(u, HttpMethod.PUT, new HttpEntity(body), responseType));
+            return cbFactory
+                    .create(cbName.get())
+                    .run(() -> restTemplate
+                            .exchange(u, HttpMethod.PUT, new HttpEntity(body), responseType));
         } else {
             return restTemplate.exchange(u, HttpMethod.PUT, new HttpEntity(body), responseType);
         }
@@ -205,8 +215,10 @@ public abstract class SyncService {
         var u = restTemplate.getUriTemplateHandler().expand(uri.toString());
         var cbName = getCircuitBreakerName(u);
         if (cbName.isPresent()) {
-            return cbFactory.create(cbName.get()).run(() -> restTemplate
-                    .exchange(u, HttpMethod.PUT, new HttpEntity(body), responseType));
+            return cbFactory
+                    .create(cbName.get())
+                    .run(() -> restTemplate
+                            .exchange(u, HttpMethod.PUT, new HttpEntity(body), responseType));
         } else {
             return restTemplate.exchange(u, HttpMethod.PUT, new HttpEntity(body), responseType);
         }
