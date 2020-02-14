@@ -1,3 +1,5 @@
+debug: ${SCIP_DEBUG:false}
+
 spring:
   application:
     name: spring-cloud-in-practice-post

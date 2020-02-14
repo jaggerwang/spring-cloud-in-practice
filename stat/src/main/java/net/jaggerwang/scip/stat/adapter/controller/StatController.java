@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class StatController extends AbstractController {
     @GetMapping("/ofUser")
     public RootDto user(@RequestParam Long userId) {
-        var userStat = statUsecases.userStatInfoByUserId(userId);
+        var userStat = statUsecase.userStatInfoByUserId(userId);
 
         return new RootDto().addDataEntry("userStat", UserStatDto.fromEntity(userStat));
     }
 
     @GetMapping("/ofPost")
     public RootDto post(@RequestParam Long postId) {
-        var postStat = statUsecases.postStatInfoByPostId(postId);
+        var postStat = statUsecase.postStatInfoByPostId(postId);
 
         return new RootDto().addDataEntry("postStat", PostStatDto.fromEntity(postStat));
     }

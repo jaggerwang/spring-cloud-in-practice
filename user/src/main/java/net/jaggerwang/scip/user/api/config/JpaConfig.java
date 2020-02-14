@@ -1,4 +1,4 @@
-package net.jaggerwang.scip.stat.api.config;
+package net.jaggerwang.scip.user.api.config;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration(proxyBeanMethods = false)
-public class SpringDataJpaConfig {
+public class JpaConfig {
     @PersistenceContext
     private EntityManager entityManager;
 

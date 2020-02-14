@@ -17,14 +17,9 @@ public class RouteConfig {
     @Bean
     public RouteLocator routes(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route(p -> p.path("/")
+                .route(p -> p.path("/", "/user/**")
                         .filters(f -> f
                                 .rewritePath("/", "/user/logged")
-                                .filters(tokenRelayFilterFactory.apply())
-                                .removeRequestHeader("Cookie"))
-                        .uri("lb://spring-cloud-in-practice-user"))
-                .route(p -> p.path("/user/**")
-                        .filters(f -> f
                                 .filters(tokenRelayFilterFactory.apply())
                                 .removeRequestHeader("Cookie"))
                         .uri("lb://spring-cloud-in-practice-user"))

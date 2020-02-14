@@ -10,12 +10,12 @@ import net.jaggerwang.scip.file.entity.FileEntity;
 import net.jaggerwang.scip.file.usecase.port.repository.FileRepository;
 import net.jaggerwang.scip.file.usecase.port.service.StorageService;
 
-public class FileUsecases {
+public class FileUsecase {
     private FileRepository fileRepository;
 
     private StorageService storageService;
 
-    public FileUsecases(FileRepository fileRepository, StorageService storageService) {
+    public FileUsecase(FileRepository fileRepository, StorageService storageService) {
         this.fileRepository = fileRepository;
         this.storageService = storageService;
     }

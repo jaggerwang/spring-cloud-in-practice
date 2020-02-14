@@ -6,13 +6,13 @@ import net.jaggerwang.scip.stat.entity.UserStatEntity;
 import net.jaggerwang.scip.stat.usecase.port.repository.PostStatRepository;
 import net.jaggerwang.scip.stat.usecase.port.repository.UserStatRepository;
 
-public class StatUsecases {
+public class StatUsecase {
     private UserStatRepository userStatRepository;
 
     private PostStatRepository postStatRepository;
 
-    public StatUsecases(UserStatRepository userStatRepository,
-            PostStatRepository postStatRepository) {
+    public StatUsecase(UserStatRepository userStatRepository,
+                       PostStatRepository postStatRepository) {
         this.userStatRepository = userStatRepository;
         this.postStatRepository = postStatRepository;
     }

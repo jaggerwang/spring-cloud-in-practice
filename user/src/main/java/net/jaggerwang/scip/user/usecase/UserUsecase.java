@@ -10,7 +10,7 @@ import net.jaggerwang.scip.common.usecase.exception.*;
 import net.jaggerwang.scip.user.entity.UserEntity;
 import net.jaggerwang.scip.user.usecase.port.repository.UserRepository;
 
-public class UserUsecases {
+public class UserUsecase {
     private static HashMap<String, String> mobileVerifyCodes = new HashMap<>();
     private static HashMap<String, String> emailVerifyCodes = new HashMap<>();
 
@@ -18,7 +18,7 @@ public class UserUsecases {
     private RandomGenerator randomGenerator = new RandomGenerator();
     private PasswordEncoder passwordEncoder = new PasswordEncoder();
 
-    public UserUsecases(UserRepository userRepository) {
+    public UserUsecase(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

@@ -8,12 +8,12 @@ import net.jaggerwang.scip.common.usecase.port.service.sync.UserService;
 import net.jaggerwang.scip.post.entity.PostEntity;
 import net.jaggerwang.scip.post.usecase.port.repository.PostRepository;
 
-public class PostUsecases {
+public class PostUsecase {
     private PostRepository postRepository;
 
     private UserService userService;
 
-    public PostUsecases(PostRepository postRepository, UserService userService) {
+    public PostUsecase(PostRepository postRepository, UserService userService) {
         this.postRepository = postRepository;
         this.userService = userService;
     }

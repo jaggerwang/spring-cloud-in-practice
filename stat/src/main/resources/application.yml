@@ -1,5 +1,3 @@
-debug: ${SCIP_DEBUG:false}
-
 logging:
     file:
         path: ${SCIP_LOGGING_FILE_PATH:/tmp}

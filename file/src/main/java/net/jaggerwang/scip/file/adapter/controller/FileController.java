@@ -41,7 +41,7 @@ public class FileController extends AbstractController {
                     .bucket(bucket)
                     .meta(meta).build();
 
-            fileEntity = fileUsecases.upload(path, content, fileEntity);
+            fileEntity = fileUsecase.upload(path, content, fileEntity);
 
             fileEntities.add(fileEntity);
         }
@@ -52,7 +52,7 @@ public class FileController extends AbstractController {
 
     @GetMapping("/info")
     public RootDto info(@RequestParam Long id) {
-        var fileEntity = fileUsecases.info(id);
+        var fileEntity = fileUsecase.info(id);
         if (fileEntity.isEmpty()) {
             throw new NotFoundException("文件未找到");
         }
@@ -63,7 +63,7 @@ public class FileController extends AbstractController {
     @GetMapping("/infos")
     public RootDto infos(@RequestParam String ids) {
         var idList = Arrays.stream(ids.split(",")).mapToLong(Long::parseLong).boxed().collect(Collectors.toList());
-        var fileEntities = fileUsecases.infos(idList, true);
+        var fileEntities = fileUsecase.infos(idList, true);
 
         return new RootDto().addDataEntry("file", fileEntities.stream()
                 .map(FileDto::fromEntity).collect(Collectors.toList()));

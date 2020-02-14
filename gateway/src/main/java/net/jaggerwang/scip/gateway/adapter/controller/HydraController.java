@@ -6,7 +6,6 @@ import net.jaggerwang.scip.common.usecase.port.service.async.HydraService;
 import net.jaggerwang.scip.common.usecase.port.service.async.UserService;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
 import net.jaggerwang.scip.common.usecase.port.service.dto.auth.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

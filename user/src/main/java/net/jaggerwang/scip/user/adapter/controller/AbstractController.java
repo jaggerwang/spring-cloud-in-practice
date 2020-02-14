@@ -1,7 +1,7 @@
 package net.jaggerwang.scip.user.adapter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.jaggerwang.scip.user.usecase.UserUsecases;
+import net.jaggerwang.scip.user.usecase.UserUsecase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,7 +12,7 @@ abstract public class AbstractController {
     protected ObjectMapper objectMapper;
 
     @Autowired
-    protected UserUsecases userUsecases;
+    protected UserUsecase userUsecase;
 
     protected Long loggedUserId() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
