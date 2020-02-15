@@ -1,6 +1,6 @@
 # Spring Cloud in Practice
 
-This project can be used as a starter for spring cloud micro services development. It is the micro services version of [Spring Boot in Practice](https://github.com/jaggerwang/spring-boot-in-practice). It use [Spring Cloud Consul](https://cloud.spring.io/spring-cloud-consul/reference/html/) for service discovery, [Spring Cloud Gateway](https://cloud.spring.io/spring-cloud-gateway/reference/html/) to implement api gateway, and [ORY/Hydra](https://github.com/ory/hydra) for running a OAuth 2.0 Provider service. There is an article [Spring Cloud 微服务开发指南](https://blog.jaggerwang.net/spring-cloud-micro-service-develop-tour/) for learning this project.
+This project can be used as a starter for spring cloud micro services development. It is the micro services version of [Spring Boot in Practice](https://github.com/jaggerwang/spring-boot-in-practice). It use [Spring Cloud Consul](https://cloud.spring.io/spring-cloud-consul/reference/html/) for service discovery, [Spring Cloud Gateway](https://cloud.spring.io/spring-cloud-gateway/reference/html/) to implement api gateway, and [ORY/Hydra](https://github.com/ory/hydra) for running a OAuth2 Provider service. There is an article [Spring Cloud 微服务开发指南](https://blog.jaggerwang.net/spring-cloud-micro-service-develop-tour/) for learning this project.
 
 ## Dependent frameworks and packages
 
@@ -13,7 +13,7 @@ This project can be used as a starter for spring cloud micro services developmen
 1. [Spring Cloud Gateway](https://spring.io/projects/spring-cloud-gateway) Api gateway
 1. [Spring Cloud Consul](https://spring.io/projects/spring-cloud-consul) Service discovery
 1. [Spring Cloud Circuit Breaker](https://spring.io/projects/spring-cloud-circuitbreaker) Circuit breaker
-1. [ORY/Hydra](https://github.com/ory/hydra) OAuth 2.0 Provider
+1. [ORY/Hydra](https://github.com/ory/hydra) OAuth2 Provider
 
 ## APIs
 
@@ -103,7 +103,7 @@ Suppose we can use `root` user without password to access these databases, if no
 
 If you use macOS, you can use `brew install consul` to install consul, and use `brew services start consul` to start service at port `8500`.
 
-#### Prepare hydra database and start hydra oauth server
+#### Prepare Hydra database and start OAuth2 server
 
 We need install `hydra` command at first. You can use the following commands on macOS to install hydra.
 
@@ -112,7 +112,7 @@ brew tap ory/hydra
 brew install ory/hydra/hydra
 ```
 
-Then we can use `hydra` command to prepare database and run a OAuth 2.0 Provider service. 
+Then we can use `hydra` command to prepare database and run a OAuth2 server. 
 
 ```bash
 DSN=mysql://root:@tcp(localhost:3306)/scip_auth hydra migrate sql -e --yes
@@ -120,7 +120,9 @@ DSN=mysql://root:@tcp(localhost:3306)/scip_auth hydra migrate sql -e --yes
 STRATEGIES_ACCESS_TOKEN=jwt LOG_LEVEL=info SECRETS_SYSTEM=a2N4m0XL659TIrB2V3fJBxUED5Zv5zUQ DSN=mysql://root:@tcp(localhost:3306)/scip_auth URLS_SELF_ISSUER=http://localhost:4444/ URLS_LOGIN=http://localhost:8080/hydra/login URLS_CONSENT=http://localhost:8080/hydra/consent URLS_LOGOUT=http://localhost:8080/hydra/logout hydra serve all --dangerous-force-http --dangerous-allow-insecure-redirect-urls 'http://localhost:8080/hydra/login,http://localhost:8080/hydra/consent,http://localhost:8080/hydra/logout'
 ```
 
-#### Create test and scip oauth client application
+#### Create OAuth2 clients
+
+There are two clients, one is for Hydra test client, and another is for gateway application.
 
 ```bash
 hydra clients create --endpoint 'http://localhost:4445/' --id test --name 'Test' --secret E0g8oR7m711bGcvy --grant-types authorization_code,refresh_token,client_credentials,implicit --response-types token,code,id_token --scope openid,offline,profile --callbacks 'http://localhost:4446/callback'
@@ -134,14 +136,14 @@ hydra clients create --endpoint 'http://localhost:4445/' --id scip --name 'Sprin
 ./mvnw package
 ```
 
-#### Start gateway and all micro services
+#### Start gateway and all backend services
 
 ```bash
 java -jar gateway/target/spring-cloud-in-practice-gateway-1.0.0-SNAPSHOT.jar
-java -jar gateway/target/spring-cloud-in-practice-user-1.0.0-SNAPSHOT.jar
-java -jar gateway/target/spring-cloud-in-practice-post-1.0.0-SNAPSHOT.jar
-java -jar gateway/target/spring-cloud-in-practice-file-1.0.0-SNAPSHOT.jar
-java -jar gateway/target/spring-cloud-in-practice-stat-1.0.0-SNAPSHOT.jar
+java -jar user/target/spring-cloud-in-practice-user-1.0.0-SNAPSHOT.jar
+java -jar post/target/spring-cloud-in-practice-post-1.0.0-SNAPSHOT.jar
+java -jar file/target/spring-cloud-in-practice-file-1.0.0-SNAPSHOT.jar
+java -jar stat/target/spring-cloud-in-practice-stat-1.0.0-SNAPSHOT.jar
 ```
 
 #### Register a test user
@@ -155,15 +157,17 @@ curl --request POST 'http://localhost:8080/user/register' \
 }'
 ```
 
-#### Start test client application
-
-The test client application is only for testing OAuth 2.0 authentication flow.
+#### Test OAuth2 authorization flow with Hydra test client
 
 ```bash
 hydra token user --auth-url 'http://localhost:4444/oauth2/auth' --token-url 'http://localhost:4444/oauth2/token' --client-id test --client-secret E0g8oR7m711bGcvy --scope openid,offline,profile --redirect 'http://localhost:4446/callback'
 ```
 
-It will auto open `http://localhost:4446` for testing OAuth 2.0 Authorize Code Flow. And you can access all apis through gateway `http://localhost:8080`.
+It will auto open `http://localhost:4446` for testing OAuth2 Authorization Code Flow. 
+
+#### Test APIs
+
+The index page `http://localhost:8080/` will return the OAuth2 Access Token issued by Hydra OAuth2 server, it'll be null if not having one. You can access page `http://localhost:8080/login` to commence a OAuth2 authorization flow.
 
 ### By docker compose
 
@@ -181,7 +185,9 @@ docker-compose up
 
 If you repackaged any module, you should add `--build` option to enable the new jar package.
 
-#### Create test and scip oauth client application
+#### Create OAuth2 clients
+
+There are two clients, one is for Hydra test client, and another is for gateway application.
 
 ```bash
 hydra clients create --endpoint 'http://localhost:9091/' --id test --secret E0g8oR7m711bGcvy --grant-types authorization_code,refresh_token,client_credentials,implicit --response-types token,code,id_token --scope openid,offline,profile --callbacks 'http://localhost:4446/callback'
@@ -200,12 +206,14 @@ curl --request POST 'http://localhost:9080/user/register' \
 }'
 ```
 
-#### Start test client application
-
-The test client application is only for testing OAuth 2.0 authentication flow.
+#### Test OAuth2 authorization flow with Hydra test client
 
 ```bash
 hydra token user --auth-url 'http://localhost:9090/oauth2/auth' --token-url 'http://localhost:9090/oauth2/token' --client-id test --client-secret E0g8oR7m711bGcvy --scope openid,offline,profile --redirect 'http://localhost:4446/callback'
 ```
 
-It will auto open `http://localhost:4446` for testing OAuth 2.0 Authorize Code Flow. And you access all apis through gateway `http://localhost:9080`.
+It will auto open `http://localhost:4446` for testing OAuth2 Authorization Code Flow. 
+
+#### Test APIs
+
+The index page `http://localhost:9080/` will return the OAuth2 Access Token issued by Hydra OAuth2 server, it'll be null if not having one. You can access page `http://localhost:9080/login` to commence a OAuth2 authorization flow.
