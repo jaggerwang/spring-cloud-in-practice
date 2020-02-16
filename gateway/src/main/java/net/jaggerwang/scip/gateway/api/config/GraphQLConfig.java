@@ -1,94 +1,91 @@
 package net.jaggerwang.scip.gateway.api.config;
 
-import com.coxautodev.graphql.tools.SchemaParserOptions;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.Assert;
+import graphql.GraphQL;
 import graphql.language.*;
+import graphql.scalars.ExtendedScalars;
 import graphql.schema.*;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import graphql.schema.idl.RuntimeWiring;
+import graphql.schema.idl.SchemaGenerator;
+import graphql.schema.idl.SchemaParser;
+import net.jaggerwang.scip.gateway.adapter.graphql.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.util.FileCopyUtils;
 
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
+
 @Configuration(proxyBeanMethods = false)
 public class GraphQLConfig {
-    @Bean
-    public SchemaParserOptions schemaParserOptions(ObjectMapper objectMapper) {
-        return SchemaParserOptions.newOptions()
-                .objectMapperProvider(fieldDefinition -> objectMapper).build();
+    private GraphQL graphQL;
+
+    @Value("classpath:schema.graphqls")
+    private Resource schema;
+
+    QueryDataFetchers queryDataFetchers;
+    MutationDataFetchers mutationDataFetchers;
+    UserDataFetcher userDataFetchers;
+    PostDataFetcher postDataFetchers;
+    FileDataFetchers fileDataFetchers;
+    UserStatDataFetcher userStatDataFetchers;
+    PostStatDataFetcher postStatDataFetchers;
+
+    public GraphQLConfig(QueryDataFetchers queryDataFetchers,
+                         MutationDataFetchers mutationDataFetchers,
+                         UserDataFetcher userDataFetchers,
+                         PostDataFetcher postDataFetchers,
+                         FileDataFetchers fileDataFetchers,
+                         UserStatDataFetcher userStatDataFetchers,
+                         PostStatDataFetcher postStatDataFetchers) {
+        this.queryDataFetchers = queryDataFetchers;
+        this.mutationDataFetchers = mutationDataFetchers;
+        this.userDataFetchers = userDataFetchers;
+        this.postDataFetchers = postDataFetchers;
+        this.fileDataFetchers = fileDataFetchers;
+        this.userStatDataFetchers = userStatDataFetchers;
+        this.postStatDataFetchers = postStatDataFetchers;
     }
 
     @Bean
-    public GraphQLScalarType jsonType() {
-        return GraphQLScalarType.newScalar().name("JSON").description("A json scalar")
-                .coercing(new Coercing<Object, Object>() {
-                    @Override
-                    public Object serialize(Object input) throws CoercingSerializeException {
-                        return input;
-                    }
+    public GraphQL graphQL() {
+        return graphQL;
+    }
 
-                    @Override
-                    public Object parseValue(Object input) throws CoercingParseValueException {
-                        return input;
-                    }
+    @PostConstruct
+    public void init() throws IOException {
+        var reader = new InputStreamReader(schema.getInputStream(), StandardCharsets.UTF_8);
+        var sdl = FileCopyUtils.copyToString(reader);
+        GraphQLSchema graphQLSchema = buildSchema(sdl);
+        this.graphQL = GraphQL.newGraphQL(graphQLSchema).build();
+    }
 
-                    @Override
-                    public Object parseLiteral(Object input) throws CoercingParseLiteralException {
-                        return parseLiteral(input, Collections.emptyMap());
-                    }
+    private GraphQLSchema buildSchema(String sdl) {
+        var typeRegistry = new SchemaParser().parse(sdl);
+        var runtimeWiring = buildWiring();
+        var schemaGenerator = new SchemaGenerator();
+        return schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
+    }
 
-                    @Override
-                    public Object parseLiteral(Object input, Map<String, Object> variables)
-                            throws CoercingParseLiteralException {
-                        if (!(input instanceof Value)) {
-                            throw new CoercingParseLiteralException(
-                                    "Expected AST type 'StringValue' but was '"
-                                            + (input == null ? "null"
-                                                    : input.getClass().getSimpleName())
-                                            + "'.");
-                        }
-                        if (input instanceof NullValue) {
-                            return null;
-                        }
-                        if (input instanceof FloatValue) {
-                            return ((FloatValue) input).getValue();
-                        }
-                        if (input instanceof StringValue) {
-                            return ((StringValue) input).getValue();
-                        }
-                        if (input instanceof IntValue) {
-                            return ((IntValue) input).getValue();
-                        }
-                        if (input instanceof BooleanValue) {
-                            return ((BooleanValue) input).isValue();
-                        }
-                        if (input instanceof EnumValue) {
-                            return ((EnumValue) input).getName();
-                        }
-                        if (input instanceof VariableReference) {
-                            var varName = ((VariableReference) input).getName();
-                            return variables.get(varName);
-                        }
-                        if (input instanceof ArrayValue) {
-                            var values = ((ArrayValue) input).getValues();
-                            return values.stream().map(v -> parseLiteral(v, variables))
-                                    .collect(Collectors.toList());
-                        }
-                        if (input instanceof ObjectValue) {
-                            var values = ((ObjectValue) input).getObjectFields();
-                            var parsedValues = new LinkedHashMap<String, Object>();
-                            values.forEach(fld -> {
-                                var parsedValue = parseLiteral(fld.getValue(), variables);
-                                parsedValues.put(fld.getName(), parsedValue);
-                            });
-                            return parsedValues;
-                        }
-                        return Assert.assertShouldNeverHappen("We have covered all Value types");
-                    }
-                }).build();
+    private RuntimeWiring buildWiring() {
+        return RuntimeWiring.newRuntimeWiring().scalar(ExtendedScalars.Json)
+                .type(newTypeWiring("Query").dataFetchers(queryDataFetchers.toMap()))
+                .type(newTypeWiring("Mutation").dataFetchers(mutationDataFetchers.toMap()))
+                .type(newTypeWiring("User").dataFetchers(userDataFetchers.toMap()))
+                .type(newTypeWiring("Post").dataFetchers(postDataFetchers.toMap()))
+                .type(newTypeWiring("File").dataFetchers(fileDataFetchers.toMap()))
+                .type(newTypeWiring("UserStat").dataFetchers(userStatDataFetchers.toMap()))
+                .type(newTypeWiring("PostStat").dataFetchers(postStatDataFetchers.toMap()))
+                .build();
     }
 }

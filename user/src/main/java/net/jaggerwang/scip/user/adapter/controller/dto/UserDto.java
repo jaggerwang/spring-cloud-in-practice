@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.jaggerwang.scip.common.usecase.port.service.dto.FileDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.UserStatDto;
 import net.jaggerwang.scip.user.entity.UserEntity;
 
 @Data
@@ -30,6 +32,12 @@ public class UserDto {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private FileDto avatar;
+
+    private UserStatDto stat;
+
+    private Boolean following;
 
     public static UserDto fromEntity(UserEntity userEntity) {
         return UserDto.builder().id(userEntity.getId()).username(userEntity.getUsername())

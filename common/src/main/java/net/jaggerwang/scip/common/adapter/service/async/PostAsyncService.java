@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.async.PostService;
 import net.jaggerwang.scip.common.usecase.port.service.dto.PostDto;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
+import org.springframework.lang.Nullable;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -38,7 +39,7 @@ public class PostAsyncService extends InternalAsyncService implements PostServic
     @Override
     public Mono<Void> delete(Long id) {
         return postData("/post/delete", Map.of("id", id))
-                .map(data -> null);
+                .then();
     }
 
     @Override
@@ -48,7 +49,8 @@ public class PostAsyncService extends InternalAsyncService implements PostServic
     }
 
     @Override
-    public Mono<List<PostDto>> published(Long userId, Long limit, Long offset) {
+    public Mono<List<PostDto>> published(@Nullable Long userId, @Nullable Long limit,
+                                         @Nullable Long offset) {
         var params = new HashMap<String, String>();
         if (userId != null) {
             params.put("userId", userId.toString());
@@ -64,7 +66,7 @@ public class PostAsyncService extends InternalAsyncService implements PostServic
     }
 
     @Override
-    public Mono<Long> publishedCount(Long userId) {
+    public Mono<Long> publishedCount(@Nullable Long userId) {
         var params = new HashMap<String, String>();
         if (userId != null) {
             params.put("userId", userId.toString());
@@ -76,13 +78,13 @@ public class PostAsyncService extends InternalAsyncService implements PostServic
     @Override
     public Mono<Void> like(Long postId) {
         return postData("/post/like", Map.of("postId", postId))
-                .map(data -> null);
+                .then();
     }
 
     @Override
     public Mono<Void> unlike(Long postId) {
         return postData("/post/unlike", Map.of("postId", postId))
-                .map(data -> null);
+                .then();
     }
 
     @Override
@@ -92,7 +94,8 @@ public class PostAsyncService extends InternalAsyncService implements PostServic
     }
 
     @Override
-    public Mono<List<PostDto>> liked(Long userId, Long limit, Long offset) {
+    public Mono<List<PostDto>> liked(@Nullable Long userId, @Nullable Long limit,
+                                     @Nullable Long offset) {
         var params = new HashMap<String, String>();
         if (userId != null) {
             params.put("userId", userId.toString());
@@ -108,7 +111,7 @@ public class PostAsyncService extends InternalAsyncService implements PostServic
     }
 
     @Override
-    public Mono<Long> likedCount(Long userId) {
+    public Mono<Long> likedCount(@Nullable Long userId) {
         var params = new HashMap<String, String>();
         if (userId != null) {
             params.put("userId", userId.toString());
@@ -118,7 +121,8 @@ public class PostAsyncService extends InternalAsyncService implements PostServic
     }
 
     @Override
-    public Mono<List<PostDto>> following(Long limit, Long beforeId, Long afterId) {
+    public Mono<List<PostDto>> following(@Nullable Long limit, @Nullable Long beforeId,
+                                         @Nullable Long afterId) {
         var params = new HashMap<String, String>();
         if (limit != null) {
             params.put("limit", limit.toString());

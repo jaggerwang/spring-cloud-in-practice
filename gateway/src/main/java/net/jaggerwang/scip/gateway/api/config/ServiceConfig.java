@@ -22,7 +22,7 @@ public class ServiceConfig {
     public UserService userService(WebClient.Builder builder,
                                    ReactiveCircuitBreakerFactory cbFactory,
                                    ObjectMapper objectMapper) {
-        var webClient = builder.baseUrl("lb://spring-cloud-in-practice-user").build();
+        var webClient = builder.baseUrl("http://spring-cloud-in-practice-user").build();
         return new UserAsyncService(webClient, cbFactory, objectMapper);
     }
 
@@ -30,7 +30,7 @@ public class ServiceConfig {
     public PostService postService(WebClient.Builder builder,
                                    ReactiveCircuitBreakerFactory cbFactory,
                                    ObjectMapper objectMapper) {
-        var webClient = builder.baseUrl("lb://spring-cloud-in-practice-post").build();
+        var webClient = builder.baseUrl("http://spring-cloud-in-practice-post").build();
         return new PostAsyncService(webClient, cbFactory, objectMapper);
     }
 
@@ -38,7 +38,7 @@ public class ServiceConfig {
     public FileService fileService(WebClient.Builder builder,
                                    ReactiveCircuitBreakerFactory cbFactory,
                                    ObjectMapper objectMapper) {
-        var webClient = builder.baseUrl("lb://spring-cloud-in-practice-file").build();
+        var webClient = builder.baseUrl("http://spring-cloud-in-practice-file").build();
         return new FileAsyncService(webClient, cbFactory, objectMapper);
     }
 
@@ -46,7 +46,7 @@ public class ServiceConfig {
     public StatService statService(WebClient.Builder builder,
                                    ReactiveCircuitBreakerFactory cbFactory,
                                    ObjectMapper objectMapper) {
-        var webClient = builder.baseUrl("lb://spring-cloud-in-practice-stat").build();
+        var webClient = builder.baseUrl("http://spring-cloud-in-practice-stat").build();
         return new StatAsyncService(webClient, cbFactory, objectMapper);
     }
 

@@ -96,14 +96,14 @@
         </dependency>
 
         <dependency>
-            <groupId>com.graphql-java-kickstart</groupId>
-            <artifactId>graphql-kickstart-spring-boot-starter-tools</artifactId>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java-spring-boot-starter-webflux</artifactId>
             <version>${graphql-starter.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.graphql-java-kickstart</groupId>
-            <artifactId>graphql-kickstart-spring-boot-starter-webflux</artifactId>
-            <version>${graphql-starter.version}</version>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java-extended-scalars</artifactId>
+            <version>${graphql-extended-scalars.version}</version>
         </dependency>
 
         <dependency>

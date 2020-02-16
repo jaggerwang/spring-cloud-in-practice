@@ -119,6 +119,6 @@ public class HydraAsyncService extends AsyncService implements HydraService {
     @Override
     public Mono<Void> rejectLogoutRequest(String challenge) {
         return put("/oauth2/auth/requests/logout/reject", Map.of("logout_challenge", challenge))
-                .flatMap(response -> null);
+                .then();
     }
 }

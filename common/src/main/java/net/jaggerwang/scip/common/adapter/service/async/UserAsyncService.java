@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.async.UserService;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
+import org.springframework.lang.Nullable;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -82,13 +83,13 @@ public class UserAsyncService extends InternalAsyncService implements UserServic
     @Override
     public Mono<Void> follow(Long userId) {
         return postData("/user/follow", Map.of("userId", userId.toString()))
-                .map(data -> null);
+                .then();
     }
 
     @Override
     public Mono<Void> unfollow(Long userId) {
         return postData("/user/unfollow", Map.of("userId", userId.toString()))
-                .map(data -> null);
+                .then();
     }
 
     @Override
@@ -98,7 +99,8 @@ public class UserAsyncService extends InternalAsyncService implements UserServic
     }
 
     @Override
-    public Mono<List<UserDto>> following(Long userId, Long limit, Long offset) {
+    public Mono<List<UserDto>> following(@Nullable Long userId, @Nullable Long limit,
+                                         @Nullable Long offset) {
         var params = new HashMap<String, String>();
         if (userId != null) {
             params.put("userId", userId.toString());
@@ -114,7 +116,7 @@ public class UserAsyncService extends InternalAsyncService implements UserServic
     }
 
     @Override
-    public Mono<Long> followingCount(Long userId) {
+    public Mono<Long> followingCount(@Nullable Long userId) {
         var params = new HashMap<String, String>();
         if (userId != null) {
             params.put("userId", userId.toString());
@@ -124,7 +126,8 @@ public class UserAsyncService extends InternalAsyncService implements UserServic
     }
 
     @Override
-    public Mono<List<UserDto>> follower(Long userId, Long limit, Long offset) {
+    public Mono<List<UserDto>> follower(@Nullable Long userId, @Nullable Long limit,
+                                        @Nullable Long offset) {
         var params = new HashMap<String, String>();
         if (userId != null) {
             params.put("userId", userId.toString());
@@ -140,7 +143,7 @@ public class UserAsyncService extends InternalAsyncService implements UserServic
     }
 
     @Override
-    public Mono<Long> followerCount(Long userId) {
+    public Mono<Long> followerCount(@Nullable Long userId) {
         var params = new HashMap<String, String>();
         if (userId != null) {
             params.put("userId", userId.toString());

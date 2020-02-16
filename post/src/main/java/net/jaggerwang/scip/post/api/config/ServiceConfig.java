@@ -16,7 +16,7 @@ public class ServiceConfig {
     @Bean
     @LoadBalanced
     public RestTemplate userServiceRestTemplate(RestTemplateBuilder builder) {
-        return builder.rootUri("lb://spring-cloud-in-practice-user").build();
+        return builder.rootUri("http://spring-cloud-in-practice-user").build();
     }
 
     @Bean

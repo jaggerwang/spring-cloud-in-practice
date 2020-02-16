@@ -73,13 +73,14 @@ public class UserController extends AbstractController {
     }
 
     @GetMapping("/info")
-    public RootDto info(@RequestParam Long id) {
+    public RootDto info(@RequestParam Long id, @RequestParam(defaultValue = "false") Boolean full) {
         var userEntity = userUsecase.info(id);
         if (userEntity.isEmpty()) {
             throw new NotFoundException("用户未找到");
         }
 
-        return new RootDto().addDataEntry("user", UserDto.fromEntity(userEntity.get()));
+        return new RootDto().addDataEntry("user",
+                full ? fullUserDto(userEntity.get()) : UserDto.fromEntity(userEntity.get()));
     }
 
     @PostMapping("/follow")

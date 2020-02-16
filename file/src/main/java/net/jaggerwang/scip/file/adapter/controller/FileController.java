@@ -61,9 +61,10 @@ public class FileController extends AbstractController {
     }
 
     @GetMapping("/infos")
-    public RootDto infos(@RequestParam String ids) {
+    public RootDto infos(@RequestParam String ids,
+                         @RequestParam(defaultValue = "true") Boolean keepNull) {
         var idList = Arrays.stream(ids.split(",")).mapToLong(Long::parseLong).boxed().collect(Collectors.toList());
-        var fileEntities = fileUsecase.infos(idList, true);
+        var fileEntities = fileUsecase.infos(idList, keepNull);
 
         return new RootDto().addDataEntry("file", fileEntities.stream()
                 .map(FileDto::fromEntity).collect(Collectors.toList()));
