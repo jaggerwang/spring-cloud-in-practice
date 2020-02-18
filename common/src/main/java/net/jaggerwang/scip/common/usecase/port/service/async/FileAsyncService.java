@@ -6,7 +6,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public interface FileService {
+public interface FileAsyncService {
     Mono<List<FileDto>> upload(String region, String bucket, String path, List<MultipartFile> files);
 
     Mono<List<FileDto>> upload(List<MultipartFile> files);

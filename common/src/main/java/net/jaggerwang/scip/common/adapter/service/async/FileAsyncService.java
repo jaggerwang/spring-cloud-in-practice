@@ -2,7 +2,6 @@ package net.jaggerwang.scip.common.adapter.service.async;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.jaggerwang.scip.common.usecase.port.service.async.FileService;
 import net.jaggerwang.scip.common.usecase.port.service.dto.FileDto;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.util.LinkedMultiValueMap;
@@ -16,14 +15,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class FileAsyncService extends InternalAsyncService implements FileService {
-    protected ObjectMapper objectMapper;
-
+public class FileAsyncService extends InternalAsyncService implements net.jaggerwang.scip.common.usecase.port.service.async.FileAsyncService {
     public FileAsyncService(WebClient webClient, ReactiveCircuitBreakerFactory cbFactory,
                             ObjectMapper objectMapper) {
-        super(webClient, cbFactory);
-
-        this.objectMapper = objectMapper;
+        super(webClient, cbFactory, objectMapper);
     }
 
     @Override

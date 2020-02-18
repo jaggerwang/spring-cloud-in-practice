@@ -6,110 +6,104 @@ import org.springframework.stereotype.Component;
 @Component
 public class QueryDataFetchers extends AbstractDataFetchers {
     public DataFetcher userLogged() {
-        return env -> {
-            if (loggedUserId() == null) {
-                return null;
-            }
-
-            return userService.info(loggedUserId());
-        };
+        return env -> userAsyncService.logged();
     }
 
     public DataFetcher userInfo() {
         return env -> {
-            Long id = env.getArgument("id");
-            return userService.info(id);
+            var id = Long.valueOf((Integer) env.getArgument("id"));
+            return userAsyncService.info(id);
         };
     }
 
     public DataFetcher userFollowing() {
         return env -> {
-            Long userId = env.getArgument("userId");
-            Long limit = env.getArgument("limit");
-            Long offset = env.getArgument("offset");
-            return userService.following(userId, limit, offset);
+            var userId = Long.valueOf((Integer) env.getArgument("userId"));
+            var limit = Long.valueOf((Integer) env.getArgument("limit"));
+            var offset = Long.valueOf((Integer) env.getArgument("offset"));
+            return userAsyncService.following(userId, limit, offset);
         };
     }
 
     public DataFetcher userFollowingCount() {
         return env -> {
-            Long userId = env.getArgument("userId");
-            return userService.followingCount(userId);
+            var userId = Long.valueOf((Integer) env.getArgument("userId"));
+            return userAsyncService.followingCount(userId);
         };
     }
 
     public DataFetcher userFollower() {
         return env -> {
-            Long userId = env.getArgument("userId");
-            Long limit = env.getArgument("limit");
-            Long offset = env.getArgument("offset");
-            return userService.follower(userId, limit, offset);
+            var userId = Long.valueOf((Integer) env.getArgument("userId"));
+            var limit = Long.valueOf((Integer) env.getArgument("limit"));
+            var offset = Long.valueOf((Integer) env.getArgument("offset"));
+            return userAsyncService.follower(userId, limit, offset);
         };
     }
 
     public DataFetcher userFollowerCount() {
         return env -> {
-            Long userId = env.getArgument("userId");
-            return userService.followerCount(userId);
+            var userId = Long.valueOf((Integer) env.getArgument("userId"));
+            return userAsyncService.followerCount(userId);
         };
     }
 
     public DataFetcher postInfo() {
         return env -> {
-            Long id = env.getArgument("id");
-            return postService.info(id);
+            var id = Long.valueOf((Integer) env.getArgument("id"));
+            return postAsyncService.info(id);
         };
     }
 
     public DataFetcher postPublished() {
         return env -> {
-            Long userId = env.getArgument("userId");
-            Long limit = env.getArgument("limit");
-            Long offset = env.getArgument("offset");
-            return postService.published(userId, limit, offset);
+            var userId = Long.valueOf((Integer) env.getArgument("userId"));
+            var limit = Long.valueOf((Integer) env.getArgument("limit"));
+            var offset = Long.valueOf((Integer) env.getArgument("offset"));
+            return postAsyncService.published(userId, limit, offset);
         };
     }
 
     public DataFetcher postPublishedCount() {
         return env -> {
-            Long userId = env.getArgument("userId");
-            return postService.publishedCount(userId);
+            var userId = Long.valueOf((Integer) env.getArgument("userId"));
+            return postAsyncService.publishedCount(userId);
         };
     }
 
     public DataFetcher postLiked() {
         return env -> {
-            Long userId = env.getArgument("userId");
-            Long limit = env.getArgument("limit");
-            Long offset = env.getArgument("offset");
-            return postService.liked(userId, limit, offset);
+            var userId = Long.valueOf((Integer) env.getArgument("userId"));
+            var limit = Long.valueOf((Integer) env.getArgument("limit"));
+            var offset = Long.valueOf((Integer) env.getArgument("offset"));
+            return postAsyncService.liked(userId, limit, offset);
         };
     }
 
     public DataFetcher postLikedCount() {
         return env -> {
-            Long userId = env.getArgument("userId");
-            return postService.likedCount(userId);
+            var userId = Long.valueOf((Integer) env.getArgument("userId"));
+            return postAsyncService.likedCount(userId);
         };
     }
 
     public DataFetcher postFollowing() {
         return env -> {
-            Long limit = env.getArgument("limit");
-            Long beforeId = env.getArgument("beforeId");
-            Long afterId = env.getArgument("afterId");
-            return postService.following(limit, beforeId, afterId);
+            var limit = Long.valueOf((Integer) env.getArgument("limit"));
+            var beforeId = Long.valueOf((Integer) env.getArgument("beforeId"));
+            var afterId = Long.valueOf((Integer) env.getArgument("afterId"));
+            return postAsyncService.following(limit, beforeId, afterId);
         };
     }
 
     public DataFetcher postFollowingCount() {
-        return env -> postService.followingCount();
+        return env -> postAsyncService.followingCount();
     }
 
     public DataFetcher fileInfo() {
         return env -> {
-            Long id = env.getArgument("id");
-            return fileService.info(id);
+            var id = Long.valueOf((Integer) env.getArgument("id"));
+            return fileAsyncService.info(id);
         };
     }
 }

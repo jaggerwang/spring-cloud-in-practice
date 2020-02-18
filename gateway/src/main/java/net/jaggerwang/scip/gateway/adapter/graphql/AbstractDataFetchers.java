@@ -2,14 +2,11 @@ package net.jaggerwang.scip.gateway.adapter.graphql;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.schema.DataFetcher;
-import net.jaggerwang.scip.common.usecase.port.service.async.FileService;
-import net.jaggerwang.scip.common.usecase.port.service.async.PostService;
-import net.jaggerwang.scip.common.usecase.port.service.async.StatService;
-import net.jaggerwang.scip.common.usecase.port.service.async.UserService;
+import net.jaggerwang.scip.common.usecase.port.service.async.FileAsyncService;
+import net.jaggerwang.scip.common.usecase.port.service.async.PostAsyncService;
+import net.jaggerwang.scip.common.usecase.port.service.async.StatAsyncService;
+import net.jaggerwang.scip.common.usecase.port.service.async.UserAsyncService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -21,26 +18,16 @@ abstract public class AbstractDataFetchers {
     protected ObjectMapper objectMapper;
 
     @Autowired
-    protected UserService userService;
+    protected UserAsyncService userAsyncService;
 
     @Autowired
-    protected PostService postService;
+    protected PostAsyncService postAsyncService;
 
     @Autowired
-    protected FileService fileService;
+    protected FileAsyncService fileAsyncService;
 
     @Autowired
-    protected StatService statService;
-
-    protected Long loggedUserId() {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
-            return null;
-        }
-
-        var jwt = (Jwt) auth.getPrincipal();
-        return Long.parseLong(jwt.getSubject());
-    }
+    protected StatAsyncService statAsyncService;
 
     public Map<String, DataFetcher> toMap() {
         var dataFetchers = new HashMap<String, DataFetcher>();

@@ -2,7 +2,6 @@ package net.jaggerwang.scip.common.adapter.service.sync;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.dto.PostDto;
-import net.jaggerwang.scip.common.usecase.port.service.sync.PostService;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.web.client.RestTemplate;
 
@@ -10,14 +9,10 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Optional;
 
-public class PostSyncService extends InternalSyncService implements PostService {
-    protected ObjectMapper objectMapper;
-
+public class PostSyncService extends InternalSyncService implements net.jaggerwang.scip.common.usecase.port.service.sync.PostSyncService {
     public PostSyncService(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
                            ObjectMapper objectMapper) {
-        super(restTemplate, cbFactory);
-
-        this.objectMapper = objectMapper;
+        super(restTemplate, cbFactory, objectMapper);
     }
 
     @Override

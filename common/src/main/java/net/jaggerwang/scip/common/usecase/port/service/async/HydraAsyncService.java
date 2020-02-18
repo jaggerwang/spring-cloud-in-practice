@@ -3,7 +3,7 @@ package net.jaggerwang.scip.common.usecase.port.service.async;
 import net.jaggerwang.scip.common.usecase.port.service.dto.auth.*;
 import reactor.core.publisher.Mono;
 
-public interface HydraService {
+public interface HydraAsyncService {
     Mono<LoginRequestDto> getLoginRequest(String challenge);
 
     Mono<String> directlyAcceptLoginRequest(String challenge, LoginAcceptDto accept);

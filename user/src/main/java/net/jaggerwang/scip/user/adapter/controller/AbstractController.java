@@ -1,8 +1,8 @@
 package net.jaggerwang.scip.user.adapter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.jaggerwang.scip.common.usecase.port.service.sync.FileService;
-import net.jaggerwang.scip.common.usecase.port.service.sync.StatService;
+import net.jaggerwang.scip.common.usecase.port.service.sync.FileSyncService;
+import net.jaggerwang.scip.common.usecase.port.service.sync.StatSyncService;
 import net.jaggerwang.scip.user.adapter.controller.dto.UserDto;
 import net.jaggerwang.scip.user.entity.UserEntity;
 import net.jaggerwang.scip.user.usecase.UserUsecase;
@@ -19,10 +19,10 @@ abstract public class AbstractController {
     protected UserUsecase userUsecase;
 
     @Autowired
-    protected FileService fileService;
+    protected FileSyncService fileSyncService;
 
     @Autowired
-    protected StatService statService;
+    protected StatSyncService statSyncService;
 
     protected Long loggedUserId() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
@@ -38,11 +38,11 @@ abstract public class AbstractController {
         var userDto = UserDto.fromEntity(userEntity);
 
         if (userDto.getAvatarId() != null) {
-            var avatar = fileService.info(userDto.getAvatarId());
+            var avatar = fileSyncService.info(userDto.getAvatarId());
             userDto.setAvatar(avatar);
         }
 
-        userDto.setStat(statService.ofUser(userDto.getId()));
+        userDto.setStat(statSyncService.ofUser(userDto.getId()));
 
         if (loggedUserId() != null) {
             userDto.setFollowing(userUsecase.isFollowing(loggedUserId(), userDto.getId()));

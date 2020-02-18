@@ -10,7 +10,7 @@ public class MutationDataFetchers extends AbstractDataFetchers {
     public DataFetcher userRegister() {
         return env -> {
             UserDto userInput = env.getArgument("userInput");
-            return userService.register(userInput);
+            return userAsyncService.register(userInput);
         };
     }
 
@@ -18,7 +18,7 @@ public class MutationDataFetchers extends AbstractDataFetchers {
         return env -> {
             UserDto userInput = env.getArgument("userInput");
             String code = env.getArgument("code");
-            return userService.modify(userInput, code);
+            return userAsyncService.modify(userInput, code);
         };
     }
 
@@ -26,49 +26,49 @@ public class MutationDataFetchers extends AbstractDataFetchers {
         return env -> {
             String type = env.getArgument("type");
             String mobile = env.getArgument("mobile");
-            return userService.sendMobileVerifyCode(type, mobile);
+            return userAsyncService.sendMobileVerifyCode(type, mobile);
         };
     }
 
     public DataFetcher userFollow() {
         return env -> {
-            Long userId = env.getArgument("userId");
-            return userService.follow(userId);
+            var userId = Long.valueOf((Integer) env.getArgument("userId"));
+            return userAsyncService.follow(userId);
         };
     }
 
     public DataFetcher userUnfollow() {
         return env -> {
-            Long userId = env.getArgument("userId");
-            return userService.unfollow(userId);
+            var userId = Long.valueOf((Integer) env.getArgument("userId"));
+            return userAsyncService.unfollow(userId);
         };
     }
 
     public DataFetcher postPublish() {
         return env -> {
             PostDto postInput = env.getArgument("postInput");
-            return postService.publish(postInput);
+            return postAsyncService.publish(postInput);
         };
     }
 
     public DataFetcher postDelete() {
         return env -> {
-            Long id = env.getArgument("id");
-            return postService.delete(id);
+            var id = Long.valueOf((Integer) env.getArgument("id"));
+            return postAsyncService.delete(id);
         };
     }
 
     public DataFetcher postLike() {
         return env -> {
-            Long postId = env.getArgument("postId");
-            return postService.like(postId);
+            var postId = Long.valueOf((Integer) env.getArgument("postId"));
+            return postAsyncService.like(postId);
         };
     }
 
     public DataFetcher postUnlike() {
         return env -> {
-            Long postId = env.getArgument("postId");
-            return postService.unlike(postId);
+            var postId = Long.valueOf((Integer) env.getArgument("postId"));
+            return postAsyncService.unlike(postId);
         };
     }
 }

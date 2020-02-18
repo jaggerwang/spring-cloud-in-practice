@@ -2,7 +2,7 @@ package net.jaggerwang.scip.common.usecase.port.service.sync;
 
 import net.jaggerwang.scip.common.usecase.port.service.dto.auth.*;
 
-public interface HydraService {
+public interface HydraSyncService {
     LoginRequestDto getLoginRequest(String challenge);
 
     String directlyAcceptLoginRequest(String challenge, LoginAcceptDto accept);

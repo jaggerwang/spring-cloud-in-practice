@@ -16,7 +16,7 @@ public class FileDataFetchers extends AbstractDataFetchers {
     public DataFetcher user() {
         return env -> {
             FileDto fileDto = env.getSource();
-            return userService.info(fileDto.getUserId());
+            return userAsyncService.info(fileDto.getUserId());
         };
     }
 

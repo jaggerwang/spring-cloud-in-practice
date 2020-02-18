@@ -2,7 +2,6 @@ package net.jaggerwang.scip.common.adapter.service.async;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.jaggerwang.scip.common.usecase.port.service.async.UserService;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.lang.Nullable;
@@ -15,14 +14,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class UserAsyncService extends InternalAsyncService implements UserService {
-    protected ObjectMapper objectMapper;
-
+public class UserAsyncService extends InternalAsyncService implements net.jaggerwang.scip.common.usecase.port.service.async.UserAsyncService {
     public UserAsyncService(WebClient webClient, ReactiveCircuitBreakerFactory cbFactory,
                             ObjectMapper objectMapper) {
-        super(webClient, cbFactory);
-
-        this.objectMapper = objectMapper;
+        super(webClient, cbFactory, objectMapper);
     }
 
     @Override
@@ -57,7 +52,8 @@ public class UserAsyncService extends InternalAsyncService implements UserServic
     @Override
     public Mono<UserDto> logged() {
         return getData("/user/logged")
-                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
+                .flatMap(data -> Mono.justOrEmpty(
+                        objectMapper.convertValue(data.get("user"), UserDto.class)));
     }
 
     @Override

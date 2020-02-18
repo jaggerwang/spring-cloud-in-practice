@@ -2,7 +2,6 @@ package net.jaggerwang.scip.post.api.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.adapter.service.sync.UserSyncService;
-import net.jaggerwang.scip.common.usecase.port.service.sync.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
@@ -20,9 +19,9 @@ public class ServiceConfig {
     }
 
     @Bean
-    public UserService userService(@Qualifier("userServiceRestTemplate") RestTemplate restTemplate,
-                                   CircuitBreakerFactory cbFactory,
-                                   ObjectMapper objectMapper) {
+    public net.jaggerwang.scip.common.usecase.port.service.sync.UserSyncService userService(@Qualifier("userServiceRestTemplate") RestTemplate restTemplate,
+                                                                                            CircuitBreakerFactory cbFactory,
+                                                                                            ObjectMapper objectMapper) {
         return new UserSyncService(restTemplate, cbFactory, objectMapper);
     }
 }

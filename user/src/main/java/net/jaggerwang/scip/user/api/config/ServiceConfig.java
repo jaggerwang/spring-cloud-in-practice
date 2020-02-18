@@ -3,8 +3,6 @@ package net.jaggerwang.scip.user.api.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.adapter.service.sync.FileSyncService;
 import net.jaggerwang.scip.common.adapter.service.sync.StatSyncService;
-import net.jaggerwang.scip.common.usecase.port.service.sync.FileService;
-import net.jaggerwang.scip.common.usecase.port.service.sync.StatService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
@@ -22,11 +20,12 @@ public class ServiceConfig {
     }
 
     @Bean
-    public FileService fileService(@Qualifier("fileServiceRestTemplate") RestTemplate restTemplate,
-                                   CircuitBreakerFactory cbFactory,
-                                   ObjectMapper objectMapper) {
+    public net.jaggerwang.scip.common.usecase.port.service.sync.FileSyncService fileService(@Qualifier("fileServiceRestTemplate") RestTemplate restTemplate,
+                                                                                            CircuitBreakerFactory cbFactory,
+                                                                                            ObjectMapper objectMapper) {
         return new FileSyncService(restTemplate, cbFactory, objectMapper);
     }
+
     @Bean
     @LoadBalanced
     public RestTemplate statServiceRestTemplate(RestTemplateBuilder builder) {
@@ -34,9 +33,9 @@ public class ServiceConfig {
     }
 
     @Bean
-    public StatService statService(@Qualifier("statServiceRestTemplate") RestTemplate restTemplate,
-                                   CircuitBreakerFactory cbFactory,
-                                   ObjectMapper objectMapper) {
+    public net.jaggerwang.scip.common.usecase.port.service.sync.StatSyncService statService(@Qualifier("statServiceRestTemplate") RestTemplate restTemplate,
+                                                                                            CircuitBreakerFactory cbFactory,
+                                                                                            ObjectMapper objectMapper) {
         return new StatSyncService(restTemplate, cbFactory, objectMapper);
     }
 }

@@ -2,8 +2,8 @@ package net.jaggerwang.scip.gateway.adapter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
-import net.jaggerwang.scip.common.usecase.port.service.async.HydraService;
-import net.jaggerwang.scip.common.usecase.port.service.async.UserService;
+import net.jaggerwang.scip.common.usecase.port.service.async.HydraAsyncService;
+import net.jaggerwang.scip.common.usecase.port.service.async.UserAsyncService;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
 import net.jaggerwang.scip.common.usecase.port.service.dto.auth.*;
 import org.springframework.stereotype.Controller;
@@ -17,27 +17,27 @@ import java.util.Arrays;
 @RequestMapping("/hydra")
 public class HydraController {
     protected ObjectMapper objectMapper;
-    protected UserService userService;
-    protected HydraService hydraService;
+    protected UserAsyncService userAsyncService;
+    protected HydraAsyncService hydraAsyncService;
 
-    public HydraController(ObjectMapper objectMapper, UserService userService,
-                           HydraService hydraService) {
+    public HydraController(ObjectMapper objectMapper, UserAsyncService userAsyncService,
+                           HydraAsyncService hydraAsyncService) {
         this.objectMapper = objectMapper;
-        this.userService = userService;
-        this.hydraService = hydraService;
+        this.userAsyncService = userAsyncService;
+        this.hydraAsyncService = hydraAsyncService;
     }
 
     @GetMapping("/login")
     public Mono<String> login(@RequestParam(name = "login_challenge") String challenge,
                               Model model) {
-        return hydraService
+        return hydraAsyncService
                 .getLoginRequest(challenge)
                 .flatMap(loginRequest -> {
                     if (loginRequest.getSkip()) {
                         var loginAccept = LoginAcceptDto.builder()
                                 .subject(loginRequest.getSubject())
                                 .build();
-                        return hydraService
+                        return hydraAsyncService
                                 .directlyAcceptLoginRequest(challenge, loginAccept)
                                 .map(redirectTo -> "redirect:"+redirectTo);
                     }
@@ -65,18 +65,18 @@ public class HydraController {
                     .error("login_rejected")
                     .errorDescription("The resource owner rejected to log in")
                     .build();
-            return hydraService
+            return hydraAsyncService
                     .rejectLoginRequest(form.challenge, loginReject)
                     .map(redirectTo -> "redirect:" + redirectTo);
         }
 
         Mono<UserDto> mono;
         if (form.username != null) {
-            mono = userService.verifyPasswordByUsername(form.username, form.password);
+            mono = userAsyncService.verifyPasswordByUsername(form.username, form.password);
         } else if (form.mobile != null) {
-            mono = userService.verifyPasswordByMobile(form.mobile, form.password);
+            mono = userAsyncService.verifyPasswordByMobile(form.mobile, form.password);
         } else if (form.email != null) {
-            mono = userService.verifyPasswordByEmail(form.email, form.password);
+            mono = userAsyncService.verifyPasswordByEmail(form.email, form.password);
         } else {
             model.addAttribute("error", "用户名、手机或邮箱不能都为空");
             return Mono.just("hydra/login");
@@ -89,7 +89,7 @@ public class HydraController {
                             .remember(form.remember)
                             .rememberFor(86400)
                             .build();
-                    return hydraService
+                    return hydraAsyncService
                             .acceptLoginRequest(form.challenge, loginAccept)
                             .map(redirectTo -> "redirect:"+redirectTo);
                 });
@@ -98,7 +98,7 @@ public class HydraController {
     @GetMapping("/consent")
     public Mono<String> consent(@RequestParam(name = "consent_challenge") String challenge,
                                 Model model) {
-        return hydraService
+        return hydraAsyncService
                 .getConsentRequest(challenge)
                 .flatMap(consentRequest -> {
                     if (consentRequest.getSkip()) {
@@ -106,7 +106,7 @@ public class HydraController {
                                 .grantScope(consentRequest.getRequestedScope())
                                 .grantAccessTokenAudience(consentRequest.getRequestedAccessTokenAudience())
                                 .build();
-                        return hydraService
+                        return hydraAsyncService
                                 .directlyAcceptConsentRequest(challenge, consentAccept)
                                 .map(redirectTo -> "redirect:"+redirectTo);
                     }
@@ -134,12 +134,12 @@ public class HydraController {
                     .error("access_denied")
                     .errorDescription("The resource owner denied the request")
                     .build();
-            return hydraService
+            return hydraAsyncService
                     .rejectConsentRequest(form.challenge, consentReject)
                     .map(redirectTo -> "redirect:"+redirectTo);
         }
 
-        return hydraService
+        return hydraAsyncService
                 .getConsentRequest(form.challenge)
                 .flatMap(consentRequest -> {
                     var consentAccept = ConsentAcceptDto.builder()
@@ -148,7 +148,7 @@ public class HydraController {
                             .remember(form.remember)
                             .rememberFor(86400)
                             .build();
-                    return hydraService
+                    return hydraAsyncService
                             .acceptConsentRequest(form.challenge, consentAccept)
                             .map(redirectTo -> "redirect:"+redirectTo);
                 });
@@ -157,7 +157,7 @@ public class HydraController {
     @GetMapping("/logout")
     public Mono<String> logout(@RequestParam(name = "logout_challenge") String challenge,
                               Model model) {
-        return hydraService
+        return hydraAsyncService
                 .getLogoutRequest(challenge)
                 .map(e -> {
                     model.addAttribute("challenge", challenge);
@@ -174,12 +174,12 @@ public class HydraController {
     @PostMapping("/logout")
     public Mono<String> logout(@ModelAttribute LogoutForm form) {
         if (form.submit.equals("No")) {
-            return hydraService
+            return hydraAsyncService
                     .rejectLogoutRequest(form.challenge)
                     .map(e -> "redirect:/");
         }
 
-        return hydraService
+        return hydraAsyncService
                 .acceptLogoutRequest(form.challenge)
                 .map(redirectTo -> "redirect:"+redirectTo);
     }

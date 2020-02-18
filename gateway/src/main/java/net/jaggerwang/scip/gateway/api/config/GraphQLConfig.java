@@ -1,8 +1,6 @@
 package net.jaggerwang.scip.gateway.api.config;
 
-import graphql.Assert;
 import graphql.GraphQL;
-import graphql.language.*;
 import graphql.scalars.ExtendedScalars;
 import graphql.schema.*;
 import graphql.schema.idl.RuntimeWiring;
@@ -19,10 +17,6 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 
@@ -66,15 +60,14 @@ public class GraphQLConfig {
     public void init() throws IOException {
         var reader = new InputStreamReader(schema.getInputStream(), StandardCharsets.UTF_8);
         var sdl = FileCopyUtils.copyToString(reader);
-        GraphQLSchema graphQLSchema = buildSchema(sdl);
+        var graphQLSchema = buildSchema(sdl);
         this.graphQL = GraphQL.newGraphQL(graphQLSchema).build();
     }
 
     private GraphQLSchema buildSchema(String sdl) {
         var typeRegistry = new SchemaParser().parse(sdl);
         var runtimeWiring = buildWiring();
-        var schemaGenerator = new SchemaGenerator();
-        return schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
+        return new SchemaGenerator().makeExecutableSchema(typeRegistry, runtimeWiring);
     }
 
     private RuntimeWiring buildWiring() {

@@ -1,7 +1,6 @@
 package net.jaggerwang.scip.common.adapter.service.async;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.jaggerwang.scip.common.usecase.port.service.async.StatService;
 import net.jaggerwang.scip.common.usecase.port.service.dto.PostStatDto;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserStatDto;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
@@ -12,14 +11,10 @@ import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
 
-public class StatAsyncService extends InternalAsyncService implements StatService {
-    protected ObjectMapper objectMapper;
-
+public class StatAsyncService extends InternalAsyncService implements net.jaggerwang.scip.common.usecase.port.service.async.StatAsyncService {
     public StatAsyncService(WebClient webClient, ReactiveCircuitBreakerFactory cbFactory,
                             ObjectMapper objectMapper) {
-        super(webClient, cbFactory);
-
-        this.objectMapper = objectMapper;
+        super(webClient, cbFactory, objectMapper);
     }
 
     @Override

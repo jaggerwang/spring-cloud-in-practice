@@ -3,7 +3,6 @@ package net.jaggerwang.scip.common.adapter.service.sync;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
-import net.jaggerwang.scip.common.usecase.port.service.sync.UserService;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.web.client.RestTemplate;
@@ -13,19 +12,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-public class UserSyncService extends InternalSyncService implements UserService {
-    protected ObjectMapper objectMapper;
-
+public class UserSyncService extends InternalSyncService implements net.jaggerwang.scip.common.usecase.port.service.sync.UserSyncService {
     public UserSyncService(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
                            ObjectMapper objectMapper) {
-        super(restTemplate, cbFactory);
-
-        this.objectMapper = objectMapper;
+        super(restTemplate, cbFactory, objectMapper);
     }
 
     @Override
     public Optional<String> getCircuitBreakerName(URI uri) {
         return Optional.of("normal");
+    }
+
+    @Override
+    public Optional<UserDto> logged() {
+        var response = getData("/user/logged");
+        return Optional.ofNullable(objectMapper.convertValue(response.get("user"), UserDto.class));
     }
 
     @Override

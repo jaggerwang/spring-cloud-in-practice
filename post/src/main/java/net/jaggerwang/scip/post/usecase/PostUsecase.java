@@ -4,18 +4,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import net.jaggerwang.scip.common.usecase.port.service.sync.UserService;
+import net.jaggerwang.scip.common.usecase.port.service.sync.UserSyncService;
 import net.jaggerwang.scip.post.entity.PostEntity;
 import net.jaggerwang.scip.post.usecase.port.repository.PostRepository;
 
 public class PostUsecase {
     private PostRepository postRepository;
 
-    private UserService userService;
+    private UserSyncService userSyncService;
 
-    public PostUsecase(PostRepository postRepository, UserService userService) {
+    public PostUsecase(PostRepository postRepository, UserSyncService userSyncService) {
         this.postRepository = postRepository;
-        this.userService = userService;
+        this.userSyncService = userSyncService;
     }
 
     public PostEntity publish(PostEntity postEntity) {
@@ -62,14 +62,14 @@ public class PostUsecase {
     }
 
     public List<PostEntity> following(Long userId, Long limit, Long beforeId, Long afterId) {
-        var userIds = userService.following(userId, null, null).stream()
+        var userIds = userSyncService.following(userId, null, null).stream()
                 .map(userDto -> userDto.getId()).collect(Collectors.toList());
 
         return postRepository.following(userIds, limit, beforeId, afterId);
     }
 
     public Long followingCount(Long userId) {
-        var userIds = userService.following(userId, null, null).stream()
+        var userIds = userSyncService.following(userId, null, null).stream()
                 .map(userDto -> userDto.getId()).collect(Collectors.toList());
 
         return postRepository.followingCount(userIds);

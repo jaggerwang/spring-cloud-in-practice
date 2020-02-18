@@ -14,21 +14,21 @@ public class UserDataFetcher extends AbstractDataFetchers {
                 return Mono.empty();
             }
 
-            return fileService.info(userDto.getAvatarId());
+            return fileAsyncService.info(userDto.getAvatarId());
         };
     }
 
     public DataFetcher stat() {
         return env -> {
             UserDto userDto = env.getSource();
-            return statService.ofUser(userDto.getId());
+            return statAsyncService.ofUser(userDto.getId());
         };
     }
 
     public DataFetcher following() {
         return env -> {
             UserDto userDto = env.getSource();
-            return userService.isFollowing(userDto.getId());
+            return userAsyncService.isFollowing(userDto.getId());
         };
     }
 }

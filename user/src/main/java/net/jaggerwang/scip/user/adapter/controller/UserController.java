@@ -8,7 +8,6 @@ import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
 import net.jaggerwang.scip.common.usecase.exception.*;
 import net.jaggerwang.scip.user.adapter.controller.dto.UserDto;
 import net.jaggerwang.scip.user.entity.UserEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -46,7 +45,7 @@ public class UserController extends AbstractController {
     }
 
     @GetMapping("/logged")
-    public RootDto logged(@RequestHeader MultiValueMap<String, String> headers) {
+    public RootDto logged() {
         if (loggedUserId() == null) {
             return new RootDto().addDataEntry("user", null);
         }

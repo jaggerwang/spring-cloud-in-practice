@@ -9,7 +9,7 @@ public class PostStatDataFetcher extends AbstractDataFetchers {
     public DataFetcher post() {
         return env -> {
             PostStatDto postStatDto = env.getSource();
-            return postService.info(postStatDto.getPostId());
+            return postAsyncService.info(postStatDto.getPostId());
         };
     }
 }

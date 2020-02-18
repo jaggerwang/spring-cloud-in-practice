@@ -5,7 +5,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserAsyncService {
     Mono<UserDto> register(UserDto userDto);
 
     Mono<UserDto> verifyPasswordByUsername(String username, String password);

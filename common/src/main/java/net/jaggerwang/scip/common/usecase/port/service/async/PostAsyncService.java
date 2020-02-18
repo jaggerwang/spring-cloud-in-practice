@@ -5,7 +5,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public interface PostService {
+public interface PostAsyncService {
     Mono<PostDto> publish(PostDto postDto);
 
     Mono<Void> delete(Long id);

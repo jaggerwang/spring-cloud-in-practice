@@ -10,14 +10,14 @@ public class PostDataFetcher extends AbstractDataFetchers {
     public DataFetcher user() {
         return env -> {
             PostDto postDto = env.getSource();
-            return userService.info(postDto.getUserId());
+            return userAsyncService.info(postDto.getUserId());
         };
     }
 
     public DataFetcher images() {
         return env -> {
             PostDto postDto = env.getSource();
-            return fileService.infos(postDto.getImageIds(), false);
+            return fileAsyncService.infos(postDto.getImageIds(), false);
         };
     }
 
@@ -28,21 +28,21 @@ public class PostDataFetcher extends AbstractDataFetchers {
                 return Mono.empty();
             }
 
-            return fileService.info(postDto.getVideoId());
+            return fileAsyncService.info(postDto.getVideoId());
         };
     }
 
     public DataFetcher stat() {
         return env -> {
             PostDto postDto = env.getSource();
-            return statService.ofPost(postDto.getId());
+            return statAsyncService.ofPost(postDto.getId());
         };
     }
 
     public DataFetcher liked() {
         return env -> {
             PostDto postDto = env.getSource();
-            return postService.isLiked(postDto.getId());
+            return postAsyncService.isLiked(postDto.getId());
         };
     }
 }
