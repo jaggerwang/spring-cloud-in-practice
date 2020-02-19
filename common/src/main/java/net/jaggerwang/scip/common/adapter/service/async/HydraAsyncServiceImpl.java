@@ -1,5 +1,6 @@
 package net.jaggerwang.scip.common.adapter.service.async;
 
+import net.jaggerwang.scip.common.usecase.port.service.async.HydraAsyncService;
 import net.jaggerwang.scip.common.usecase.port.service.dto.auth.*;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.core.ParameterizedTypeReference;
@@ -11,8 +12,8 @@ import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
 
-public class HydraAsyncService extends AsyncService implements net.jaggerwang.scip.common.usecase.port.service.async.HydraAsyncService {
-    public HydraAsyncService(WebClient webClient, ReactiveCircuitBreakerFactory cbFactory) {
+public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncService {
+    public HydraAsyncServiceImpl(WebClient webClient, ReactiveCircuitBreakerFactory cbFactory) {
         super(webClient, cbFactory);
     }
 

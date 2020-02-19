@@ -33,14 +33,9 @@ public abstract class InternalSyncService extends SyncService {
         if (throwable instanceof HttpStatusCodeException) {
             var sce = (HttpStatusCodeException) throwable;
             status = sce.getStatusCode();
-            var resBody = sce.getResponseBodyAsString();
-            if (!resBody.isEmpty()) {
-                try {
-                    body = objectMapper.readValue(resBody, RootDto.class);
-                } catch (JsonProcessingException e) {
-                }
-            } else {
-                body = new RootDto("fail", status.toString());
+            try {
+                body = objectMapper.readValue(sce.getResponseBodyAsString(), RootDto.class);
+            } catch (JsonProcessingException e) {
             }
         }
         return ResponseEntity.status(status).body(body);

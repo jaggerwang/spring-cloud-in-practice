@@ -3,6 +3,7 @@ package net.jaggerwang.scip.common.adapter.service.sync;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.dto.FileDto;
+import net.jaggerwang.scip.common.usecase.port.service.sync.FileSyncService;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.web.client.RestTemplate;
@@ -12,9 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-public class FileSyncService extends InternalSyncService implements net.jaggerwang.scip.common.usecase.port.service.sync.FileSyncService {
-    public FileSyncService(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
-                           ObjectMapper objectMapper) {
+public class FileSyncServiceImpl extends InternalSyncService implements FileSyncService {
+    public FileSyncServiceImpl(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
+                               ObjectMapper objectMapper) {
         super(restTemplate, cbFactory, objectMapper);
     }
 

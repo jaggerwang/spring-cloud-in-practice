@@ -2,6 +2,7 @@ package net.jaggerwang.scip.common.adapter.service.async;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.jaggerwang.scip.common.usecase.port.service.async.UserAsyncService;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.lang.Nullable;
@@ -14,9 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class UserAsyncService extends InternalAsyncService implements net.jaggerwang.scip.common.usecase.port.service.async.UserAsyncService {
-    public UserAsyncService(WebClient webClient, ReactiveCircuitBreakerFactory cbFactory,
-                            ObjectMapper objectMapper) {
+public class UserAsyncServiceImpl extends InternalAsyncService implements UserAsyncService {
+    public UserAsyncServiceImpl(WebClient webClient, ReactiveCircuitBreakerFactory cbFactory,
+                                ObjectMapper objectMapper) {
         super(webClient, cbFactory, objectMapper);
     }
 

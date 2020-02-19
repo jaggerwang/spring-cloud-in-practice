@@ -2,6 +2,7 @@ package net.jaggerwang.scip.common.adapter.service.sync;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.dto.auth.*;
+import net.jaggerwang.scip.common.usecase.port.service.sync.HydraSyncService;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestTemplate;
@@ -11,11 +12,11 @@ import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
 
-public class HydraSyncService extends SyncService implements net.jaggerwang.scip.common.usecase.port.service.sync.HydraSyncService {
+public class HydraSyncServiceImpl extends SyncService implements HydraSyncService {
     protected ObjectMapper objectMapper;
 
-    public HydraSyncService(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
-                            ObjectMapper objectMapper) {
+    public HydraSyncServiceImpl(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
+                                ObjectMapper objectMapper) {
         super(restTemplate, cbFactory);
 
         this.objectMapper = objectMapper;
