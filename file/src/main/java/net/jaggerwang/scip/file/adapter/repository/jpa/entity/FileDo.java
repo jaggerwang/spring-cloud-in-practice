@@ -16,7 +16,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.jaggerwang.scip.file.adapter.repository.jpa.converter.FileMetaConverter;
-import net.jaggerwang.scip.file.entity.FileEntity;
+import net.jaggerwang.scip.common.entity.FileEntity;
 
 @Entity(name = "File")
 @Table(name = "file")

@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.jaggerwang.scip.stat.entity.UserStatEntity;
+import net.jaggerwang.scip.common.entity.UserStatEntity;
 
 @Entity(name = "UserStat")
 @Table(name = "user_stat")

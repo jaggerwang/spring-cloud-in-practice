@@ -2,7 +2,7 @@ package net.jaggerwang.scip.stat.usecase.port.repository;
 
 import java.util.Optional;
 
-import net.jaggerwang.scip.stat.entity.PostStatEntity;
+import net.jaggerwang.scip.common.entity.PostStatEntity;
 
 public interface PostStatRepository {
     PostStatEntity save(PostStatEntity postStatEntity);

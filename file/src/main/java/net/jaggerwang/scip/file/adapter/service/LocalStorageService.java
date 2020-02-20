@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import net.jaggerwang.scip.common.adapter.generator.IdGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import net.jaggerwang.scip.file.entity.FileEntity.Meta;
+import net.jaggerwang.scip.common.entity.FileEntity.Meta;
 import net.jaggerwang.scip.file.usecase.port.service.StorageService;
 
 @Component

@@ -1,8 +1,8 @@
 package net.jaggerwang.scip.stat.adapter.controller;
 
+import net.jaggerwang.scip.common.usecase.port.service.dto.PostStatDto;
 import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
-import net.jaggerwang.scip.stat.adapter.controller.dto.PostStatDto;
-import net.jaggerwang.scip.stat.adapter.controller.dto.UserStatDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.UserStatDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

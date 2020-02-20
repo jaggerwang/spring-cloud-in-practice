@@ -17,7 +17,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.jaggerwang.scip.post.adapter.repository.jpa.converter.PostImageIdsConverter;
-import net.jaggerwang.scip.post.entity.PostEntity;
+import net.jaggerwang.scip.common.entity.PostEntity;
 
 @Entity(name = "Post")
 @Table(name = "post")

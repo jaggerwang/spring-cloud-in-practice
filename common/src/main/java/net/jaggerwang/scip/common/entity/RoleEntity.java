@@ -1,4 +1,4 @@
-package net.jaggerwang.scip.stat.entity;
+package net.jaggerwang.scip.common.entity;
 
 import java.time.LocalDateTime;
 
@@ -8,12 +8,10 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostStatEntity {
+public class RoleEntity {
     private Long id;
 
-    private Long postId;
-
-    private Long likeCount;
+    private String name;
 
     private LocalDateTime createdAt;
 

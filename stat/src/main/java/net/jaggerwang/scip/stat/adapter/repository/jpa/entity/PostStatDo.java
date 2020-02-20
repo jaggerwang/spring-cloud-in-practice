@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.jaggerwang.scip.stat.entity.PostStatEntity;
+import net.jaggerwang.scip.common.entity.PostStatEntity;
 
 @Entity(name = "PostStat")
 @Table(name = "post_stat")

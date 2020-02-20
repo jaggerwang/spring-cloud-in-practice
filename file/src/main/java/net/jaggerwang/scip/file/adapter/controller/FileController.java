@@ -1,5 +1,6 @@
 package net.jaggerwang.scip.file.adapter.controller;
 
+import net.jaggerwang.scip.common.usecase.port.service.dto.FileDto;
 import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
 import net.jaggerwang.scip.common.usecase.exception.*;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import net.jaggerwang.scip.file.adapter.controller.dto.FileDto;
-import net.jaggerwang.scip.file.entity.FileEntity;
+import net.jaggerwang.scip.common.entity.FileEntity;
 
 import java.io.IOException;
 import java.util.ArrayList;

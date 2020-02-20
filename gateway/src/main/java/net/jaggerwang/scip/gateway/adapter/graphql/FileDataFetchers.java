@@ -39,7 +39,7 @@ public class FileDataFetchers extends AbstractDataFetchers {
     public DataFetcher thumbs() {
         return env -> {
             FileDto fileDto = env.getSource();
-            var type = (String) fileDto.getMeta().get("type");
+            var type = fileDto.getMeta().getType();
             if (type.startsWith("image/")) {
                 var thumbs = new HashMap<String, String>();
                 var u = generateUrl(fileDto);

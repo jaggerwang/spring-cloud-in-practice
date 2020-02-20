@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import net.jaggerwang.scip.common.usecase.exception.*;
-import net.jaggerwang.scip.file.entity.FileEntity;
+import net.jaggerwang.scip.common.entity.FileEntity;
 import net.jaggerwang.scip.file.usecase.port.repository.FileRepository;
 import net.jaggerwang.scip.file.usecase.port.service.StorageService;
 

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.jaggerwang.scip.common.entity.UserEntity;
 
 import java.time.LocalDateTime;
 
@@ -29,4 +30,17 @@ public class UserDto {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    public static UserDto fromEntity(UserEntity userEntity) {
+        return UserDto.builder().id(userEntity.getId()).username(userEntity.getUsername())
+                .mobile(userEntity.getMobile()).email(userEntity.getEmail())
+                .avatarId(userEntity.getAvatarId()).intro(userEntity.getIntro())
+                .createdAt(userEntity.getCreatedAt()).updatedAt(userEntity.getUpdatedAt()).build();
+    }
+
+    public UserEntity toEntity() {
+        return UserEntity.builder().id(id).username(username).password(password).mobile(mobile)
+                .email(email).avatarId(avatarId).intro(intro).createdAt(createdAt)
+                .updatedAt(updatedAt).build();
+    }
 }

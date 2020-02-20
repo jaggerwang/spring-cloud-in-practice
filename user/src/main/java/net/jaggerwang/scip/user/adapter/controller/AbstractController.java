@@ -1,15 +1,17 @@
 package net.jaggerwang.scip.user.adapter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
 import net.jaggerwang.scip.common.usecase.port.service.sync.FileSyncService;
 import net.jaggerwang.scip.common.usecase.port.service.sync.StatSyncService;
-import net.jaggerwang.scip.user.adapter.controller.dto.UserDto;
-import net.jaggerwang.scip.user.entity.UserEntity;
+import net.jaggerwang.scip.common.entity.UserEntity;
 import net.jaggerwang.scip.user.usecase.UserUsecase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
+
+import java.util.Map;
 
 abstract public class AbstractController {
     @Autowired
@@ -34,20 +36,21 @@ abstract public class AbstractController {
         return Long.parseLong(jwt.getSubject());
     }
 
-    protected UserDto fullUserDto(UserEntity userEntity) {
+    protected Map<String, Object> fullUserDto(UserEntity userEntity) {
         var userDto = UserDto.fromEntity(userEntity);
+        var m = objectMapper.convertValue(userDto, Map.class);
 
         if (userDto.getAvatarId() != null) {
             var avatar = fileSyncService.info(userDto.getAvatarId());
-            userDto.setAvatar(avatar);
+            m.put("avatar", avatar);
         }
 
-        userDto.setStat(statSyncService.ofUser(userDto.getId()));
+        m.put("stat", statSyncService.ofUser(userDto.getId()));
 
         if (loggedUserId() != null) {
-            userDto.setFollowing(userUsecase.isFollowing(loggedUserId(), userDto.getId()));
+            m.put("following", userUsecase.isFollowing(loggedUserId(), userDto.getId()));
         }
 
-        return userDto;
+        return m;
     }
 }

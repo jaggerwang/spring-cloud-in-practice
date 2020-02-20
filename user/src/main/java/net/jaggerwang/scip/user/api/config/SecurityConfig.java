@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 )
                 .authorizeRequests(authorizeRequests -> authorizeRequests
                         .antMatchers("/favicon.ico", "/actuator/**", "/user/register",
-                                "/user/verifyPassword", "/user/logged")
+                                "/user/verifyPassword", "/user/logged", "/user/following")
                         .permitAll()
                         .anyRequest()
                         .hasAuthority("SCOPE_user"));

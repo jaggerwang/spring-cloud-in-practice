@@ -48,6 +48,8 @@ services:
       URLS_LOGIN: http://localhost:9080/hydra/login
       URLS_CONSENT: http://localhost:9080/hydra/consent
       URLS_LOGOUT: http://localhost:9080/hydra/logout
+      ACCESS_TOKEN: 12h
+      REFRESH_TOKEN: 720h
     ports:
       - 9090:4444
       - 9091:4445

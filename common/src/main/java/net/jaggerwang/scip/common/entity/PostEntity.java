@@ -1,4 +1,4 @@
-package net.jaggerwang.scip.post.entity;
+package net.jaggerwang.scip.common.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;

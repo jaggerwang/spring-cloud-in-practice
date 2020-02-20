@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import net.jaggerwang.scip.file.entity.FileEntity;
+import net.jaggerwang.scip.common.entity.FileEntity;
 
 @Converter
 public class FileMetaConverter implements AttributeConverter<FileEntity.Meta, String> {

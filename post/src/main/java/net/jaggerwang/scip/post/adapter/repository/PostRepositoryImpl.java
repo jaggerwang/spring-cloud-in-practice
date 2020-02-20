@@ -15,7 +15,7 @@ import net.jaggerwang.scip.post.adapter.repository.jpa.entity.PostLikeDo;
 import net.jaggerwang.scip.post.adapter.repository.jpa.entity.QPostDo;
 import net.jaggerwang.scip.post.adapter.repository.jpa.entity.QPostLikeDo;
 import net.jaggerwang.scip.post.adapter.repository.jpa.PostLikeJpaRepository;
-import net.jaggerwang.scip.post.entity.PostEntity;
+import net.jaggerwang.scip.common.entity.PostEntity;
 import net.jaggerwang.scip.post.usecase.port.repository.PostRepository;
 
 @Component

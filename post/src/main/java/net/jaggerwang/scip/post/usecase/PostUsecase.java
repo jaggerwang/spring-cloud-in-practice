@@ -5,12 +5,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import net.jaggerwang.scip.common.usecase.port.service.sync.UserSyncService;
-import net.jaggerwang.scip.post.entity.PostEntity;
+import net.jaggerwang.scip.common.entity.PostEntity;
 import net.jaggerwang.scip.post.usecase.port.repository.PostRepository;
 
 public class PostUsecase {
     private PostRepository postRepository;
-
     private UserSyncService userSyncService;
 
     public PostUsecase(PostRepository postRepository, UserSyncService userSyncService) {

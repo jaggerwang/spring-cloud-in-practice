@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import net.jaggerwang.scip.user.adapter.repository.jpa.UserJpaRepository;
 import net.jaggerwang.scip.user.adapter.repository.jpa.entity.QUserDo;
 import net.jaggerwang.scip.user.adapter.repository.jpa.entity.QUserFollowDo;
-import net.jaggerwang.scip.user.entity.UserEntity;
+import net.jaggerwang.scip.common.entity.UserEntity;
 
 @Component
 public class UserRepositoryImpl implements UserRepository {

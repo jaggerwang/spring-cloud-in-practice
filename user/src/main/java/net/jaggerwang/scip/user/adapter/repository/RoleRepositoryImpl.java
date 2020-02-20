@@ -11,7 +11,7 @@ import net.jaggerwang.scip.user.adapter.repository.jpa.entity.QRoleDo;
 import net.jaggerwang.scip.user.adapter.repository.jpa.entity.QUserDo;
 import net.jaggerwang.scip.user.adapter.repository.jpa.entity.QUserRoleDo;
 import net.jaggerwang.scip.user.adapter.repository.jpa.entity.RoleDo;
-import net.jaggerwang.scip.user.entity.RoleEntity;
+import net.jaggerwang.scip.common.entity.RoleEntity;
 import net.jaggerwang.scip.user.usecase.port.repository.RoleRepository;
 
 @Component

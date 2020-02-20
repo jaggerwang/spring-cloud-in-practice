@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import net.jaggerwang.scip.file.adapter.repository.jpa.FileJpaRepository;
 import net.jaggerwang.scip.file.adapter.repository.jpa.entity.FileDo;
-import net.jaggerwang.scip.file.entity.FileEntity;
+import net.jaggerwang.scip.common.entity.FileEntity;
 import net.jaggerwang.scip.file.usecase.port.repository.FileRepository;
 
 @Component

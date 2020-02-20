@@ -3,7 +3,7 @@ package net.jaggerwang.scip.file.usecase.port.repository;
 import java.util.List;
 import java.util.Optional;
 
-import net.jaggerwang.scip.file.entity.FileEntity;
+import net.jaggerwang.scip.common.entity.FileEntity;
 
 public interface FileRepository {
     FileEntity save(FileEntity fileEntity);

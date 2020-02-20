@@ -3,7 +3,7 @@ package net.jaggerwang.scip.user.usecase.port.repository;
 import java.util.List;
 import java.util.Optional;
 
-import net.jaggerwang.scip.user.entity.RoleEntity;
+import net.jaggerwang.scip.common.entity.RoleEntity;
 
 public interface RoleRepository {
     RoleEntity save(RoleEntity userEntity);

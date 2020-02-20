@@ -4,16 +4,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import net.jaggerwang.scip.common.usecase.port.service.dto.PostDto;
 import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
 import net.jaggerwang.scip.common.usecase.exception.*;
-import net.jaggerwang.scip.post.adapter.controller.dto.PostDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import net.jaggerwang.scip.post.entity.PostEntity;
+import net.jaggerwang.scip.common.entity.PostEntity;
 
 @RestController
 @RequestMapping("/post")
@@ -114,8 +114,8 @@ public class PostController extends AbstractController {
 
     @GetMapping("/following")
     public RootDto following(@RequestParam(defaultValue = "10") Long limit,
-                             @RequestParam Long beforeId,
-                             @RequestParam Long afterId) {
+                             @RequestParam(required = false) Long beforeId,
+                             @RequestParam(required = false) Long afterId) {
         var postEntities = postUsecase.following(loggedUserId(), limit, beforeId, afterId);
 
         return new RootDto().addDataEntry("posts", postEntities.stream()

@@ -7,7 +7,7 @@ import java.util.Optional;
 import net.jaggerwang.scip.common.adapter.encoder.PasswordEncoder;
 import net.jaggerwang.scip.common.adapter.generator.RandomGenerator;
 import net.jaggerwang.scip.common.usecase.exception.*;
-import net.jaggerwang.scip.user.entity.UserEntity;
+import net.jaggerwang.scip.common.entity.UserEntity;
 import net.jaggerwang.scip.user.usecase.port.repository.UserRepository;
 
 public class UserUsecase {

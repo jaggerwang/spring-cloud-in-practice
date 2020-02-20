@@ -3,7 +3,7 @@ package net.jaggerwang.scip.post.usecase.port.repository;
 import java.util.List;
 import java.util.Optional;
 
-import net.jaggerwang.scip.post.entity.PostEntity;
+import net.jaggerwang.scip.common.entity.PostEntity;
 
 public interface PostRepository {
     PostEntity save(PostEntity postEntity);

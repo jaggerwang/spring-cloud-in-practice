@@ -1,12 +1,12 @@
 package net.jaggerwang.scip.common.usecase.port.service.dto;
 
+import java.time.LocalDateTime;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.Map;
+import net.jaggerwang.scip.common.entity.FileEntity;
 
 @Data
 @Builder
@@ -17,15 +17,31 @@ public class FileDto {
 
     private Long userId;
 
-    private String region;
+    private FileEntity.Region region;
 
     private String bucket;
 
     private String path;
 
-    private Map<String, Object> meta;
+    private FileEntity.Meta meta;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private String url;
+
+    private Map<FileEntity.ThumbType, String> thumbs;
+
+    public static FileDto fromEntity(FileEntity fileEntity) {
+        return FileDto.builder().id(fileEntity.getId()).userId(fileEntity.getUserId())
+                .region(fileEntity.getRegion()).bucket(fileEntity.getBucket())
+                .path(fileEntity.getPath()).meta(fileEntity.getMeta())
+                .createdAt(fileEntity.getCreatedAt()).updatedAt(fileEntity.getUpdatedAt()).build();
+    }
+
+    public FileEntity toEntity() {
+        return FileEntity.builder().id(id).userId(userId).region(region).bucket(bucket).path(path)
+                .meta(meta).createdAt(createdAt).updatedAt(updatedAt).build();
+    }
 }

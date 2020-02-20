@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import net.jaggerwang.scip.stat.adapter.repository.jpa.UserStatJpaRepository;
 import net.jaggerwang.scip.stat.adapter.repository.jpa.entity.UserStatDo;
-import net.jaggerwang.scip.stat.entity.UserStatEntity;
+import net.jaggerwang.scip.common.entity.UserStatEntity;
 import net.jaggerwang.scip.stat.usecase.port.repository.UserStatRepository;
 
 @Component

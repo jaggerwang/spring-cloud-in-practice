@@ -3,7 +3,7 @@ package net.jaggerwang.scip.user.usecase.port.repository;
 import java.util.List;
 import java.util.Optional;
 
-import net.jaggerwang.scip.user.entity.UserEntity;
+import net.jaggerwang.scip.common.entity.UserEntity;
 
 public interface UserRepository {
     UserEntity save(UserEntity userEntity);

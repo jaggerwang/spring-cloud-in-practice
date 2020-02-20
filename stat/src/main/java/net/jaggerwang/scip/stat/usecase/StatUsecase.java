@@ -1,8 +1,8 @@
 package net.jaggerwang.scip.stat.usecase;
 
 import java.time.LocalDateTime;
-import net.jaggerwang.scip.stat.entity.PostStatEntity;
-import net.jaggerwang.scip.stat.entity.UserStatEntity;
+import net.jaggerwang.scip.common.entity.PostStatEntity;
+import net.jaggerwang.scip.common.entity.UserStatEntity;
 import net.jaggerwang.scip.stat.usecase.port.repository.PostStatRepository;
 import net.jaggerwang.scip.stat.usecase.port.repository.UserStatRepository;
 
