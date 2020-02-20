@@ -44,5 +44,11 @@ spring:
                 register: true
                 healthCheckPath: /actuator/health
 
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+
 file:
     upload-dir: ${SCIP_FILE_UPLOAD_DIR:/tmp}

@@ -8,6 +8,10 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration(proxyBeanMethods = false)
 public class RouteConfig {
+    /**
+     * TODO Right now it will not auto refresh access token when expired.
+     * {@see https://github.com/spring-cloud/spring-cloud-security/issues/175}
+     */
     private TokenRelayGatewayFilterFactory tokenRelayFilterFactory;
 
     public RouteConfig(TokenRelayGatewayFilterFactory tokenRelayFilterFactory) {

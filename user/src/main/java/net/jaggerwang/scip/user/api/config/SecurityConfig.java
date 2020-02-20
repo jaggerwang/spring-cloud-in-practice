@@ -38,8 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                         new RootDto("unauthorized", "未授权")))
                 )
                 .authorizeRequests(authorizeRequests -> authorizeRequests
-                        .antMatchers("/actuator/**", "/user/register", "/user/verifyPassword",
-                                "/user/logged")
+                        .antMatchers("/favicon.ico", "/actuator/**", "/user/register",
+                                "/user/verifyPassword", "/user/logged")
                         .permitAll()
                         .anyRequest()
                         .hasAuthority("SCOPE_user"));

@@ -38,3 +38,9 @@ spring:
                 enabled: true
                 register: true
                 healthCheckPath: /actuator/health
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
