@@ -20,6 +20,7 @@ public class UserDataFetcher extends AbstractDataFetchers {
 
     public DataFetcher stat() {
         return env -> {
+            var user = env.getSource();
             UserDto userDto = env.getSource();
             return statAsyncService.ofUser(userDto.getId());
         };

@@ -51,11 +51,6 @@ public class GraphQLConfig {
         this.postStatDataFetchers = postStatDataFetchers;
     }
 
-    @Bean
-    public GraphQL graphQL() {
-        return graphQL;
-    }
-
     @PostConstruct
     public void init() throws IOException {
         var reader = new InputStreamReader(schema.getInputStream(), StandardCharsets.UTF_8);
@@ -80,5 +75,10 @@ public class GraphQLConfig {
                 .type(newTypeWiring("UserStat").dataFetchers(userStatDataFetchers.toMap()))
                 .type(newTypeWiring("PostStat").dataFetchers(postStatDataFetchers.toMap()))
                 .build();
+    }
+
+    @Bean
+    public GraphQL graphQL() {
+        return graphQL;
     }
 }

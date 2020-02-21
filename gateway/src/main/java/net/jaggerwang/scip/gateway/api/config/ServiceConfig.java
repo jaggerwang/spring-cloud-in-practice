@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
 import net.jaggerwang.scip.common.adapter.service.async.*;
+import net.jaggerwang.scip.common.api.filter.AuthHeaderRelayFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
@@ -40,44 +41,44 @@ public class ServiceConfig {
     @Bean
     @LoadBalanced
     public WebClient.Builder webClientBuilder() {
-        return WebClient.builder();
+        return WebClient.builder().filter(new AuthHeaderRelayFilter());
     }
 
     @Bean
-    public UserAsyncServiceImpl userService(WebClient.Builder builder,
-                                            ReactiveCircuitBreakerFactory cbFactory,
-                                            ObjectMapper objectMapper) {
+    public UserAsyncServiceImpl userAsyncService(WebClient.Builder builder,
+                                                 ReactiveCircuitBreakerFactory cbFactory,
+                                                 ObjectMapper objectMapper) {
         var webClient = builder.baseUrl("http://spring-cloud-in-practice-user").build();
         return new UserAsyncServiceImpl(webClient, cbFactory, objectMapper);
     }
 
     @Bean
-    public PostAsyncServiceImpl postService(WebClient.Builder builder,
-                                            ReactiveCircuitBreakerFactory cbFactory,
-                                            ObjectMapper objectMapper) {
+    public PostAsyncServiceImpl postAsyncService(WebClient.Builder builder,
+                                                 ReactiveCircuitBreakerFactory cbFactory,
+                                                 ObjectMapper objectMapper) {
         var webClient = builder.baseUrl("http://spring-cloud-in-practice-post").build();
         return new PostAsyncServiceImpl(webClient, cbFactory, objectMapper);
     }
 
     @Bean
-    public FileAsyncServiceImpl fileService(WebClient.Builder builder,
-                                            ReactiveCircuitBreakerFactory cbFactory,
-                                            ObjectMapper objectMapper) {
+    public FileAsyncServiceImpl fileAsyncService(WebClient.Builder builder,
+                                                 ReactiveCircuitBreakerFactory cbFactory,
+                                                 ObjectMapper objectMapper) {
         var webClient = builder.baseUrl("http://spring-cloud-in-practice-file").build();
         return new FileAsyncServiceImpl(webClient, cbFactory, objectMapper);
     }
 
     @Bean
-    public StatAsyncServiceImpl statService(WebClient.Builder builder,
-                                            ReactiveCircuitBreakerFactory cbFactory,
-                                            ObjectMapper objectMapper) {
+    public StatAsyncServiceImpl statAsyncService(WebClient.Builder builder,
+                                                 ReactiveCircuitBreakerFactory cbFactory,
+                                                 ObjectMapper objectMapper) {
         var webClient = builder.baseUrl("http://spring-cloud-in-practice-stat").build();
         return new StatAsyncServiceImpl(webClient, cbFactory, objectMapper);
     }
 
     @Bean
-    public HydraAsyncServiceImpl hydraService(@Value("${service.hydra.admin-url}") String baseUrl,
-                                              ReactiveCircuitBreakerFactory cbFactory) {
+    public HydraAsyncServiceImpl hydraAsyncService(@Value("${service.hydra.admin-url}") String baseUrl,
+                                                   ReactiveCircuitBreakerFactory cbFactory) {
         var webClient = WebClient.builder().baseUrl(baseUrl).build();
         return new HydraAsyncServiceImpl(webClient, cbFactory);
     }

@@ -5,14 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import net.jaggerwang.scip.common.api.filter.CustomHttpTraceFilter;
-import net.jaggerwang.scip.common.api.listener.InheritableRequestContextListener;
 import org.springframework.boot.actuate.trace.http.HttpExchangeTracer;
 import org.springframework.boot.actuate.trace.http.HttpTraceRepository;
 import org.springframework.boot.actuate.trace.http.InMemoryHttpTraceRepository;
 import org.springframework.boot.actuate.web.trace.servlet.HttpTraceFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.context.request.RequestContextListener;
 
 @Configuration(proxyBeanMethods = false)
 public class CommonConfig {
@@ -32,10 +30,5 @@ public class CommonConfig {
     public HttpTraceFilter httpTraceFilter(HttpTraceRepository repository,
                                            HttpExchangeTracer tracer) {
         return new CustomHttpTraceFilter(repository, tracer);
-    }
-
-    @Bean
-    public RequestContextListener requestContextListener() {
-        return new InheritableRequestContextListener();
     }
 }

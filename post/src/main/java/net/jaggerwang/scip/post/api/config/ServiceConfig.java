@@ -46,9 +46,9 @@ public class ServiceConfig {
     }
 
     @Bean
-    public UserSyncService userService(@Qualifier("userServiceRestTemplate") RestTemplate restTemplate,
-                                       CircuitBreakerFactory cbFactory,
-                                       ObjectMapper objectMapper) {
+    public UserSyncService userSyncService(@Qualifier("userServiceRestTemplate") RestTemplate restTemplate,
+                                           CircuitBreakerFactory cbFactory,
+                                           ObjectMapper objectMapper) {
         return new UserSyncServiceImpl(restTemplate, cbFactory, objectMapper);
     }
 }
