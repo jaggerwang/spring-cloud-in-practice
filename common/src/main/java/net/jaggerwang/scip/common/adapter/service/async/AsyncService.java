@@ -2,6 +2,7 @@ package net.jaggerwang.scip.common.adapter.service.async;
 
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.lang.Nullable;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -21,7 +22,7 @@ public abstract class AsyncService {
 
     abstract public Optional<String> getCircuitBreakerName(URI uri);
 
-    public Mono<ClientResponse> get(URI uri,
+    public Mono<ClientResponse> get(URI uri, @Nullable MultiValueMap<String, String> headers,
                                     @Nullable Function<Throwable, Mono<ClientResponse>> fallback) {
         var response = webClient
                 .get()
@@ -29,6 +30,9 @@ public abstract class AsyncService {
                         .path(uri.getPath())
                         .query(uri.getQuery())
                         .build())
+                .headers(httpHeaders -> {
+                    if (headers != null) httpHeaders.addAll(headers);
+                })
                 .exchange();
         var cbName = getCircuitBreakerName(uri);
         if (cbName.isPresent()) {
@@ -41,7 +45,8 @@ public abstract class AsyncService {
         }
     }
 
-    public <T> Mono<ClientResponse> post(URI uri, @Nullable T body,
+    public <T> Mono<ClientResponse> post(URI uri, @Nullable MultiValueMap<String, String> headers,
+                                         @Nullable T body,
                                          @Nullable Function<Throwable, Mono<ClientResponse>> fallback) {
         var response = webClient
                 .post()
@@ -49,6 +54,9 @@ public abstract class AsyncService {
                         .path(uri.getPath())
                         .query(uri.getQuery())
                         .build())
+                .headers(httpHeaders -> {
+                    if (headers != null) httpHeaders.addAll(headers);
+                })
                 .bodyValue(body)
                 .exchange();
         var cbName = getCircuitBreakerName(uri);
@@ -62,7 +70,8 @@ public abstract class AsyncService {
         }
     }
 
-    public <T> Mono<ClientResponse> put(URI uri, @Nullable T body,
+    public <T> Mono<ClientResponse> put(URI uri, @Nullable MultiValueMap<String, String> headers,
+                                        @Nullable T body,
                                         @Nullable Function<Throwable, Mono<ClientResponse>> fallback) {
         var response = webClient
                 .put()
@@ -70,6 +79,9 @@ public abstract class AsyncService {
                         .path(uri.getPath())
                         .query(uri.getQuery())
                         .build())
+                .headers(httpHeaders -> {
+                    if (headers != null) httpHeaders.addAll(headers);
+                })
                 .bodyValue(body)
                 .exchange();
         var cbName = getCircuitBreakerName(uri);

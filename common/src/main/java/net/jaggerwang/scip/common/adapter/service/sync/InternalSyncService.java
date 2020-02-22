@@ -18,12 +18,13 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
 public abstract class InternalSyncService extends SyncService {
     protected ObjectMapper objectMapper;
-    private HttpServletRequest upstreamRequest;
+    protected HttpServletRequest upstreamRequest;
 
     public InternalSyncService(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
                                ObjectMapper objectMapper) {
@@ -40,9 +41,10 @@ public abstract class InternalSyncService extends SyncService {
     private MultiValueMap<String, String> passThroughHeaders() {
         var headers = new LinkedMultiValueMap<String, String>();
         if (upstreamRequest != null) {
-            headers.add(HttpHeaders.AUTHORIZATION,
-                    upstreamRequest.getHeader(HttpHeaders.AUTHORIZATION));
-            headers.add(HttpHeaders.COOKIE, upstreamRequest.getHeader(HttpHeaders.COOKIE));
+            headers.addAll(HttpHeaders.AUTHORIZATION,
+                    Collections.list(upstreamRequest.getHeaders(HttpHeaders.AUTHORIZATION)));
+            headers.addAll(HttpHeaders.COOKIE,
+                    Collections.list(upstreamRequest.getHeaders(HttpHeaders.COOKIE)));
         }
         return headers;
     }
@@ -61,14 +63,18 @@ public abstract class InternalSyncService extends SyncService {
         return ResponseEntity.status(status).body(body);
     }
 
-    public Map<String, Object> getData(URI uri) {
-        var requestEntity = new HttpEntity<>(passThroughHeaders());
-        var response = get(uri, requestEntity, RootDto.class, this::fallback);
+    private Map<String, Object> handleResponse(ResponseEntity<RootDto> response) {
         if (!Objects.equals(response.getBody().getCode(), "ok")) {
             throw new InternalApiException(response.getStatusCode(), response.getBody().getCode(),
                     response.getBody().getMessage(), response.getBody().getData());
         }
         return response.getBody().getData();
+    }
+
+    public Map<String, Object> getData(URI uri) {
+        var requestEntity = new HttpEntity<>(passThroughHeaders());
+        var response = get(uri, requestEntity, RootDto.class, this::fallback);
+        return handleResponse(response);
     }
 
     public Map<String, Object> getData(String path) {
@@ -95,11 +101,7 @@ public abstract class InternalSyncService extends SyncService {
     public <T> Map<String, Object> postData(URI uri, @Nullable T body) {
         var requestEntity = new HttpEntity<>(body, passThroughHeaders());
         var response = post(uri, requestEntity, RootDto.class, this::fallback);
-        if (!Objects.equals(response.getBody().getCode(), "ok")) {
-            throw new InternalApiException(response.getStatusCode(), response.getBody().getCode(),
-                    response.getBody().getMessage(), response.getBody().getData());
-        }
-        return response.getBody().getData();
+        return handleResponse(response);
     }
 
     public <T> Map<String, Object> postData(String path, @Nullable T body) {

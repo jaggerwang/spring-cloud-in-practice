@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
 import net.jaggerwang.scip.common.adapter.service.async.*;
-import net.jaggerwang.scip.common.api.filter.AuthHeaderRelayFilter;
+import net.jaggerwang.scip.common.api.filter.HeadersRelayFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
@@ -13,9 +13,11 @@ import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFac
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Duration;
+import java.util.Set;
 
 @Configuration(proxyBeanMethods = false)
 public class ServiceConfig {
@@ -41,7 +43,9 @@ public class ServiceConfig {
     @LoadBalanced
     @Bean
     public WebClient.Builder webClientBuilder() {
-        return WebClient.builder().filter(new AuthHeaderRelayFilter());
+        var headersRelayFilter = new HeadersRelayFilter(Set.of(HttpHeaders.AUTHORIZATION,
+                HttpHeaders.COOKIE));
+        return WebClient.builder().filter(headersRelayFilter);
     }
 
     @Bean

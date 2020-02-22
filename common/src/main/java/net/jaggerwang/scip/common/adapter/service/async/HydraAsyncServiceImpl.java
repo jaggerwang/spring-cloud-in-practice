@@ -28,7 +28,7 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
                 .path("/oauth2/auth/requests/login")
                 .queryParam("login_challenge", challenge)
                 .build();
-        return get(uri, null)
+        return get(uri, null, null)
                 .flatMap(response -> response.bodyToMono(LoginRequestDto.class));
     }
 
@@ -38,7 +38,7 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
                 .path("/oauth2/auth/requests/login/accept")
                 .queryParam("login_challenge", challenge)
                 .build();
-        return put(uri, Map.of("subject", accept.getSubject()), null)
+        return put(uri, null, Map.of("subject", accept.getSubject()), null)
                 .flatMap(response -> response.
                         bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {}))
                 .map(m -> (String) m.get("redirect_to"));
@@ -50,7 +50,7 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
                 .path("/oauth2/auth/requests/login/accept")
                 .queryParam("login_challenge", challenge)
                 .build();
-        return put(uri, Map.of("subject", accept.getSubject(), "remember", accept.getRemember(),
+        return put(uri, null, Map.of("subject", accept.getSubject(), "remember", accept.getRemember(),
                 "remember_for", accept.getRememberFor()), null)
                 .flatMap(response -> response
                         .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {}))
@@ -63,7 +63,7 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
                 .path("/oauth2/auth/requests/login/reject")
                 .queryParam("login_challenge", challenge)
                 .build();
-        return put(uri, Map.of("error", reject.getError(),
+        return put(uri, null, Map.of("error", reject.getError(),
                 "error_description", reject.getErrorDescription()), null)
                 .flatMap(response -> response
                         .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {}))
@@ -76,7 +76,7 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
                 .path("/oauth2/auth/requests/consent")
                 .queryParam("consent_challenge", challenge)
                 .build();
-        return get(uri, null)
+        return get(uri, null, null)
                 .flatMap(response -> response.bodyToMono(ConsentRequestDto.class));
     }
 
@@ -86,7 +86,7 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
                 .path("/oauth2/auth/requests/consent/accept")
                 .queryParam("consent_challenge", challenge)
                 .build();
-        return put(uri, Map.of("grant_scope", accept.getGrantScope(),
+        return put(uri, null, Map.of("grant_scope", accept.getGrantScope(),
                 "grant_access_token_audience", accept.getGrantAccessTokenAudience(),
                 "session", accept.getSession()), null)
                 .flatMap(response -> response
@@ -100,7 +100,7 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
                 .path("/oauth2/auth/requests/consent/accept")
                 .queryParam("consent_challenge", challenge)
                 .build();
-        return put(uri, Map.of("grant_scope", accept.getGrantScope(),
+        return put(uri, null, Map.of("grant_scope", accept.getGrantScope(),
                 "grant_access_token_audience", accept.getGrantAccessTokenAudience(),
                 "session", accept.getSession(), "remember", accept.getRemember(),
                 "remember_for", accept.getRememberFor()), null)
@@ -115,7 +115,7 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
                 .path("/oauth2/auth/requests/consent/reject")
                 .queryParam("consent_challenge", challenge)
                 .build();
-        return put(uri, Map.of("error", reject.getError(),
+        return put(uri, null, Map.of("error", reject.getError(),
                 "error_description", reject.getErrorDescription()), null)
                 .flatMap(response -> response
                         .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {}))
@@ -128,7 +128,7 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
                 .path("/oauth2/auth/requests/logout")
                 .queryParam("logout_challenge", challenge)
                 .build();
-        return get(uri, null)
+        return get(uri, null, null)
                 .flatMap(response -> response.bodyToMono(LogoutRequestDto.class));
     }
 
@@ -138,7 +138,7 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
                 .path("/oauth2/auth/requests/logout/accept")
                 .queryParam("logout_challenge", challenge)
                 .build();
-        return put(uri, null, null)
+        return put(uri, null, null, null)
                 .flatMap(response -> response
                         .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {}))
                 .map(m -> (String) m.get("redirect_to"));
@@ -150,7 +150,7 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
                 .path("/oauth2/auth/requests/logout/reject")
                 .queryParam("logout_challenge", challenge)
                 .build();
-        return put(uri, null, null)
+        return put(uri, null, null, null)
                 .then();
     }
 }

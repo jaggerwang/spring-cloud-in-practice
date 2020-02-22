@@ -9,16 +9,25 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Set;
 
-public class AuthHeaderRelayInterceptor implements ClientHttpRequestInterceptor {
+public class HeadersRelayInterceptor implements ClientHttpRequestInterceptor {
+    private Set<String> headers;
+
+    public HeadersRelayInterceptor(Set<String> headers) {
+        this.headers = headers;
+    }
+
     @Override
-    public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
+    public ClientHttpResponse intercept(HttpRequest request, byte[] body,
+                                        ClientHttpRequestExecution execution) throws IOException {
         var requestAttrs = RequestContextHolder.getRequestAttributes();
         if (requestAttrs instanceof ServletRequestAttributes) {
-            var servletRequestAttrs = (ServletRequestAttributes) requestAttrs;
-            var authHeader = servletRequestAttrs.getRequest().getHeader(HttpHeaders.AUTHORIZATION);
-            if (authHeader != null) {
-                request.getHeaders().add(HttpHeaders.AUTHORIZATION, authHeader);
+            var upstreamRequest = ((ServletRequestAttributes) requestAttrs).getRequest();
+            for (var header: headers) {
+                request.getHeaders().addAll(header,
+                        Collections.list(upstreamRequest.getHeaders(header)));
             }
         }
         return execution.execute(request, body);
