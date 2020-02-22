@@ -5,6 +5,7 @@ import net.jaggerwang.scip.common.usecase.port.service.dto.auth.*;
 import net.jaggerwang.scip.common.usecase.port.service.sync.HydraSyncService;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
@@ -18,7 +19,6 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
     public HydraSyncServiceImpl(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
                                 ObjectMapper objectMapper) {
         super(restTemplate, cbFactory);
-
         this.objectMapper = objectMapper;
     }
 
@@ -33,7 +33,7 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
                 .path("/oauth2/auth/requests/login")
                 .queryParam("login_challenge", challenge)
                 .build();
-        return get(uri, LoginRequestDto.class, null).getBody();
+        return get(uri, null, LoginRequestDto.class, null).getBody();
     }
 
     @Override
@@ -42,7 +42,8 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
                 .path("/oauth2/auth/requests/login/accept")
                 .queryParam("login_challenge", challenge)
                 .build();
-        return (String) put(uri, Map.of("subject", accept.getSubject()),
+        var requestEntity = new HttpEntity<>(Map.of("subject", accept.getSubject()));
+        return (String) put(uri, requestEntity,
                 new ParameterizedTypeReference<Map<String, Object>>() {}, null)
                 .getBody()
                 .get("redirect_to");
@@ -54,8 +55,9 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
                 .path("/oauth2/auth/requests/login/accept")
                 .queryParam("login_challenge", challenge)
                 .build();
-        return (String) put(uri, Map.of("subject", accept.getSubject(),
-                "remember", accept.getRemember(), "remember_for", accept.getRememberFor()),
+        var requestEntity = new HttpEntity<>(Map.of("subject", accept.getSubject(),
+                "remember", accept.getRemember(), "remember_for", accept.getRememberFor()));
+        return (String) put(uri, requestEntity,
                 new ParameterizedTypeReference<Map<String, Object>>() {}, null)
                 .getBody()
                 .get("redirect_to");
@@ -67,8 +69,9 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
                 .path("/oauth2/auth/requests/login/reject")
                 .queryParam("login_challenge", challenge)
                 .build();
-        return (String) put(uri, Map.of("error", reject.getError(),
-                "error_description", reject.getErrorDescription()),
+        var requestEntity = new HttpEntity<>(Map.of("error", reject.getError(),
+                "error_description", reject.getErrorDescription()));
+        return (String) put(uri, requestEntity,
                 new ParameterizedTypeReference<Map<String, Object>>() {}, null)
                 .getBody()
                 .get("redirect_to");
@@ -80,7 +83,7 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
                 .path("/oauth2/auth/requests/consent")
                 .queryParam("consent_challenge", challenge)
                 .build();
-        return get(uri, ConsentRequestDto.class, null)
+        return get(uri, null, ConsentRequestDto.class, null)
                 .getBody();
     }
 
@@ -90,9 +93,10 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
                 .path("/oauth2/auth/requests/consent/accept")
                 .queryParam("consent_challenge", challenge)
                 .build();
-        return (String) put(uri, Map.of("grant_scope", accept.getGrantScope(),
+        var requestEntity = new HttpEntity<>(Map.of("grant_scope", accept.getGrantScope(),
                 "grant_access_token_audience", accept.getGrantAccessTokenAudience(),
-                "session", accept.getSession()),
+                "session", accept.getSession()));
+        return (String) put(uri, requestEntity,
                 new ParameterizedTypeReference<Map<String, Object>>() {}, null)
                 .getBody()
                 .get("redirect_to");
@@ -104,10 +108,11 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
                 .path("/oauth2/auth/requests/consent/accept")
                 .queryParam("consent_challenge", challenge)
                 .build();
-        return (String) put(uri, Map.of("grant_scope", accept.getGrantScope(),
+        var requestEntity = new HttpEntity<>(Map.of("grant_scope", accept.getGrantScope(),
                 "grant_access_token_audience", accept.getGrantAccessTokenAudience(),
                 "session", accept.getSession(), "remember", accept.getRemember(),
-                "remember_for", accept.getRememberFor()),
+                "remember_for", accept.getRememberFor()));
+        return (String) put(uri, requestEntity,
                 new ParameterizedTypeReference<Map<String, Object>>() {}, null)
                 .getBody()
                 .get("redirect_to");
@@ -119,8 +124,9 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
                 .path("/oauth2/auth/requests/consent/reject")
                 .queryParam("consent_challenge", challenge)
                 .build();
-        return (String) put(uri, Map.of("error", reject.getError(),
-                "error_description", reject.getErrorDescription()),
+        var requestEntity = new HttpEntity<>(Map.of("error", reject.getError(),
+                "error_description", reject.getErrorDescription()));
+        return (String) put(uri, requestEntity,
                 new ParameterizedTypeReference<Map<String, Object>>() {}, null)
                 .getBody()
                 .get("redirect_to");
@@ -132,7 +138,7 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
                 .path("/oauth2/auth/requests/logout")
                 .queryParam("logout_challenge", challenge)
                 .build();
-        return get(uri, LogoutRequestDto.class, null)
+        return get(uri, null, LogoutRequestDto.class, null)
                 .getBody();
     }
 

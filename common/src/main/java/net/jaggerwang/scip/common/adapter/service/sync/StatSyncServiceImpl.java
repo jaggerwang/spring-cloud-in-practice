@@ -7,6 +7,7 @@ import net.jaggerwang.scip.common.usecase.port.service.sync.StatSyncService;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Optional;
@@ -15,6 +16,11 @@ public class StatSyncServiceImpl extends InternalSyncService implements StatSync
     public StatSyncServiceImpl(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
                                ObjectMapper objectMapper) {
         super(restTemplate, cbFactory, objectMapper);
+    }
+
+    public StatSyncServiceImpl(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
+                               ObjectMapper objectMapper, HttpServletRequest upstreamRequest) {
+        super(restTemplate, cbFactory, objectMapper, upstreamRequest);
     }
 
     @Override

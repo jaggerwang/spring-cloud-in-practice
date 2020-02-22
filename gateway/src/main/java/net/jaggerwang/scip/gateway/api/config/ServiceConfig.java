@@ -38,8 +38,8 @@ public class ServiceConfig {
         });
     }
 
-    @Bean
     @LoadBalanced
+    @Bean
     public WebClient.Builder webClientBuilder() {
         return WebClient.builder().filter(new AuthHeaderRelayFilter());
     }

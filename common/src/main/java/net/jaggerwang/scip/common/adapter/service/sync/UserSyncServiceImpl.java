@@ -8,6 +8,7 @@ import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,11 @@ public class UserSyncServiceImpl extends InternalSyncService implements UserSync
     public UserSyncServiceImpl(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
                                ObjectMapper objectMapper) {
         super(restTemplate, cbFactory, objectMapper);
+    }
+
+    public UserSyncServiceImpl(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
+                               ObjectMapper objectMapper, HttpServletRequest upstreamRequest) {
+        super(restTemplate, cbFactory, objectMapper, upstreamRequest);
     }
 
     @Override

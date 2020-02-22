@@ -9,7 +9,6 @@ import net.jaggerwang.scip.common.usecase.exception.*;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
 import net.jaggerwang.scip.common.entity.UserEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
 
 @RestController
 @RequestMapping("/user")

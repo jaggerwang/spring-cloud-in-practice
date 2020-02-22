@@ -23,23 +23,19 @@ public class RouteConfig {
         return builder.routes()
                 .route(p -> p.path("/user/**")
                         .filters(f -> f
-                                .filters(tokenRelayFilterFactory.apply())
-                                .removeRequestHeader("Cookie"))
+                                .filters(tokenRelayFilterFactory.apply()))
                         .uri("lb://spring-cloud-in-practice-user"))
                 .route(p -> p.path("/post/**")
                         .filters(f -> f
-                                .filters(tokenRelayFilterFactory.apply())
-                                .removeRequestHeader("Cookie"))
+                                .filters(tokenRelayFilterFactory.apply()))
                         .uri("lb://spring-cloud-in-practice-post"))
                 .route(p -> p.path("/file/**").or().path("/files/**")
                         .filters(f -> f
-                                .filters(tokenRelayFilterFactory.apply())
-                                .removeRequestHeader("Cookie"))
+                                .filters(tokenRelayFilterFactory.apply()))
                         .uri("lb://spring-cloud-in-practice-file"))
                 .route(p -> p.path("/stat/**")
                         .filters(f -> f
-                                .filters(tokenRelayFilterFactory.apply())
-                                .removeRequestHeader("Cookie"))
+                                .filters(tokenRelayFilterFactory.apply()))
                         .uri("lb://spring-cloud-in-practice-stat"))
                 .build();
     }

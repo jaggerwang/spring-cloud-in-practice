@@ -15,7 +15,9 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.annotation.RequestScope;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.Duration;
 
 @Configuration(proxyBeanMethods = false)
@@ -39,16 +41,18 @@ public class ServiceConfig {
         });
     }
 
-    @Bean
     @LoadBalanced
+    @Bean
     public RestTemplate userServiceRestTemplate(RestTemplateBuilder builder) {
         return builder.rootUri("http://spring-cloud-in-practice-user").build();
     }
 
     @Bean
+    @RequestScope
     public UserSyncService userSyncService(@Qualifier("userServiceRestTemplate") RestTemplate restTemplate,
                                            CircuitBreakerFactory cbFactory,
-                                           ObjectMapper objectMapper) {
-        return new UserSyncServiceImpl(restTemplate, cbFactory, objectMapper);
+                                           ObjectMapper objectMapper,
+                                           HttpServletRequest request) {
+        return new UserSyncServiceImpl(restTemplate, cbFactory, objectMapper, request);
     }
 }

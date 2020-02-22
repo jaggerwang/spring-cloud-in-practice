@@ -23,99 +23,111 @@ public abstract class SyncService {
 
     abstract public Optional<String> getCircuitBreakerName(URI uri);
 
-    public <T> ResponseEntity<T> get(URI uri, Class<T> responseType,
+    public <T> ResponseEntity<T> get(URI uri, @Nullable HttpEntity<?> requestEntity,
+                                     Class<T> responseType,
                                      @Nullable Function<Throwable, ResponseEntity<T>> fallback) {
         var u = restTemplate.getUriTemplateHandler().expand(uri.toString());
         var cbName = getCircuitBreakerName(u);
         if (cbName.isPresent()) {
             var cb = cbFactory.create(cbName.get());
             return fallback != null ?
-                    cb.run(() -> restTemplate.exchange(u, HttpMethod.GET, null, responseType),
+                    cb.run(() -> restTemplate
+                                    .exchange(u, HttpMethod.GET, requestEntity, responseType),
                             fallback) :
-                    cb.run(() -> restTemplate.exchange(u, HttpMethod.GET, null, responseType));
+                    cb.run(() -> restTemplate
+                            .exchange(u, HttpMethod.GET, requestEntity, responseType));
         } else {
-            return restTemplate.exchange(u, HttpMethod.GET, null, responseType);
+            return restTemplate.exchange(u, HttpMethod.GET, requestEntity, responseType);
         }
     }
 
-    public <T> ResponseEntity<T> get(URI uri, ParameterizedTypeReference<T> responseType,
+    public <T> ResponseEntity<T> get(URI uri, @Nullable HttpEntity<?> requestEntity,
+                                     ParameterizedTypeReference<T> responseType,
                                      @Nullable Function<Throwable, ResponseEntity<T>> fallback) {
         var u = restTemplate.getUriTemplateHandler().expand(uri.toString());
         var cbName = getCircuitBreakerName(u);
         if (cbName.isPresent()) {
             var cb = cbFactory.create(cbName.get());
             return fallback != null ?
-                    cb.run(() -> restTemplate.exchange(u, HttpMethod.GET, null, responseType),
+                    cb.run(() -> restTemplate
+                                    .exchange(u, HttpMethod.GET, requestEntity, responseType),
                             fallback) :
-                    cb.run(() -> restTemplate.exchange(u, HttpMethod.GET, null, responseType));
+                    cb.run(() -> restTemplate
+                            .exchange(u, HttpMethod.GET, requestEntity, responseType));
         } else {
-            return restTemplate.exchange(u, HttpMethod.GET, null, responseType);
+            return restTemplate.exchange(u, HttpMethod.GET, requestEntity, responseType);
         }
     }
 
-    public <T, S> ResponseEntity<T> post(URI uri, @Nullable S body, Class<T> responseType,
+    public <T> ResponseEntity<T> post(URI uri, @Nullable HttpEntity<?> requestEntity,
+                                         Class<T> responseType,
                                          @Nullable Function<Throwable, ResponseEntity<T>> fallback) {
         var u = restTemplate.getUriTemplateHandler().expand(uri.toString());
-        var entity = body != null ? new HttpEntity(body) : null;
         var cbName = getCircuitBreakerName(u);
         if (cbName.isPresent()) {
             var cb = cbFactory.create(cbName.get());
             return fallback != null ?
-                    cb.run(() -> restTemplate.exchange(u, HttpMethod.POST, entity, responseType),
+                    cb.run(() -> restTemplate
+                                    .exchange(u, HttpMethod.POST, requestEntity, responseType),
                             fallback) :
-                    cb.run(() -> restTemplate.exchange(u, HttpMethod.POST, entity, responseType));
+                    cb.run(() -> restTemplate
+                            .exchange(u, HttpMethod.POST, requestEntity, responseType));
         } else {
-            return restTemplate.exchange(u, HttpMethod.POST, entity, responseType);
+            return restTemplate.exchange(u, HttpMethod.POST, requestEntity, responseType);
         }
     }
 
-    public <T, S> ResponseEntity<T> post(URI uri, @Nullable S body,
+    public <T> ResponseEntity<T> post(URI uri, @Nullable HttpEntity<?> requestEntity,
                                          ParameterizedTypeReference<T> responseType,
                                          @Nullable Function<Throwable, ResponseEntity<T>> fallback) {
         var u = restTemplate.getUriTemplateHandler().expand(uri.toString());
-        var entity = body != null ? new HttpEntity(body) : null;
         var cbName = getCircuitBreakerName(u);
         if (cbName.isPresent()) {
             var cb = cbFactory.create(cbName.get());
             return fallback != null ?
-                    cb.run(() -> restTemplate.exchange(u, HttpMethod.POST, entity, responseType),
+                    cb.run(() -> restTemplate
+                                    .exchange(u, HttpMethod.POST, requestEntity, responseType),
                             fallback) :
-                    cb.run(() -> restTemplate.exchange(u, HttpMethod.POST, entity, responseType));
+                    cb.run(() -> restTemplate
+                            .exchange(u, HttpMethod.POST, requestEntity, responseType));
         } else {
-            return restTemplate.exchange(u, HttpMethod.POST, entity, responseType);
+            return restTemplate.exchange(u, HttpMethod.POST, requestEntity, responseType);
         }
     }
 
-    public <T, S> ResponseEntity<T> put(URI uri, @Nullable S body, Class<T> responseType,
+    public <T> ResponseEntity<T> put(URI uri, @Nullable HttpEntity<?> requestEntity,
+                                        Class<T> responseType,
                                         @Nullable Function<Throwable, ResponseEntity<T>> fallback) {
         var u = restTemplate.getUriTemplateHandler().expand(uri.toString());
-        var entity = body != null ? new HttpEntity(body) : null;
         var cbName = getCircuitBreakerName(u);
         if (cbName.isPresent()) {
             var cb = cbFactory.create(cbName.get());
             return fallback != null ?
-                    cb.run(() -> restTemplate.exchange(u, HttpMethod.PUT, entity, responseType),
+                    cb.run(() -> restTemplate.
+                                    exchange(u, HttpMethod.PUT, requestEntity, responseType),
                             fallback) :
-                    cb.run(() -> restTemplate.exchange(u, HttpMethod.PUT, entity, responseType));
+                    cb.run(() -> restTemplate
+                            .exchange(u, HttpMethod.PUT, requestEntity, responseType));
         } else {
-            return restTemplate.exchange(u, HttpMethod.PUT, entity, responseType);
+            return restTemplate.exchange(u, HttpMethod.PUT, requestEntity, responseType);
         }
     }
 
-    public <T, S> ResponseEntity<T> put(URI uri, @Nullable S body,
+    public <T> ResponseEntity<T> put(URI uri, @Nullable HttpEntity<?> requestEntity,
                                         ParameterizedTypeReference<T> responseType,
                                         @Nullable Function<Throwable, ResponseEntity<T>> fallback) {
         var u = restTemplate.getUriTemplateHandler().expand(uri.toString());
-        var entity = body != null ? new HttpEntity(body) : null;
         var cbName = getCircuitBreakerName(u);
         if (cbName.isPresent()) {
             var cb = cbFactory.create(cbName.get());
             return fallback != null ?
-                    cb.run(() -> restTemplate.exchange(u, HttpMethod.PUT, entity, responseType),
+                    cb.run(() -> restTemplate
+                                    .exchange(u, HttpMethod.PUT, requestEntity, responseType),
                             fallback) :
-                    cb.run(() -> restTemplate.exchange(u, HttpMethod.PUT, entity, responseType));
+                    cb.run(() -> restTemplate
+                            .exchange(u, HttpMethod.PUT, requestEntity, responseType));
         } else {
-            return restTemplate.exchange(u, HttpMethod.PUT, entity, responseType);
+            return restTemplate.exchange(u, HttpMethod.PUT, requestEntity, responseType);
         }
     }
 }
