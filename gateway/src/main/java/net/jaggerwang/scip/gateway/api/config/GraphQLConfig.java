@@ -1,6 +1,7 @@
 package net.jaggerwang.scip.gateway.api.config;
 
 import graphql.GraphQL;
+import graphql.execution.AsyncExecutionStrategy;
 import graphql.scalars.ExtendedScalars;
 import graphql.schema.*;
 import graphql.schema.idl.RuntimeWiring;
@@ -27,28 +28,28 @@ public class GraphQLConfig {
     @Value("classpath:schema.graphqls")
     private Resource schema;
 
-    QueryDataFetchers queryDataFetchers;
-    MutationDataFetchers mutationDataFetchers;
-    UserDataFetcher userDataFetchers;
-    PostDataFetcher postDataFetchers;
-    FileDataFetchers fileDataFetchers;
-    UserStatDataFetcher userStatDataFetchers;
-    PostStatDataFetcher postStatDataFetchers;
+    QueryDataFetcher queryDataFetcher;
+    MutationDataFetcher mutationDataFetcher;
+    UserDataFetcher userDataFetcher;
+    PostDataFetcher postDataFetcher;
+    FileDataFetcher fileDataFetchers;
+    UserStatDataFetcher userStatDataFetcher;
+    PostStatDataFetcher postStatDataFetcher;
 
-    public GraphQLConfig(QueryDataFetchers queryDataFetchers,
-                         MutationDataFetchers mutationDataFetchers,
-                         UserDataFetcher userDataFetchers,
-                         PostDataFetcher postDataFetchers,
-                         FileDataFetchers fileDataFetchers,
-                         UserStatDataFetcher userStatDataFetchers,
-                         PostStatDataFetcher postStatDataFetchers) {
-        this.queryDataFetchers = queryDataFetchers;
-        this.mutationDataFetchers = mutationDataFetchers;
-        this.userDataFetchers = userDataFetchers;
-        this.postDataFetchers = postDataFetchers;
+    public GraphQLConfig(QueryDataFetcher queryDataFetcher,
+                         MutationDataFetcher mutationDataFetcher,
+                         UserDataFetcher userDataFetcher,
+                         PostDataFetcher postDataFetcher,
+                         FileDataFetcher fileDataFetchers,
+                         UserStatDataFetcher userStatDataFetcher,
+                         PostStatDataFetcher postStatDataFetcher) {
+        this.queryDataFetcher = queryDataFetcher;
+        this.mutationDataFetcher = mutationDataFetcher;
+        this.userDataFetcher = userDataFetcher;
+        this.postDataFetcher = postDataFetcher;
         this.fileDataFetchers = fileDataFetchers;
-        this.userStatDataFetchers = userStatDataFetchers;
-        this.postStatDataFetchers = postStatDataFetchers;
+        this.userStatDataFetcher = userStatDataFetcher;
+        this.postStatDataFetcher = postStatDataFetcher;
     }
 
     @PostConstruct
@@ -56,7 +57,12 @@ public class GraphQLConfig {
         var reader = new InputStreamReader(schema.getInputStream(), StandardCharsets.UTF_8);
         var sdl = FileCopyUtils.copyToString(reader);
         var graphQLSchema = buildSchema(sdl);
-        this.graphQL = GraphQL.newGraphQL(graphQLSchema).build();
+        var executionStrategy = new AsyncExecutionStrategy(
+                new CustomDataFetchingExceptionHandler());
+        this.graphQL = GraphQL.newGraphQL(graphQLSchema)
+                .queryExecutionStrategy(executionStrategy)
+                .mutationExecutionStrategy(executionStrategy)
+                .build();
     }
 
     private GraphQLSchema buildSchema(String sdl) {
@@ -67,13 +73,13 @@ public class GraphQLConfig {
 
     private RuntimeWiring buildWiring() {
         return RuntimeWiring.newRuntimeWiring().scalar(ExtendedScalars.Json)
-                .type(newTypeWiring("Query").dataFetchers(queryDataFetchers.toMap()))
-                .type(newTypeWiring("Mutation").dataFetchers(mutationDataFetchers.toMap()))
-                .type(newTypeWiring("User").dataFetchers(userDataFetchers.toMap()))
-                .type(newTypeWiring("Post").dataFetchers(postDataFetchers.toMap()))
+                .type(newTypeWiring("Query").dataFetchers(queryDataFetcher.toMap()))
+                .type(newTypeWiring("Mutation").dataFetchers(mutationDataFetcher.toMap()))
+                .type(newTypeWiring("User").dataFetchers(userDataFetcher.toMap()))
+                .type(newTypeWiring("Post").dataFetchers(postDataFetcher.toMap()))
                 .type(newTypeWiring("File").dataFetchers(fileDataFetchers.toMap()))
-                .type(newTypeWiring("UserStat").dataFetchers(userStatDataFetchers.toMap()))
-                .type(newTypeWiring("PostStat").dataFetchers(postStatDataFetchers.toMap()))
+                .type(newTypeWiring("UserStat").dataFetchers(userStatDataFetcher.toMap()))
+                .type(newTypeWiring("PostStat").dataFetchers(postStatDataFetcher.toMap()))
                 .build();
     }
 

@@ -1,3 +1,5 @@
+debug: ${SCIP_DEBUG:false}
+
 logging:
     file:
         path: ${SCIP_LOGGING_FILE_PATH:/tmp}
@@ -13,6 +15,8 @@ server:
     port: 8083
 
 spring:
+    application:
+        name: spring-cloud-in-practice-file
     servlet:
         multipart:
             file-size-threshold: 10MB
@@ -39,6 +43,8 @@ spring:
             ribbon:
                 enabled: false
         consul:
+            host: ${SCIP_SPRING_CLOUD_CONSUL_HOST:localhost}
+            port: ${SCIP_SPRING_CLOUD_CONSUL_PORT:8500}
             discovery:
                 enabled: true
                 register: true

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 @Component
-public class PostDataFetcher extends AbstractDataFetchers {
+public class PostDataFetcher extends AbstractDataFetcher {
     public DataFetcher user() {
         return env -> {
             PostDto postDto = env.getSource();

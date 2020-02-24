@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-abstract public class AbstractDataFetchers {
+abstract public class AbstractDataFetcher {
     @Autowired
     protected ObjectMapper objectMapper;
 

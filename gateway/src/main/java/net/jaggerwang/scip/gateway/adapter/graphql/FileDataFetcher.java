@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 
 @Component
-public class FileDataFetchers extends AbstractDataFetchers {
+public class FileDataFetcher extends AbstractDataFetcher {
     @Value("${service.file.base-url}")
     private String baseUrl;
 
@@ -20,13 +20,6 @@ public class FileDataFetchers extends AbstractDataFetchers {
         };
     }
 
-    public DataFetcher url() {
-        return env -> {
-            FileDto fileDto = env.getSource();
-            return generateUrl(fileDto);
-        };
-    }
-
     private String generateUrl(FileDto fileDto) {
         if ("LOCAL".equals(fileDto.getRegion())) {
             return baseUrl
@@ -34,6 +27,13 @@ public class FileDataFetchers extends AbstractDataFetchers {
         } else {
             return "";
         }
+    }
+
+    public DataFetcher url() {
+        return env -> {
+            FileDto fileDto = env.getSource();
+            return generateUrl(fileDto);
+        };
     }
 
     public DataFetcher thumbs() {

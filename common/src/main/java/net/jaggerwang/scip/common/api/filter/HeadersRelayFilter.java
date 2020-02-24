@@ -21,16 +21,21 @@ public class HeadersRelayFilter implements ExchangeFilterFunction {
                                        ExchangeFunction exchangeFunction) {
         return Mono.subscriberContext()
                 .flatMap(ctx -> {
+                    var request = clientRequest;
                     var upstreamExchange = ctx.getOrEmpty(ServerWebExchange.class);
                     if (upstreamExchange.isPresent()) {
+                        var builder = ClientRequest.from(request);
                         var upstreamHeaders = ((ServerWebExchange) upstreamExchange.get())
                                 .getRequest().getHeaders();
                         for (var header: headers) {
-                            clientRequest.headers().addAll(header, upstreamHeaders.get(header));
+                            if (upstreamHeaders.get(header) != null) {
+                                builder.header(header,
+                                        upstreamHeaders.get(header).toArray(new String[0]));
+                            }
                         }
+                        request = builder.build();
                     }
-
-                    return exchangeFunction.exchange(clientRequest);
+                    return exchangeFunction.exchange(request);
                 });
     }
 }

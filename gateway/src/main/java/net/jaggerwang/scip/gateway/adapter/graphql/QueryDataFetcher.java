@@ -4,7 +4,7 @@ import graphql.schema.DataFetcher;
 import org.springframework.stereotype.Component;
 
 @Component
-public class QueryDataFetchers extends AbstractDataFetchers {
+public class QueryDataFetcher extends AbstractDataFetcher {
     public DataFetcher userLogged() {
         return env -> userAsyncService.logged().toFuture();
     }

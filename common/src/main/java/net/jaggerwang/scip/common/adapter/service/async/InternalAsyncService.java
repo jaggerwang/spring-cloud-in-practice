@@ -1,9 +1,13 @@
 package net.jaggerwang.scip.common.adapter.service.async;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
 import net.jaggerwang.scip.common.usecase.exception.InternalApiException;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -25,9 +29,30 @@ public abstract class InternalAsyncService extends AsyncService {
         this.objectMapper = objectMapper;
     }
 
+    private Mono<ClientResponse> fallback(Throwable throwable) {
+        var status = HttpStatus.SERVICE_UNAVAILABLE;
+        var body = "";
+        try {
+            body = objectMapper.writeValueAsString(new RootDto("fail", throwable.toString()));
+        } catch (JsonProcessingException e) {
+        }
+        var response = ClientResponse.create(status)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .body(body)
+                .build();
+
+        throwable.printStackTrace();
+
+        return Mono.just(response);
+    }
+
     private Mono<Map<String, Object>> handleResponse(ClientResponse response) {
         return response
                 .bodyToMono(RootDto.class)
+                .doOnError(throwable -> {
+                    throw new InternalApiException(response.statusCode(), "fail",
+                            response.statusCode().toString() + " " + throwable.toString());
+                })
                 .map(rootDto -> {
                     if (!Objects.equals(rootDto.getCode(), "ok"))
                         throw new InternalApiException(response.statusCode(),
@@ -35,13 +60,11 @@ public abstract class InternalAsyncService extends AsyncService {
                                 rootDto.getData());
 
                     return rootDto.getData();
-                })
-                .switchIfEmpty(Mono.error(new InternalApiException(
-                        response.statusCode(), "fail", response.statusCode().toString())));
+                });
     }
 
     public Mono<Map<String, Object>> getData(URI uri) {
-        return get(uri, null, null).flatMap(this::handleResponse);
+        return get(uri, null, this::fallback).flatMap(this::handleResponse);
     }
 
     public Mono<Map<String, Object>> getData(String path) {

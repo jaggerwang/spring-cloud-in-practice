@@ -1,6 +1,6 @@
 package net.jaggerwang.scip.user.adapter.controller;
 
-import net.jaggerwang.scip.common.adapter.controller.ExceptionConverter;
+import net.jaggerwang.scip.common.adapter.controller.RestExceptionConverter;
 import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class RestExceptionHandler {
-    private ExceptionConverter converter = new ExceptionConverter();
+    private RestExceptionConverter converter = new RestExceptionConverter();
 
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<RootDto> handle(Throwable e) {

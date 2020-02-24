@@ -6,17 +6,17 @@ import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MutationDataFetchers extends AbstractDataFetchers {
+public class MutationDataFetcher extends AbstractDataFetcher {
     public DataFetcher userRegister() {
         return env -> {
-            UserDto userInput = env.getArgument("userInput");
+            var userInput = objectMapper.convertValue(env.getArgument("user"), UserDto.class);
             return userAsyncService.register(userInput).toFuture();
         };
     }
 
     public DataFetcher userModify() {
         return env -> {
-            UserDto userInput = env.getArgument("userInput");
+            var userInput = objectMapper.convertValue(env.getArgument("user"), UserDto.class);
             String code = env.getArgument("code");
             return userAsyncService.modify(userInput, code).toFuture();
         };
@@ -46,7 +46,7 @@ public class MutationDataFetchers extends AbstractDataFetchers {
 
     public DataFetcher postPublish() {
         return env -> {
-            PostDto postInput = env.getArgument("postInput");
+            var postInput = objectMapper.convertValue(env.getArgument("post"), PostDto.class);
             return postAsyncService.publish(postInput).toFuture();
         };
     }

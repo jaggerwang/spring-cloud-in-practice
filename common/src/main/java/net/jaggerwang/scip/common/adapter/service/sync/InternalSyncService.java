@@ -51,7 +51,7 @@ public abstract class InternalSyncService extends SyncService {
 
     private ResponseEntity<RootDto> fallback(Throwable throwable) {
         var status = HttpStatus.SERVICE_UNAVAILABLE;
-        var body = new RootDto("fail", throwable.getMessage());
+        var body = new RootDto("fail", throwable.toString());
         if (throwable instanceof HttpStatusCodeException) {
             var sce = (HttpStatusCodeException) throwable;
             status = sce.getStatusCode();
@@ -59,6 +59,8 @@ public abstract class InternalSyncService extends SyncService {
                 body = objectMapper.readValue(sce.getResponseBodyAsString(), RootDto.class);
             } catch (JsonProcessingException e) {
             }
+        } else {
+            throwable.printStackTrace();
         }
         return ResponseEntity.status(status).body(body);
     }
