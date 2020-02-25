@@ -53,7 +53,7 @@ public class FileAsyncServiceImpl extends InternalAsyncService implements FileAs
     @Override
     public Mono<List<FileDto>> infos(List<Long> ids, Boolean keepNull) {
         return getData("/file/infos", Map.of(
-                    "id", String.join(",", ids.stream()
+                    "ids", String.join(",", ids.stream()
                         .map(id -> id.toString())
                         .collect(Collectors.toList())),
                     "keepNull", keepNull.toString()))

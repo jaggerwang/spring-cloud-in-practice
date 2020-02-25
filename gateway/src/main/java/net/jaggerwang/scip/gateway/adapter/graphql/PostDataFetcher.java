@@ -5,6 +5,8 @@ import net.jaggerwang.scip.common.usecase.port.service.dto.PostDto;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Component
 public class PostDataFetcher extends AbstractDataFetcher {
     public DataFetcher user() {
@@ -17,6 +19,7 @@ public class PostDataFetcher extends AbstractDataFetcher {
     public DataFetcher images() {
         return env -> {
             PostDto postDto = env.getSource();
+            if (postDto.getImageIds().isEmpty()) return monoWithContext(Mono.just(List.of()), env);
             return monoWithContext(fileAsyncService.infos(postDto.getImageIds(), false), env);
         };
     }

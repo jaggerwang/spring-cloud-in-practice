@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                         new RootDto("unauthorized", "未授权")))
                 )
                 .authorizeRequests(authorizeRequests -> authorizeRequests
-                        .antMatchers("/favicon.ico", "/actuator/**")
+                        .antMatchers("/favicon.ico", "/actuator/**", "/files/**")
                         .permitAll()
                         .anyRequest()
                         .hasAuthority("SCOPE_file"));

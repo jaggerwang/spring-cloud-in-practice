@@ -29,7 +29,7 @@ public class UserAsyncServiceImpl extends InternalAsyncService implements UserAs
     @Override
     public Mono<UserDto> register(UserDto userDto) {
         return postData("/user/register", userDto)
-                .map(data -> objectMapper.convertValue(data.get("post"), UserDto.class));
+                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
     }
 
     @Override
@@ -59,16 +59,14 @@ public class UserAsyncServiceImpl extends InternalAsyncService implements UserAs
 
     @Override
     public Mono<UserDto> modify(UserDto userDto) {
-        return postData("/user/modify", userDto)
-                .map(data -> objectMapper.convertValue(data.get("post"), UserDto.class));
+        return postData("/user/modify", Map.of("user", userDto))
+                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
     }
 
     @Override
     public Mono<UserDto> modify(UserDto userDto, String code) {
-        var params = objectMapper.convertValue(userDto, new TypeReference<Map<String, String>>() {});
-        params.put("code", code);
-        return postData("/user/modify", params)
-                .map(data -> objectMapper.convertValue(data.get("post"), UserDto.class));
+        return postData("/user/modify", Map.of("user", userDto, "code", code))
+                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
     }
 
     @Override
@@ -152,12 +150,12 @@ public class UserAsyncServiceImpl extends InternalAsyncService implements UserAs
     @Override
     public Mono<String> sendMobileVerifyCode(String type, String mobile) {
         return postData("/user/sendMobileVerifyCode", Map.of("type", type, "mobile", mobile))
-                .map(data -> objectMapper.convertValue(data.get("count"), String.class));
+                .map(data -> objectMapper.convertValue(data.get("verifyCode"), String.class));
     }
 
     @Override
     public Mono<String> sendEmailVerifyCode(String type, String email) {
         return postData("/user/sendEmailVerifyCode", Map.of("type", type, "email", email))
-                .map(data -> objectMapper.convertValue(data.get("count"), String.class));
+                .map(data -> objectMapper.convertValue(data.get("verifyCode"), String.class));
     }
 }

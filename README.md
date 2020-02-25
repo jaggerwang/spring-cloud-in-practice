@@ -1,6 +1,6 @@
 # Spring Cloud in Practice
 
-This project can be used as a starter for spring cloud micro services development. It is the micro services version of [Spring Boot in Practice](https://github.com/jaggerwang/spring-boot-in-practice). It use [Spring Cloud Consul](https://cloud.spring.io/spring-cloud-consul/reference/html/) for service discovery, [Spring Cloud Gateway](https://cloud.spring.io/spring-cloud-gateway/reference/html/) to implement api gateway, and [ORY/Hydra](https://github.com/ory/hydra) for running a OAuth2 Provider service. There is an article [Spring Cloud 微服务开发指南](https://blog.jaggerwang.net/spring-cloud-micro-service-develop-tour/) for learning this project.
+This project can be used as a starter for spring cloud micro services development. It is the micro services version of [Spring Boot in Practice](https://github.com/jaggerwang/spring-boot-in-practice). It use [Spring Cloud Consul](https://cloud.spring.io/spring-cloud-consul/reference/html/) for service discovery, [Spring Cloud Gateway](https://cloud.spring.io/spring-cloud-gateway/reference/html/) to implement api gateway, and [ORY/Hydra](https://github.com/ory/hydra) for running a OAuth2 Provider service. The graphql api service exposed by gateway can be used as the backend api service for this flutter app [Flutter in Practice](https://github.com/jaggerwang/flutter-in-practice). There is an article [Spring Cloud 微服务开发指南](https://blog.jaggerwang.net/spring-cloud-micro-service-develop-tour/) for learning this project.
 
 ## Dependent frameworks and packages
 
@@ -42,6 +42,8 @@ This project can be used as a starter for spring cloud micro services developmen
 | /post/following | GET | Posts of following users of someone |
 | /file/upload | POST | Upload file |
 | /file/info | GET | Get file meta info |
+
+The rest api service only return top objects, not return nested objects compared to the original monolith one.
 
 ### GraphQL
 
@@ -125,9 +127,9 @@ STRATEGIES_ACCESS_TOKEN=jwt LOG_LEVEL=info SECRETS_SYSTEM=a2N4m0XL659TIrB2V3fJBx
 There are two clients, one is for Hydra test client, and another is for gateway application.
 
 ```bash
-hydra clients create --endpoint 'http://localhost:4445/' --id test --name 'Test' --secret E0g8oR7m711bGcvy --grant-types authorization_code,refresh_token,client_credentials,implicit --response-types token,code,id_token --scope openid,offline,profile --callbacks 'http://localhost:4446/callback'
+hydra --endpoint 'http://localhost:4445/' clients create --id test --name 'Test' --secret E0g8oR7m711bGcvy --grant-types authorization_code,refresh_token,client_credentials,implicit --response-types token,code,id_token --scope openid,offline,profile --callbacks 'http://localhost:4446/callback'
 
-hydra clients create --endpoint 'http://localhost:4445/' --id scip --name 'Spring Cloud in Practice' --secret ilxzM0AdA7BVaL7c --grant-types authorization_code,refresh_token,client_credentials,implicit --response-types token,code,id_token --scope offline,user,post,file,stat --callbacks 'http://localhost:8080/login/oauth2/code/hydra'
+hydra --endpoint 'http://localhost:4445/' clients create --id scip --name 'Spring Cloud in Practice' --secret ilxzM0AdA7BVaL7c --grant-types authorization_code,refresh_token,client_credentials,implicit --response-types token,code,id_token --scope offline,user,post,file,stat --callbacks 'http://localhost:8080/login/oauth2/code/hydra'
 ```
 
 #### Package all modules
@@ -190,9 +192,9 @@ If you repackaged any module, you should add `--build` option to enable the new 
 There are two clients, one is for Hydra test client, and another is for gateway application.
 
 ```bash
-hydra clients create --endpoint 'http://localhost:9091/' --id test --secret E0g8oR7m711bGcvy --grant-types authorization_code,refresh_token,client_credentials,implicit --response-types token,code,id_token --scope openid,offline,profile --callbacks 'http://localhost:4446/callback'
+hydra --endpoint 'http://localhost:9091/' clients create --id test --secret E0g8oR7m711bGcvy --grant-types authorization_code,refresh_token,client_credentials,implicit --response-types token,code,id_token --scope openid,offline,profile --callbacks 'http://localhost:4446/callback'
 
-hydra clients create --endpoint 'http://localhost:9091/' --id scip --name 'Spring Cloud in Practice' --secret ilxzM0AdA7BVaL7c --grant-types authorization_code,refresh_token,client_credentials,implicit --response-types token,code,id_token --scope offline,user,post,file,stat --callbacks 'http://localhost:9080/login/oauth2/code/hydra'
+hydra --endpoint 'http://localhost:9091/' clients create --id scip --name 'Spring Cloud in Practice' --secret ilxzM0AdA7BVaL7c --grant-types authorization_code,refresh_token,client_credentials,implicit --response-types token,code,id_token --scope offline,user,post,file,stat --callbacks 'http://localhost:9080/login/oauth2/code/hydra'
 ```
 
 #### Register a test user

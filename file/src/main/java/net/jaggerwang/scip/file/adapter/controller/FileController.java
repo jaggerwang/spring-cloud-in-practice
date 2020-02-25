@@ -66,7 +66,7 @@ public class FileController extends AbstractController {
         var idList = Arrays.stream(ids.split(",")).mapToLong(Long::parseLong).boxed().collect(Collectors.toList());
         var fileEntities = fileUsecase.infos(idList, keepNull);
 
-        return new RootDto().addDataEntry("file", fileEntities.stream()
+        return new RootDto().addDataEntry("files", fileEntities.stream()
                 .map(FileDto::fromEntity).collect(Collectors.toList()));
     }
 }

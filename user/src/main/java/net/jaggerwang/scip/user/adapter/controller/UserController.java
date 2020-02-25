@@ -83,14 +83,16 @@ public class UserController extends AbstractController {
     }
 
     @PostMapping("/follow")
-    public RootDto follow(@RequestBody Long userId) {
+    public RootDto follow(@RequestBody Map<String, Object> input) {
+        var userId = objectMapper.convertValue(input.get("userId"), Long.class);
         userUsecase.follow(loggedUserId(), userId);
 
         return new RootDto();
     }
 
     @PostMapping("/unfollow")
-    public RootDto unfollow(@RequestBody Long userId) {
+    public RootDto unfollow(@RequestBody Map<String, Object> input) {
+        var userId = objectMapper.convertValue(input.get("userId"), Long.class);
         userUsecase.unfollow(loggedUserId(), userId);
 
         return new RootDto();

@@ -25,11 +25,11 @@ public class ServiceConfig {
     @Bean
     public Customizer<ReactiveResilience4JCircuitBreakerFactory> cbFactoryCustomizer() {
         return factory -> factory.configureDefault(id -> {
-            var timeout = Duration.ofSeconds(2);
+            var timeout = Duration.ofSeconds(5);
             if (id.equals("fast")) {
-                timeout = Duration.ofSeconds(1);
+                timeout = Duration.ofSeconds(2);
             } else if (id.equals("slow")) {
-                timeout = Duration.ofSeconds(5);
+                timeout = Duration.ofSeconds(10);
             }
 
             return new Resilience4JConfigBuilder(id)

@@ -1,6 +1,7 @@
 package net.jaggerwang.scip.gateway.adapter.graphql;
 
 import graphql.schema.DataFetcher;
+import net.jaggerwang.scip.common.entity.FileEntity;
 import net.jaggerwang.scip.common.usecase.port.service.dto.FileDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,7 @@ public class FileDataFetcher extends AbstractDataFetcher {
     }
 
     private String generateUrl(FileDto fileDto) {
-        if ("LOCAL".equals(fileDto.getRegion())) {
+        if (FileEntity.Region.LOCAL == fileDto.getRegion()) {
             return baseUrl
                     + Paths.get("/", fileDto.getBucket(), fileDto.getPath()).toString();
         } else {

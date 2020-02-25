@@ -18,32 +18,40 @@ public class QueryDataFetcher extends AbstractDataFetcher {
 
     public DataFetcher userFollowing() {
         return env -> {
-            var userId = Long.valueOf((Integer) env.getArgument("userId"));
-            var limit = Long.valueOf((Integer) env.getArgument("limit"));
-            var offset = Long.valueOf((Integer) env.getArgument("offset"));
+            var userId = env.getArgument("userId") != null ?
+                    Long.valueOf((Integer) env.getArgument("userId")) : null;
+            var limit = env.getArgument("limit") != null ?
+                    Long.valueOf((Integer) env.getArgument("limit")) : null;
+            var offset = env.getArgument("offset") != null ?
+                    Long.valueOf((Integer) env.getArgument("offset")) : null;
             return monoWithContext(userAsyncService.following(userId, limit, offset), env);
         };
     }
 
     public DataFetcher userFollowingCount() {
         return env -> {
-            var userId = Long.valueOf((Integer) env.getArgument("userId"));
+            var userId = env.getArgument("userId") != null ?
+                    Long.valueOf((Integer) env.getArgument("userId")) : null;
             return monoWithContext(userAsyncService.followingCount(userId), env);
         };
     }
 
     public DataFetcher userFollower() {
         return env -> {
-            var userId = Long.valueOf((Integer) env.getArgument("userId"));
-            var limit = Long.valueOf((Integer) env.getArgument("limit"));
-            var offset = Long.valueOf((Integer) env.getArgument("offset"));
+            var userId = env.getArgument("userId") != null ?
+                    Long.valueOf((Integer) env.getArgument("userId")) : null;
+            var limit = env.getArgument("limit") != null ?
+                    Long.valueOf((Integer) env.getArgument("limit")) : null;
+            var offset = env.getArgument("offset") != null ?
+                    Long.valueOf((Integer) env.getArgument("offset")) : null;
             return monoWithContext(userAsyncService.follower(userId, limit, offset), env);
         };
     }
 
     public DataFetcher userFollowerCount() {
         return env -> {
-            var userId = Long.valueOf((Integer) env.getArgument("userId"));
+            var userId = env.getArgument("userId") != null ?
+                    Long.valueOf((Integer) env.getArgument("userId")) : null;
             return monoWithContext(userAsyncService.followerCount(userId), env);
         };
     }
@@ -57,41 +65,52 @@ public class QueryDataFetcher extends AbstractDataFetcher {
 
     public DataFetcher postPublished() {
         return env -> {
-            var userId = Long.valueOf((Integer) env.getArgument("userId"));
-            var limit = Long.valueOf((Integer) env.getArgument("limit"));
-            var offset = Long.valueOf((Integer) env.getArgument("offset"));
+            var userId = env.getArgument("userId") != null ?
+                    Long.valueOf((Integer) env.getArgument("userId")) : null;
+            var limit = env.getArgument("limit") != null ?
+                    Long.valueOf((Integer) env.getArgument("limit")) : null;
+            var offset = env.getArgument("offset") != null ?
+                    Long.valueOf((Integer) env.getArgument("offset")) : null;
             return monoWithContext(postAsyncService.published(userId, limit, offset), env);
         };
     }
 
     public DataFetcher postPublishedCount() {
         return env -> {
-            var userId = Long.valueOf((Integer) env.getArgument("userId"));
+            var userId = env.getArgument("userId") != null ?
+                    Long.valueOf((Integer) env.getArgument("userId")) : null;
             return monoWithContext(postAsyncService.publishedCount(userId), env);
         };
     }
 
     public DataFetcher postLiked() {
         return env -> {
-            var userId = Long.valueOf((Integer) env.getArgument("userId"));
-            var limit = Long.valueOf((Integer) env.getArgument("limit"));
-            var offset = Long.valueOf((Integer) env.getArgument("offset"));
+            var userId = env.getArgument("userId") != null ?
+                    Long.valueOf((Integer) env.getArgument("userId")) : null;
+            var limit = env.getArgument("limit") != null ?
+                    Long.valueOf((Integer) env.getArgument("limit")) : null;
+            var offset = env.getArgument("offset") != null ?
+                    Long.valueOf((Integer) env.getArgument("offset")) : null;
             return monoWithContext(postAsyncService.liked(userId, limit, offset), env);
         };
     }
 
     public DataFetcher postLikedCount() {
         return env -> {
-            var userId = Long.valueOf((Integer) env.getArgument("userId"));
+            var userId = env.getArgument("userId") != null ?
+                    Long.valueOf((Integer) env.getArgument("userId")) : null;
             return monoWithContext(postAsyncService.likedCount(userId), env);
         };
     }
 
     public DataFetcher postFollowing() {
         return env -> {
-            var limit = Long.valueOf((Integer) env.getArgument("limit"));
-            var beforeId = Long.valueOf((Integer) env.getArgument("beforeId"));
-            var afterId = Long.valueOf((Integer) env.getArgument("afterId"));
+            var limit = env.getArgument("limit") != null ?
+                    Long.valueOf((Integer) env.getArgument("limit")) : null;
+            var beforeId = env.getArgument("beforeId") != null ?
+                    Long.valueOf((Integer) env.getArgument("beforeId")) : null;
+            var afterId = env.getArgument("afterId") != null ?
+                    Long.valueOf((Integer) env.getArgument("afterId")) : null;
             return monoWithContext(postAsyncService.following(limit, beforeId, afterId), env);
         };
     }
