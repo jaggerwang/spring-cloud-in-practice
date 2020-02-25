@@ -10,11 +10,8 @@ public class UserDataFetcher extends AbstractDataFetcher {
     public DataFetcher avatar() {
         return env -> {
             UserDto userDto = env.getSource();
-            if (userDto.getAvatarId() == null) {
-                return Mono.empty();
-            }
-
-            return fileAsyncService.info(userDto.getAvatarId());
+            if (userDto.getAvatarId() == null) return monoWithContext(Mono.empty(), env);
+            return monoWithContext(fileAsyncService.info(userDto.getAvatarId()), env);
         };
     }
 
@@ -22,14 +19,14 @@ public class UserDataFetcher extends AbstractDataFetcher {
         return env -> {
             var user = env.getSource();
             UserDto userDto = env.getSource();
-            return statAsyncService.ofUser(userDto.getId());
+            return monoWithContext(statAsyncService.ofUser(userDto.getId()), env);
         };
     }
 
     public DataFetcher following() {
         return env -> {
             UserDto userDto = env.getSource();
-            return userAsyncService.isFollowing(userDto.getId());
+            return monoWithContext(userAsyncService.isFollowing(userDto.getId()), env);
         };
     }
 }

@@ -19,14 +19,20 @@ public class StatUsecase {
 
     public UserStatEntity userStatInfoByUserId(Long userId) {
         var userStatEntity = userStatRepository.findByUserId(userId);
-        return userStatEntity.orElseGet(() -> UserStatEntity.builder().id(0L).userId(userId).createdAt(LocalDateTime.now())
+        return userStatEntity.orElseGet(() -> UserStatEntity.builder()
+                .id(0L)
+                .userId(userId)
+                .createdAt(LocalDateTime.now())
                 .build());
 
     }
 
     public PostStatEntity postStatInfoByPostId(Long postId) {
         var postStatEntity = postStatRepository.findByPostId(postId);
-        return postStatEntity.orElseGet(() -> PostStatEntity.builder().id(0L).postId(postId).createdAt(LocalDateTime.now())
+        return postStatEntity.orElseGet(() -> PostStatEntity.builder()
+                .id(0L)
+                .postId(postId)
+                .createdAt(LocalDateTime.now())
                 .build());
 
     }

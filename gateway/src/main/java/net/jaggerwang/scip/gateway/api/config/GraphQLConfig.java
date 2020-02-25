@@ -28,21 +28,25 @@ public class GraphQLConfig {
     @Value("classpath:schema.graphqls")
     private Resource schema;
 
-    QueryDataFetcher queryDataFetcher;
-    MutationDataFetcher mutationDataFetcher;
-    UserDataFetcher userDataFetcher;
-    PostDataFetcher postDataFetcher;
-    FileDataFetcher fileDataFetchers;
-    UserStatDataFetcher userStatDataFetcher;
-    PostStatDataFetcher postStatDataFetcher;
+    private CustomDataFetchingExceptionHandler exceptionHandler;
 
-    public GraphQLConfig(QueryDataFetcher queryDataFetcher,
+    private QueryDataFetcher queryDataFetcher;
+    private MutationDataFetcher mutationDataFetcher;
+    private UserDataFetcher userDataFetcher;
+    private PostDataFetcher postDataFetcher;
+    private FileDataFetcher fileDataFetchers;
+    private UserStatDataFetcher userStatDataFetcher;
+    private PostStatDataFetcher postStatDataFetcher;
+
+    public GraphQLConfig(CustomDataFetchingExceptionHandler exceptionHandler,
+                         QueryDataFetcher queryDataFetcher,
                          MutationDataFetcher mutationDataFetcher,
                          UserDataFetcher userDataFetcher,
                          PostDataFetcher postDataFetcher,
                          FileDataFetcher fileDataFetchers,
                          UserStatDataFetcher userStatDataFetcher,
                          PostStatDataFetcher postStatDataFetcher) {
+        this.exceptionHandler = exceptionHandler;
         this.queryDataFetcher = queryDataFetcher;
         this.mutationDataFetcher = mutationDataFetcher;
         this.userDataFetcher = userDataFetcher;
@@ -57,8 +61,7 @@ public class GraphQLConfig {
         var reader = new InputStreamReader(schema.getInputStream(), StandardCharsets.UTF_8);
         var sdl = FileCopyUtils.copyToString(reader);
         var graphQLSchema = buildSchema(sdl);
-        var executionStrategy = new AsyncExecutionStrategy(
-                new CustomDataFetchingExceptionHandler());
+        var executionStrategy = new AsyncExecutionStrategy(exceptionHandler);
         this.graphQL = GraphQL.newGraphQL(graphQLSchema)
                 .queryExecutionStrategy(executionStrategy)
                 .mutationExecutionStrategy(executionStrategy)

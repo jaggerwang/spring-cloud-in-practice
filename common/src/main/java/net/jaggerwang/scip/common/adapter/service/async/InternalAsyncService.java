@@ -29,11 +29,13 @@ public abstract class InternalAsyncService extends AsyncService {
         this.objectMapper = objectMapper;
     }
 
+    // Handle client exception
     private Mono<ClientResponse> fallback(Throwable throwable) {
-        var status = HttpStatus.SERVICE_UNAVAILABLE;
+        var status = HttpStatus.BAD_REQUEST;
         var body = "";
         try {
-            body = objectMapper.writeValueAsString(new RootDto("fail", throwable.toString()));
+            body = objectMapper.writeValueAsString(
+                    new RootDto("fail", status.toString() + " " + throwable.toString()));
         } catch (JsonProcessingException e) {
         }
         var response = ClientResponse.create(status)
@@ -49,10 +51,14 @@ public abstract class InternalAsyncService extends AsyncService {
     private Mono<Map<String, Object>> handleResponse(ClientResponse response) {
         return response
                 .bodyToMono(RootDto.class)
+                // Handle invalid body, such as wrong content type
                 .doOnError(throwable -> {
                     throw new InternalApiException(response.statusCode(), "fail",
                             response.statusCode().toString() + " " + throwable.toString());
                 })
+                // Make sure mono not empty
+                .switchIfEmpty(Mono.error(new InternalApiException(response.statusCode(), "fail",
+                        response.statusCode().toString())))
                 .map(rootDto -> {
                     if (!Objects.equals(rootDto.getCode(), "ok"))
                         throw new InternalApiException(response.statusCode(),

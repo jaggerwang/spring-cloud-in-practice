@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 @Component
 public class FileDataFetcher extends AbstractDataFetcher {
@@ -16,7 +16,7 @@ public class FileDataFetcher extends AbstractDataFetcher {
     public DataFetcher user() {
         return env -> {
             FileDto fileDto = env.getSource();
-            return userAsyncService.info(fileDto.getUserId());
+            return monoWithContext(userAsyncService.info(fileDto.getUserId()), env);
         };
     }
 
@@ -41,7 +41,7 @@ public class FileDataFetcher extends AbstractDataFetcher {
             FileDto fileDto = env.getSource();
             var type = fileDto.getMeta().getType();
             if (type.startsWith("image/")) {
-                var thumbs = new HashMap<String, String>();
+                var thumbs = new LinkedHashMap<String, String>();
                 var u = generateUrl(fileDto);
                 thumbs.put("SMALL",
                         String.format("%s?process=%s", u, "thumb-small"));

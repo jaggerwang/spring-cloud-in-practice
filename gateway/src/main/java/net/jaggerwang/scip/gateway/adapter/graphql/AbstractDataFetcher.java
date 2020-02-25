@@ -2,15 +2,18 @@ package net.jaggerwang.scip.gateway.adapter.graphql;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.schema.DataFetcher;
+import graphql.schema.DataFetchingEnvironment;
 import net.jaggerwang.scip.common.usecase.port.service.async.FileAsyncService;
 import net.jaggerwang.scip.common.usecase.port.service.async.PostAsyncService;
 import net.jaggerwang.scip.common.usecase.port.service.async.StatAsyncService;
 import net.jaggerwang.scip.common.usecase.port.service.async.UserAsyncService;
 import org.springframework.beans.factory.annotation.Autowired;
+import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 
 abstract public class AbstractDataFetcher {
@@ -43,5 +46,11 @@ abstract public class AbstractDataFetcher {
             }
         }
         return dataFetchers;
+    }
+
+    protected <T> CompletableFuture<T> monoWithContext(Mono<T> mono, DataFetchingEnvironment env) {
+        return mono
+                .subscriberContext(ctx -> env.getContext())
+                .toFuture();
     }
 }

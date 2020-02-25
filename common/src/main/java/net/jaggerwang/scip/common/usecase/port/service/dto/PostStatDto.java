@@ -17,7 +17,8 @@ public class PostStatDto {
 
     private Long postId;
 
-    private Long likeCount;
+    @Builder.Default
+    private Long likeCount = 0L;
 
     private LocalDateTime createdAt;
 

@@ -9,7 +9,7 @@ public class UserStatDataFetcher extends AbstractDataFetcher {
     public DataFetcher user() {
         return env -> {
             UserStatDto userStatDto = env.getSource();
-            return userAsyncService.info(userStatDto.getUserId());
+            return monoWithContext(userAsyncService.info(userStatDto.getUserId()), env);
         };
     }
 }

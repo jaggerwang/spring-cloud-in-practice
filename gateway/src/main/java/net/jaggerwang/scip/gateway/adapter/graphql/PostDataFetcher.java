@@ -10,39 +10,36 @@ public class PostDataFetcher extends AbstractDataFetcher {
     public DataFetcher user() {
         return env -> {
             PostDto postDto = env.getSource();
-            return userAsyncService.info(postDto.getUserId());
+            return monoWithContext(userAsyncService.info(postDto.getUserId()), env);
         };
     }
 
     public DataFetcher images() {
         return env -> {
             PostDto postDto = env.getSource();
-            return fileAsyncService.infos(postDto.getImageIds(), false);
+            return monoWithContext(fileAsyncService.infos(postDto.getImageIds(), false), env);
         };
     }
 
     public DataFetcher video() {
         return env -> {
             PostDto postDto = env.getSource();
-            if (postDto.getVideoId() == null) {
-                return Mono.empty();
-            }
-
-            return fileAsyncService.info(postDto.getVideoId());
+            if (postDto.getVideoId() == null) return monoWithContext(Mono.empty(), env);
+            return monoWithContext(fileAsyncService.info(postDto.getVideoId()), env);
         };
     }
 
     public DataFetcher stat() {
         return env -> {
             PostDto postDto = env.getSource();
-            return statAsyncService.ofPost(postDto.getId());
+            return monoWithContext(statAsyncService.ofPost(postDto.getId()), env);
         };
     }
 
     public DataFetcher liked() {
         return env -> {
             PostDto postDto = env.getSource();
-            return postAsyncService.isLiked(postDto.getId());
+            return monoWithContext(postAsyncService.isLiked(postDto.getId()), env);
         };
     }
 }
