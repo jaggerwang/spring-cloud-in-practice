@@ -74,7 +74,7 @@ services:
       SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_JWK_SET_URI: http://hydra:4444/.well-known/jwks.json
       SCIP_SPRING_CLOUD_CONSUL_HOST: consul
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
-      SCIP_SERVICE_FILE_BASE_URL: http://localhost:9080/
+      SCIP_SERVICE_FILE_BASE_URL: http://localhost:9080/files
       SCIP_SERVICE_HYDRA_URL: http://hydra:4444/
       SCIP_SERVICE_HYDRA_ADMIN_URL: http://hydra:4445/
     ports:
@@ -100,6 +100,8 @@ services:
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
       SCIP_SERVICE_HYDRA_URL: http://hydra:4444/
       SCIP_SERVICE_HYDRA_ADMIN_URL: http://hydra:4445/
+    ports:
+      - 9081:8081
     volumes:
       - ~/data/spring-cloud-in-practice/user:/data
     depends_on:
@@ -119,6 +121,8 @@ services:
       SCIP_SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://hydra:4444/.well-known/jwks.json
       SCIP_SPRING_CLOUD_CONSUL_HOST: consul
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
+    ports:
+      - 9082:8082
     volumes:
       - ~/data/spring-cloud-in-practice/post:/data
     depends_on:
@@ -139,6 +143,8 @@ services:
       SCIP_SPRING_CLOUD_CONSUL_HOST: consul
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
       SCIP_FILE_UPLOAD_DIR: /data/upload
+    ports:
+      - 9083:8083
     volumes:
       - ~/data/spring-cloud-in-practice/file:/data
     depends_on:
@@ -158,6 +164,8 @@ services:
       SCIP_SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://hydra:4444/.well-known/jwks.json
       SCIP_SPRING_CLOUD_CONSUL_HOST: consul
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
+    ports:
+      - 9084:8084
     volumes:
       - ~/data/spring-cloud-in-practice/stat:/data
     depends_on:
