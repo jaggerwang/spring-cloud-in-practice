@@ -5,10 +5,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class QueryDataFetcher extends AbstractDataFetcher {
-    public DataFetcher userLogged() {
-        return env -> monoWithContext(userAsyncService.logged(), env);
-    }
-
     public DataFetcher userInfo() {
         return env -> {
             var id = Long.valueOf((Integer) env.getArgument("id"));

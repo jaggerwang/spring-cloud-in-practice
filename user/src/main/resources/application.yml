@@ -1,52 +1,41 @@
 debug: ${SCIP_DEBUG:false}
 
 logging:
-    file:
-        path: ${SCIP_LOGGING_FILE_PATH:/tmp}
-    level:
-        org:
-         springframework:
-            web:
-                filter:
-                    CommonsRequestLoggingFilter: ${SCIP_LOGGING_LEVEL_REQUEST:DEBUG}
+  file:
+    path: ${SCIP_LOGGING_FILE_PATH:/tmp}
 
 server:
-    address: 0.0.0.0
-    port: 8081
+  address: 0.0.0.0
+  port: 8081
 
 spring:
-    application:
-        name: spring-cloud-in-practice-user
-    datasource:
-        url: ${SCIP_SPRING_DATASOURCE_URL:jdbc:mysql://localhost/scip_user}
-        username: ${SCIP_SPRING_DATASOURCE_USERNAME:root}
-        password: ${SCIP_SPRING_DATASOURCE_PASSWORD:}
-    flyway:
+  application:
+    name: spring-cloud-in-practice-user
+  datasource:
+    url: ${SCIP_SPRING_DATASOURCE_URL:jdbc:mysql://localhost/scip_user}
+    username: ${SCIP_SPRING_DATASOURCE_USERNAME:root}
+    password: ${SCIP_SPRING_DATASOURCE_PASSWORD:}
+  flyway:
+    enabled: true
+    locations: classpath:db/migration/{vendor}
+    clean-disabled: true
+    baseline-on-migrate: true
+  jpa:
+    open-in-view: false
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    consul:
+      host: ${SCIP_SPRING_CLOUD_CONSUL_HOST:localhost}
+      port: ${SCIP_SPRING_CLOUD_CONSUL_PORT:8500}
+      discovery:
         enabled: true
-        locations: classpath:db/migration/{vendor}
-        clean-disabled: true
-        baseline-on-migrate: true
-    jpa:
-        open-in-view: false
-    security:
-        oauth2:
-            resourceserver:
-                jwt:
-                    jwk-set-uri: ${SCIP_SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI:http://localhost:4444/.well-known/jwks.json}
-    cloud:
-        loadbalancer:
-            ribbon:
-                enabled: false
-        consul:
-            host: ${SCIP_SPRING_CLOUD_CONSUL_HOST:localhost}
-            port: ${SCIP_SPRING_CLOUD_CONSUL_PORT:8500}
-            discovery:
-                enabled: true
-                register: true
-                healthCheckPath: /actuator/health
+        register: true
+        healthCheckPath: /actuator/health
 
 management:
-    endpoints:
-        web:
-            exposure:
-                include: "*"
+  endpoints:
+    web:
+      exposure:
+        include: "*"

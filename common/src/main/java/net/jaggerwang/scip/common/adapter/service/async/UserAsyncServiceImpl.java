@@ -3,6 +3,7 @@ package net.jaggerwang.scip.common.adapter.service.async;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.async.UserAsyncService;
+import net.jaggerwang.scip.common.usecase.port.service.dto.RoleDto;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.lang.Nullable;
@@ -33,28 +34,11 @@ public class UserAsyncServiceImpl extends InternalAsyncService implements UserAs
     }
 
     @Override
-    public Mono<UserDto> verifyPasswordByUsername(String username, String password) {
-        return getData("/user/verifyPassword", Map.of("username", username, "password", password))
+    public Mono<UserDto> verifyPassword(UserDto userDto) {
+        return getData("/user/verifyPassword", Map.of("username", userDto.getUsername(),
+                "mobile", userDto.getMobile(), "email", userDto.getEmail(),
+                "password", userDto.getPassword()))
                 .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
-    }
-
-    @Override
-    public Mono<UserDto> verifyPasswordByMobile(String mobile, String password) {
-        return getData("/user/verifyPassword", Map.of("mobile", mobile, "password", password))
-                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
-    }
-
-    @Override
-    public Mono<UserDto> verifyPasswordByEmail(String email, String password) {
-        return getData("/user/verifyPassword", Map.of("email", email, "password", password))
-                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
-    }
-
-    @Override
-    public Mono<UserDto> logged() {
-        return getData("/user/logged")
-                .flatMap(data -> Mono.justOrEmpty(
-                        objectMapper.convertValue(data.get("user"), UserDto.class)));
     }
 
     @Override
@@ -73,6 +57,33 @@ public class UserAsyncServiceImpl extends InternalAsyncService implements UserAs
     public Mono<UserDto> info(Long id) {
         return getData("/user/info", Map.of("id", id.toString()))
                 .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
+    }
+
+    @Override
+    public Mono<UserDto> infoByUsername(String username, Boolean withPassword) {
+        return getData("/user/infoByUsername", Map.of("username", username,
+                "withPassword", withPassword.toString()))
+                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
+    }
+
+    @Override
+    public Mono<UserDto> infoByMobile(String mobile, Boolean withPassword) {
+        return getData("/user/infoByMobile", Map.of("mobile", mobile,
+                "withPassword", withPassword.toString()))
+                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
+    }
+
+    @Override
+    public Mono<UserDto> infoByEmail(String email, Boolean withPassword) {
+        return getData("/user/infoByEmail", Map.of("email", email,
+                "withPassword", withPassword.toString()))
+                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
+    }
+
+    @Override
+    public Mono<List<RoleDto>> roles(String username) {
+        return getData("/user/roles", Map.of("username", username))
+                .map(data -> objectMapper.convertValue(data.get("roles"), new TypeReference<>() {}));
     }
 
     @Override

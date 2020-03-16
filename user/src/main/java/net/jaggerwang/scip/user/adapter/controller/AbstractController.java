@@ -7,10 +7,9 @@ import net.jaggerwang.scip.common.usecase.port.service.sync.StatSyncService;
 import net.jaggerwang.scip.common.entity.UserEntity;
 import net.jaggerwang.scip.user.usecase.UserUsecase;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 abstract public class AbstractController {
@@ -26,14 +25,13 @@ abstract public class AbstractController {
     @Autowired
     protected StatSyncService statSyncService;
 
-    protected Long loggedUserId() {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
-            return null;
-        }
+    @Autowired
+    protected HttpServletRequest request;
 
-        var jwt = (Jwt) auth.getPrincipal();
-        return Long.parseLong(jwt.getSubject());
+    protected Long loggedUserId() {
+        var xUserId = request.getHeader("X-User-Id");
+        if (StringUtils.isEmpty(xUserId)) return null;
+        return Long.parseLong(xUserId);
     }
 
     protected Map<String, Object> fullUserDto(UserEntity userEntity) {

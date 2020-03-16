@@ -70,19 +70,8 @@ public class HydraController {
                     .map(redirectTo -> "redirect:" + redirectTo);
         }
 
-        Mono<UserDto> mono;
-        if (form.username != null) {
-            mono = userAsyncService.verifyPasswordByUsername(form.username, form.password);
-        } else if (form.mobile != null) {
-            mono = userAsyncService.verifyPasswordByMobile(form.mobile, form.password);
-        } else if (form.email != null) {
-            mono = userAsyncService.verifyPasswordByEmail(form.email, form.password);
-        } else {
-            model.addAttribute("error", "用户名、手机或邮箱不能都为空");
-            return Mono.just("hydra/login");
-        }
-
-        return mono
+        return userAsyncService.verifyPassword(UserDto.builder().username(form.username)
+                    .mobile(form.mobile).email(form.email).password(form.password).build())
                 .flatMap(userDto -> {
                     var loginAccept = LoginAcceptDto.builder()
                             .subject(userDto.getId().toString())

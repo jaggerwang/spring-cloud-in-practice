@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import net.jaggerwang.scip.common.usecase.port.service.dto.RoleDto;
 import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
 import net.jaggerwang.scip.common.usecase.exception.*;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
@@ -44,16 +45,6 @@ public class UserController extends AbstractController {
         return new RootDto().addDataEntry("user", UserDto.fromEntity(userEntity.get()));
     }
 
-    @GetMapping("/logged")
-    public RootDto logged() {
-        if (loggedUserId() == null) {
-            return new RootDto().addDataEntry("user", null);
-        }
-
-        var userEntity = userUsecase.info(loggedUserId());
-        return new RootDto().addDataEntry("user", userEntity.map(UserDto::fromEntity).get());
-    }
-
     @PostMapping("/modify")
     public RootDto modify(@RequestBody Map<String, Object> input) {
         var userDto = objectMapper.convertValue(input.get("user"), UserDto.class);
@@ -72,7 +63,8 @@ public class UserController extends AbstractController {
     }
 
     @GetMapping("/info")
-    public RootDto info(@RequestParam Long id, @RequestParam(defaultValue = "false") Boolean full) {
+    public RootDto info(@RequestParam Long id,
+                        @RequestParam(defaultValue = "false") Boolean full) {
         var userEntity = userUsecase.info(id);
         if (userEntity.isEmpty()) {
             throw new NotFoundException("用户未找到");
@@ -80,6 +72,50 @@ public class UserController extends AbstractController {
 
         return new RootDto().addDataEntry("user",
                 full ? fullUserDto(userEntity.get()) : UserDto.fromEntity(userEntity.get()));
+    }
+
+    @GetMapping("/infoByUsername")
+    public RootDto infoByUsername(@RequestParam String username,
+                        @RequestParam(defaultValue = "false") Boolean withPassword) {
+        var userEntity = userUsecase.infoByUsername(username);
+        if (userEntity.isEmpty()) {
+            throw new NotFoundException("用户未找到");
+        }
+
+        return new RootDto().addDataEntry("user",
+                UserDto.fromEntity(userEntity.get(), withPassword));
+    }
+
+    @GetMapping("/infoByMobile")
+    public RootDto infoByMobile(@RequestParam String mobile,
+                                @RequestParam(defaultValue = "false") Boolean withPassword) {
+        var userEntity = userUsecase.infoByMobile(mobile);
+        if (userEntity.isEmpty()) {
+            throw new NotFoundException("用户未找到");
+        }
+
+        return new RootDto().addDataEntry("user",
+                UserDto.fromEntity(userEntity.get(), withPassword));
+    }
+
+    @GetMapping("/infoByEmail")
+    public RootDto infoByEmail(@RequestParam String email,
+                               @RequestParam(defaultValue = "false") Boolean withPassword) {
+        var userEntity = userUsecase.infoByEmail(email);
+        if (userEntity.isEmpty()) {
+            throw new NotFoundException("用户未找到");
+        }
+
+        return new RootDto().addDataEntry("user",
+                UserDto.fromEntity(userEntity.get(), withPassword));
+    }
+
+    @GetMapping("/roles")
+    public RootDto roles(@RequestParam String username) {
+        var roleEntities = userUsecase.roles(username);
+
+        return new RootDto().addDataEntry("roles",
+                roleEntities.stream().map(RoleDto::fromEntity).collect(Collectors.toList()));
     }
 
     @PostMapping("/follow")

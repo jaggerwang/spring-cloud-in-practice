@@ -1,5 +1,6 @@
 package net.jaggerwang.scip.common.usecase.port.service.async;
 
+import net.jaggerwang.scip.common.usecase.port.service.dto.RoleDto;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
 import reactor.core.publisher.Mono;
 
@@ -8,19 +9,21 @@ import java.util.List;
 public interface UserAsyncService {
     Mono<UserDto> register(UserDto userDto);
 
-    Mono<UserDto> verifyPasswordByUsername(String username, String password);
-
-    Mono<UserDto> verifyPasswordByMobile(String mobile, String password);
-
-    Mono<UserDto> verifyPasswordByEmail(String email, String password);
-
-    Mono<UserDto> logged();
+    Mono<UserDto> verifyPassword(UserDto userDto);
 
     Mono<UserDto> modify(UserDto userDto);
 
     Mono<UserDto> modify(UserDto userDto, String code);
 
     Mono<UserDto> info(Long id);
+
+    Mono<UserDto> infoByUsername(String username, Boolean withPassword);
+
+    Mono<UserDto> infoByMobile(String mobile, Boolean withPassword);
+
+    Mono<UserDto> infoByEmail(String email, Boolean withPassword);
+
+    Mono<List<RoleDto>> roles(String username);
 
     Mono<Void> follow(Long userId);
 

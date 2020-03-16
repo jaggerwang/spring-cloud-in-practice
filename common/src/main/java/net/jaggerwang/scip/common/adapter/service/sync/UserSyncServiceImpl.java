@@ -31,12 +31,6 @@ public class UserSyncServiceImpl extends InternalSyncService implements UserSync
     }
 
     @Override
-    public Optional<UserDto> logged() {
-        var response = getData("/user/logged");
-        return Optional.ofNullable(objectMapper.convertValue(response.get("user"), UserDto.class));
-    }
-
-    @Override
     public UserDto info(Long id) {
         var params = new HashMap<String, String>();
         params.put("id", id.toString());

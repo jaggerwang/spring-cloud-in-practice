@@ -6,8 +6,10 @@ import java.util.Optional;
 
 import net.jaggerwang.scip.common.adapter.encoder.PasswordEncoder;
 import net.jaggerwang.scip.common.adapter.generator.RandomGenerator;
+import net.jaggerwang.scip.common.entity.RoleEntity;
 import net.jaggerwang.scip.common.usecase.exception.*;
 import net.jaggerwang.scip.common.entity.UserEntity;
+import net.jaggerwang.scip.user.usecase.port.repository.RoleRepository;
 import net.jaggerwang.scip.user.usecase.port.repository.UserRepository;
 
 public class UserUsecase {
@@ -15,11 +17,13 @@ public class UserUsecase {
     private static HashMap<String, String> emailVerifyCodes = new HashMap<>();
 
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
     private RandomGenerator randomGenerator = new RandomGenerator();
     private PasswordEncoder passwordEncoder = new PasswordEncoder();
 
-    public UserUsecase(UserRepository userRepository) {
+    public UserUsecase(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     public UserEntity register(UserEntity userEntity) {
@@ -125,6 +129,10 @@ public class UserUsecase {
 
     public Optional<UserEntity> infoByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public List<RoleEntity> roles(String username) {
+        return roleRepository.rolesOfUser(username);
     }
 
     public void follow(Long followerId, Long followingId) {

@@ -1,75 +1,72 @@
 debug: ${SCIP_DEBUG:false}
 
 logging:
-    file:
-        path: ${SCIP_LOGGING_FILE_PATH:/tmp}
-    level:
-        org:
-         springframework:
-            web:
-                filter:
-                    CommonsRequestLoggingFilter: ${SCIP_LOGGING_LEVEL_REQUEST:DEBUG}
+  file:
+    path: ${SCIP_LOGGING_FILE_PATH:/tmp}
 
 server:
-    address: 0.0.0.0
-    port: 8080
+  address: 0.0.0.0
+  port: 8080
 
 spring:
-    application:
-        name: spring-cloud-in-practice-gateway
+  application:
+    name: spring-cloud-in-practice-gateway
+  redis:
+    host: ${SCIP_SPRING_REDIS_HOST:localhost}
+    port: ${SCIP_SPRING_REDIS_PORT:6379}
+    password: ${SCIP_SPRING_REDIS_PASSWORD:}
+    timeout: 1s
+    lettuce:
+      pool:
+        max-wait: 1s
+  session:
+    timeout: 7d
+    store-type: redis
     redis:
-        host: ${SCIP_SPRING_REDIS_HOST:localhost}
-        port: ${SCIP_SPRING_REDIS_PORT:6379}
-        password: ${SCIP_SPRING_REDIS_PASSWORD:}
-        timeout: 1s
-        lettuce:
-            pool:
-                max-wait: 1s
-    session:
-        timeout: 7d
-        store-type: redis
-        redis:
-            namespace: scip:session
-    security:
-        oauth2:
-            client:
-                registration:
-                    hydra:
-                        client-id: scip
-                        client-secret: ilxzM0AdA7BVaL7c
-                        authorization-grant-type: authorization_code
-                        redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
-                        scope: offline,user,post,file,stat
-                provider:
-                    hydra:
-                        authorization-uri: ${SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_AUTHORIZATION_URI:http://localhost:4444/oauth2/auth}
-                        token-uri: ${SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_TOKEN_URI:http://localhost:4444/oauth2/token}
-                        user-info-uri: ${SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_USER_INFO_URI:http://localhost:4444/userinfo}
-                        user-name-attribute: sub
-                        jwk-set-uri: ${SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_JWK_SET_URI:http://localhost:4444/.well-known/jwks.json}
-    cloud:
-        loadbalancer:
-            ribbon:
-                enabled: false
-        consul:
-            host: ${SCIP_SPRING_CLOUD_CONSUL_HOST:localhost}
-            port: ${SCIP_SPRING_CLOUD_CONSUL_PORT:8500}
-            discovery:
-                enabled: true
-                register: false
+      namespace: scip:session
+  security:
+    oauth2:
+      client:
+        registration:
+          hydra:
+            client-id: scip
+            client-secret: ilxzM0AdA7BVaL7c
+            authorization-grant-type: authorization_code
+            redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
+            scope: offline,user,post,file,stat
+        provider:
+          hydra:
+            authorization-uri: ${SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_AUTHORIZATION_URI:http://localhost:4444/oauth2/auth}
+            token-uri: ${SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_TOKEN_URI:http://localhost:4444/oauth2/token}
+            user-info-uri: ${SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_USER_INFO_URI:http://localhost:4444/userinfo}
+            user-name-attribute: sub
+            jwk-set-uri: ${SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_JWK_SET_URI:http://localhost:4444/.well-known/jwks.json}
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${SCIP_SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI:http://localhost:4444/.well-known/jwks.json}
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    consul:
+      host: ${SCIP_SPRING_CLOUD_CONSUL_HOST:localhost}
+      port: ${SCIP_SPRING_CLOUD_CONSUL_PORT:8500}
+      discovery:
+        enabled: true
+        register: false
 
 management:
-    endpoints:
-        web:
-            exposure:
-                include: "*"
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
 service:
-    file:
-        base-url: ${SCIP_SERVICE_FILE_BASE_URL:http://localhost:8080/files}
-    hydra:
-        url: ${SCIP_SERVICE_HYDRA_URL:http://localhost:4444/}
-        admin-url: ${SCIP_SERVICE_HYDRA_ADMIN_URL:http://localhost:4445/}
+  file:
+    base-url: ${SCIP_SERVICE_FILE_BASE_URL:http://localhost:8080/files}
+  hydra:
+    url: ${SCIP_SERVICE_HYDRA_URL:http://localhost:4444/}
+    admin-url: ${SCIP_SERVICE_HYDRA_ADMIN_URL:http://localhost:4445/}
 
 graphql:
-    url: /graphql
+  url: /graphql

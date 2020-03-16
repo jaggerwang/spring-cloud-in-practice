@@ -31,11 +31,19 @@ public class UserDto {
 
     private LocalDateTime updatedAt;
 
-    public static UserDto fromEntity(UserEntity userEntity) {
-        return UserDto.builder().id(userEntity.getId()).username(userEntity.getUsername())
+    public static UserDto fromEntity(UserEntity userEntity, Boolean withPassword) {
+        var builder = UserDto.builder().id(userEntity.getId()).username(userEntity.getUsername())
                 .mobile(userEntity.getMobile()).email(userEntity.getEmail())
                 .avatarId(userEntity.getAvatarId()).intro(userEntity.getIntro())
-                .createdAt(userEntity.getCreatedAt()).updatedAt(userEntity.getUpdatedAt()).build();
+                .createdAt(userEntity.getCreatedAt()).updatedAt(userEntity.getUpdatedAt());
+
+        if (Boolean.TRUE.equals(withPassword)) builder.password(userEntity.getPassword());
+
+        return builder.build();
+    }
+
+    public static UserDto fromEntity(UserEntity userEntity) {
+        return fromEntity(userEntity, false);
     }
 
     public UserEntity toEntity() {
