@@ -35,9 +35,13 @@ public class UserAsyncServiceImpl extends InternalAsyncService implements UserAs
 
     @Override
     public Mono<UserDto> verifyPassword(UserDto userDto) {
-        return getData("/user/verifyPassword", Map.of("username", userDto.getUsername(),
-                "mobile", userDto.getMobile(), "email", userDto.getEmail(),
-                "password", userDto.getPassword()))
+        var params = new HashMap<String, String>();
+        if (userDto.getUsername() != null) params.put("username", userDto.getUsername());
+        if (userDto.getMobile() != null) params.put("mobile", userDto.getMobile());
+        if (userDto.getEmail() != null) params.put("email", userDto.getEmail());
+        params.put("password", userDto.getPassword());
+
+        return getData("/user/verifyPassword", params)
                 .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
     }
 

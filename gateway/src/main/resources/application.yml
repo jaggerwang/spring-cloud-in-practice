@@ -24,26 +24,6 @@ spring:
     store-type: redis
     redis:
       namespace: scip:session
-  security:
-    oauth2:
-      client:
-        registration:
-          hydra:
-            client-id: scip
-            client-secret: ilxzM0AdA7BVaL7c
-            authorization-grant-type: authorization_code
-            redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
-            scope: offline,user,post,file,stat
-        provider:
-          hydra:
-            authorization-uri: ${SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_AUTHORIZATION_URI:http://localhost:4444/oauth2/auth}
-            token-uri: ${SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_TOKEN_URI:http://localhost:4444/oauth2/token}
-            user-info-uri: ${SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_USER_INFO_URI:http://localhost:4444/userinfo}
-            user-name-attribute: sub
-            jwk-set-uri: ${SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_JWK_SET_URI:http://localhost:4444/.well-known/jwks.json}
-      resourceserver:
-        jwt:
-          jwk-set-uri: ${SCIP_SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI:http://localhost:4444/.well-known/jwks.json}
   cloud:
     loadbalancer:
       ribbon:
