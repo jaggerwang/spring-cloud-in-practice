@@ -21,10 +21,10 @@ This project can be used as a starter for spring cloud micro services developmen
 
 | Path  | Method | Description |
 | ------------- | ------------- | ------------- |
+| /auth/login | POST | Login |
+| /auth/logout | GET | Logout |
+| /auth/logged | GET | Get logged user |
 | /user/register | POST | Register |
-| /user/login | POST | Login |
-| /user/logout | GET | Logout |
-| /user/logged | GET | Get logged user |
 | /user/modify | POST | Modify logged user |
 | /user/info | GET | Get user info |
 | /user/follow | POST | Follow user |
@@ -49,7 +49,8 @@ The rest api service only return top objects, not return nested objects compared
 
 ```graphql
 type Query {
-    userLogged: User
+    authLogout: User
+    authLogged: User
     userInfo(id: Int!): User!
     userFollowing(userId: Int, limit: Int, offset: Int): [User!]!
     userFollowingCount(userId: Int): Int!
@@ -68,6 +69,7 @@ type Query {
 }
 
 type Mutation {
+    authLogin(user: UserInput!): User!
     userRegister(user: UserInput!): User!
     userModify(user: UserInput!, code: String): User!
     userSendMobileVerifyCode(type: String!, mobile: String!): String!
