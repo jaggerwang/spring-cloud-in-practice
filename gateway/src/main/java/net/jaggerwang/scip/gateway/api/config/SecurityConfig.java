@@ -2,6 +2,7 @@ package net.jaggerwang.scip.gateway.api.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
+import net.jaggerwang.scip.gateway.api.security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class SecurityConfig {
     private ObjectMapper objectMapper;
     private ReactiveUserDetailsService userDetailsService;
 
-    public SecurityConfig(ObjectMapper objectMapper, ReactiveUserDetailsService userDetailsService) {
+    public SecurityConfig(ObjectMapper objectMapper, CustomUserDetailsService userDetailsService) {
         this.objectMapper = objectMapper;
         this.userDetailsService = userDetailsService;
     }
@@ -65,35 +66,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authenticationManager(authManager())
                 .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .authenticationEntryPoint((exchange, exception) -> {
-                            if (exchange.getRequest().getHeaders().getAccept()
-                                    .contains(MediaType.APPLICATION_JSON)) {
-                                return responseJson(exchange, HttpStatus.UNAUTHORIZED,
-                                        new RootDto("unauthenticated", "未认证"));
-                            } else {
-                                var response = exchange.getResponse();
-                                response.setStatusCode(HttpStatus.FOUND);
-                                response.getHeaders().setLocation(
-                                        UriComponentsBuilder.fromPath("/login").build().toUri());
-                                return response.writeWith(Flux.just(
-                                        response.bufferFactory().wrap("".getBytes())));
-                            }
-                        })
-                        .accessDeniedHandler((exchange, accessDeniedException) -> {
-                            if (exchange.getRequest().getHeaders().getAccept()
-                                    .contains(MediaType.APPLICATION_JSON)) {
-                                return responseJson(exchange, HttpStatus.FORBIDDEN,
-                                        new RootDto("unauthorized", "未授权"));
-                            } else {
-                                var response = exchange.getResponse();
-                                response.setStatusCode(HttpStatus.FORBIDDEN);
-                                return response.writeWith(Flux.just(
-                                        response.bufferFactory().wrap("未授权".getBytes())));
-                            }
-                        })
+                        .authenticationEntryPoint((exchange, exception) ->
+                                responseJson(exchange, HttpStatus.UNAUTHORIZED,
+                                        new RootDto("unauthenticated", "未认证")))
+                        .accessDeniedHandler((exchange, accessDeniedException) ->
+                                responseJson(exchange, HttpStatus.FORBIDDEN,
+                                        new RootDto("unauthorized", "未授权")))
                 )
                 .authorizeExchange(authorizeExchange -> authorizeExchange
-                        .pathMatchers("/favicon.ico", "/*/actuator/**", "/login", "/logout",
+                        .pathMatchers("/favicon.ico", "/*/actuator/**", "/", "/login", "/logout",
                                 "/auth/login", "/auth/logout", "/auth/logged",
                                 "/user/register").permitAll()
                         .anyExchange().authenticated())

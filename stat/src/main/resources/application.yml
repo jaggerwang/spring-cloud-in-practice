@@ -22,11 +22,6 @@ spring:
     baseline-on-migrate: true
   jpa:
     open-in-view: false
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: ${SCIP_SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI:http://localhost:4444/.well-known/jwks.json}
   cloud:
     loadbalancer:
       ribbon:

@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 @Controller
 @RequestMapping("/hydra")
-public class HydraController {
+public class HydraController extends AbstractController {
     protected ObjectMapper objectMapper;
     protected UserAsyncService userAsyncService;
     protected HydraAsyncService hydraAsyncService;
