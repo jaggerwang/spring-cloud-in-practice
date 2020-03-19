@@ -1,9 +1,11 @@
 package net.jaggerwang.scip.gateway.adapter.graphql;
 
 import graphql.schema.DataFetcher;
+import graphql.schema.DataFetchingEnvironment;
 import net.jaggerwang.scip.common.usecase.exception.UsecaseException;
 import net.jaggerwang.scip.common.usecase.port.service.dto.PostDto;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
+import net.jaggerwang.scip.gateway.api.security.annotation.PermitAll;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
@@ -11,33 +13,41 @@ import reactor.core.publisher.Mono;
 @Component
 public class MutationDataFetcher extends AbstractDataFetcher {
     public DataFetcher authLogin() {
-        return env -> {
-            var userInput = objectMapper.convertValue(env.getArgument("user"), UserDto.class);
-            String username = null;
-            if (userInput.getUsername() != null)  {
-                username = userInput.getUsername();
-            } else if (userInput.getMobile() != null) {
-                username = userInput.getMobile();
-            } else if (userInput.getEmail() != null) {
-                username = userInput.getEmail();
-            }
-            if (StringUtils.isEmpty(username)) {
-                throw new UsecaseException("用户名、手机或邮箱不能都为空");
-            }
-            var password = userInput.getPassword();
-            if (StringUtils.isEmpty(password)) {
-                throw new UsecaseException("密码不能为空");
-            }
+        return new DataFetcher() {
+            @PermitAll
+            @Override
+            public Object get(DataFetchingEnvironment env) {
+                var userInput = objectMapper.convertValue(env.getArgument("user"), UserDto.class);
+                String username = null;
+                if (userInput.getUsername() != null)  {
+                    username = userInput.getUsername();
+                } else if (userInput.getMobile() != null) {
+                    username = userInput.getMobile();
+                } else if (userInput.getEmail() != null) {
+                    username = userInput.getEmail();
+                }
+                if (StringUtils.isEmpty(username)) {
+                    throw new UsecaseException("用户名、手机或邮箱不能都为空");
+                }
+                var password = userInput.getPassword();
+                if (StringUtils.isEmpty(password)) {
+                    throw new UsecaseException("密码不能为空");
+                }
 
-            return monoWithContext(loginUser(username, password)
-                    .flatMap(loggedUser -> userAsyncService.info(loggedUser.getId())), env);
+                return monoWithContext(loginUser(username, password)
+                        .flatMap(loggedUser -> userAsyncService.info(loggedUser.getId())), env);
+            }
         };
     }
 
     public DataFetcher userRegister() {
-        return env -> {
-            var userInput = objectMapper.convertValue(env.getArgument("user"), UserDto.class);
-            return monoWithContext(userAsyncService.register(userInput), env);
+        return new DataFetcher() {
+            @PermitAll
+            @Override
+            public Object get(DataFetchingEnvironment env) {
+                var userInput = objectMapper.convertValue(env.getArgument("user"), UserDto.class);
+                return monoWithContext(userAsyncService.register(userInput), env);
+            }
         };
     }
 

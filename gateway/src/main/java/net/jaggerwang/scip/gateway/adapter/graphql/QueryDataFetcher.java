@@ -1,18 +1,32 @@
 package net.jaggerwang.scip.gateway.adapter.graphql;
 
 import graphql.schema.DataFetcher;
+import graphql.schema.DataFetchingEnvironment;
+import net.jaggerwang.scip.gateway.api.security.annotation.PermitAll;
 import org.springframework.stereotype.Component;
 
 @Component
 public class QueryDataFetcher extends AbstractDataFetcher {
     public DataFetcher authLogout() {
-        return env -> monoWithContext(logoutUser()
-                .flatMap(loggedUser -> userAsyncService.info(loggedUser.getId())), env);
+        return new DataFetcher() {
+            @PermitAll
+            @Override
+            public Object get(DataFetchingEnvironment env) {
+                return monoWithContext(logoutUser()
+                        .flatMap(loggedUser -> userAsyncService.info(loggedUser.getId())), env);
+            }
+        };
     }
 
     public DataFetcher authLogged() {
-        return env -> monoWithContext(loggedUserId()
-                .flatMap(userId -> userAsyncService.info(userId)), env);
+        return new DataFetcher() {
+            @PermitAll
+            @Override
+            public Object get(DataFetchingEnvironment env) {
+                return monoWithContext(loggedUserId()
+                        .flatMap(userId -> userAsyncService.info(userId)), env);
+            }
+        };
     }
 
     public DataFetcher userInfo() {
