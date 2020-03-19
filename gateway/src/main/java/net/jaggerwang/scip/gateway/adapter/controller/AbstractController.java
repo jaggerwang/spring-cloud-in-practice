@@ -57,8 +57,8 @@ abstract public class AbstractController {
                         .flatMap(context -> getWebSession()
                                 .map(session -> {
                                     context.setAuthentication(null);
-                                    session.getAttributes().put(
-                                            DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME, context);
+                                    session.getAttributes().remove(
+                                            DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME);
                                     return loggedUser;
                                 })));
     }
