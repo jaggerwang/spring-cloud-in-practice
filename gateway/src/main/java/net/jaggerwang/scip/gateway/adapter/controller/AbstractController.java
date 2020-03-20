@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.web.server.ServerWebExchange;
@@ -20,7 +19,7 @@ abstract public class AbstractController {
 
     protected Mono<ServerWebExchange> getServerWebExchange() {
         return Mono.subscriberContext()
-                .map(ctx -> ctx.get(ServerWebExchange.class));
+                .map(context -> context.get(ServerWebExchange.class));
     }
 
     protected Mono<WebSession> getWebSession() {
@@ -30,13 +29,16 @@ abstract public class AbstractController {
 
     protected Mono<SecurityContext> getSecurityContext() {
         return getWebSession()
-                .flatMap(session -> ReactiveSecurityContextHolder.getContext()
-                        .switchIfEmpty(Mono.fromSupplier(() -> {
-                            var context = new SecurityContextImpl();
-                            session.getAttributes().put(
-                                    DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME, context);
-                            return context;
-                        })));
+                .map(session -> {
+                    var securityContext = session.getAttributes().get(
+                            DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME);
+                    if (securityContext == null) {
+                        securityContext = new SecurityContextImpl();
+                        session.getAttributes().put(
+                                DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME, securityContext);
+                    }
+                    return (SecurityContext) securityContext;
+                });
     }
 
     protected Mono<LoggedUser> loginUser(String username, String password) {

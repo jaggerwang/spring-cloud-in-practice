@@ -20,9 +20,9 @@ public class HeadersRelayFilter implements ExchangeFilterFunction {
     public Mono<ClientResponse> filter(ClientRequest clientRequest,
                                        ExchangeFunction exchangeFunction) {
         return Mono.subscriberContext()
-                .flatMap(ctx -> {
+                .flatMap(context -> {
                     var request = clientRequest;
-                    var upstreamExchange = ctx.getOrEmpty(ServerWebExchange.class);
+                    var upstreamExchange = context.getOrEmpty(ServerWebExchange.class);
                     if (upstreamExchange.isPresent()) {
                         var builder = ClientRequest.from(request);
                         var upstreamHeaders = ((ServerWebExchange) upstreamExchange.get())

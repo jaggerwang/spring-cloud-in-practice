@@ -3,6 +3,7 @@ package net.jaggerwang.scip.gateway.adapter.graphql;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import net.jaggerwang.scip.gateway.api.security.annotation.PermitAll;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,6 +30,7 @@ public class QueryDataFetcher extends AbstractDataFetcher {
         };
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public DataFetcher userInfo() {
         return env -> {
             var id = Long.valueOf((Integer) env.getArgument("id"));

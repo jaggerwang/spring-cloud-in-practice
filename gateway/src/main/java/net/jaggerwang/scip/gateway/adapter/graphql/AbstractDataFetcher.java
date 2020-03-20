@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Mono;
@@ -48,7 +46,7 @@ abstract public class AbstractDataFetcher {
 
     protected Mono<ServerWebExchange> getServerWebExchange() {
         return Mono.subscriberContext()
-                .map(ctx -> ctx.get(ServerWebExchange.class));
+                .map(context -> context.get(ServerWebExchange.class));
     }
 
     protected Mono<WebSession> getWebSession() {
@@ -57,24 +55,19 @@ abstract public class AbstractDataFetcher {
     }
 
     protected Mono<SecurityContext> getSecurityContext() {
-        return getWebSession()
-                .flatMap(session -> ReactiveSecurityContextHolder.getContext()
-                        .switchIfEmpty(Mono.fromSupplier(() -> {
-                            var context = new SecurityContextImpl();
-                            session.getAttributes().put(
-                                    DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME, context);
-                            return context;
-                        })));
+        return Mono.subscriberContext()
+                .map(context -> context.get(SecurityContext.class));
     }
 
     protected Mono<LoggedUser> loginUser(String username, String password) {
         return authManager.authenticate(new UsernamePasswordAuthenticationToken(username, password))
                 .flatMap(auth -> getSecurityContext()
-                        .flatMap(context -> getWebSession()
+                        .flatMap(securityContext -> getWebSession()
                                 .map(session -> {
-                                    context.setAuthentication(auth);
+                                    securityContext.setAuthentication(auth);
                                     session.getAttributes().put(
-                                            DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME, context);
+                                            DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME,
+                                            securityContext);
                                     return (LoggedUser) auth.getPrincipal();
                                 })));
     }
@@ -82,19 +75,19 @@ abstract public class AbstractDataFetcher {
     protected Mono<LoggedUser> logoutUser() {
         return loggedUser()
                 .flatMap(loggedUser -> getSecurityContext()
-                        .flatMap(context -> getWebSession()
+                        .flatMap(securityContext -> getWebSession()
                                 .map(session -> {
-                                    context.setAuthentication(null);
-                                    session.getAttributes().put(
-                                            DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME, context);
+                                    securityContext.setAuthentication(null);
+                                    session.getAttributes().remove(
+                                            DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME);
                                     return loggedUser;
                                 })));
     }
 
     protected Mono<LoggedUser> loggedUser() {
         return getSecurityContext()
-                .flatMap(context -> {
-                    var auth = context.getAuthentication();
+                .flatMap(securityContext -> {
+                    var auth = securityContext.getAuthentication();
                     if (auth == null || auth instanceof AnonymousAuthenticationToken ||
                             !auth.isAuthenticated()) {
                         return Mono.empty();
@@ -126,7 +119,7 @@ abstract public class AbstractDataFetcher {
 
     protected <T> CompletableFuture<T> monoWithContext(Mono<T> mono, DataFetchingEnvironment env) {
         return mono
-                .subscriberContext(ctx -> env.getContext())
+                .subscriberContext(context -> env.getContext())
                 .toFuture();
     }
 }

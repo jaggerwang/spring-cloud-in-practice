@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
@@ -23,8 +23,8 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
 @EnableWebFluxSecurity
+@EnableReactiveMethodSecurity
 public class SecurityConfig {
     private ObjectMapper objectMapper;
     private ReactiveUserDetailsService userDetailsService;
@@ -72,8 +72,8 @@ public class SecurityConfig {
                                         new RootDto("unauthorized", "未授权")))
                 )
                 .authorizeExchange(authorizeExchange -> authorizeExchange
-                        .pathMatchers("/favicon.ico", "/*/actuator/**", "/", "/login", "/logout",
-                                "/auth/login", "/auth/logout", "/auth/logged",
+                        .pathMatchers("/favicon.ico", "/*/actuator/**", "/", "/graphql", "/login",
+                                "/logout", "/auth/login", "/auth/logout", "/auth/logged",
                                 "/user/register").permitAll()
                         .anyExchange().authenticated())
                 .formLogin(formLogin -> {})

@@ -6,19 +6,26 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 @Component
 @Aspect
 @Order(1)
 public class SecureGraphQLAspect {
     @Before("allDataFetchers() && isInApplication() && !isPermitAll()")
-    public void doSecurityCheck() {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || auth instanceof AnonymousAuthenticationToken || !auth.isAuthenticated()) {
-            throw new UnauthenticatedException("未认证");
-        }
+    public Mono<Void> doSecurityCheck() {
+        return ReactiveSecurityContextHolder.getContext()
+                .doOnSuccess(securityContext -> {
+                    var auth = securityContext.getAuthentication();
+                    if (auth == null || auth instanceof AnonymousAuthenticationToken ||
+                            !auth.isAuthenticated()) {
+                        throw new UnauthenticatedException("未认证");
+                    }
+                })
+                .then();
     }
 
     @Pointcut("target(graphql.schema.DataFetcher)")
