@@ -6,8 +6,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -17,9 +16,9 @@ import reactor.core.publisher.Mono;
 public class SecureGraphQLAspect {
     @Before("allDataFetchers() && isInApplication() && !isPermitAll()")
     public Mono<Void> doSecurityCheck() {
-        return ReactiveSecurityContextHolder.getContext()
-                .doOnSuccess(securityContext -> {
-                    var auth = securityContext.getAuthentication();
+        return Mono.subscriberContext()
+                .doOnSuccess(context -> {
+                    var auth = context.get(SecurityContext.class).getAuthentication();
                     if (auth == null || auth instanceof AnonymousAuthenticationToken ||
                             !auth.isAuthenticated()) {
                         throw new UnauthenticatedException("未认证");

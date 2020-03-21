@@ -6,7 +6,6 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Mono;
@@ -28,17 +27,8 @@ abstract public class AbstractController {
     }
 
     protected Mono<SecurityContext> getSecurityContext() {
-        return getWebSession()
-                .map(session -> {
-                    var securityContext = session.getAttributes().get(
-                            DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME);
-                    if (securityContext == null) {
-                        securityContext = new SecurityContextImpl();
-                        session.getAttributes().put(
-                                DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME, securityContext);
-                    }
-                    return (SecurityContext) securityContext;
-                });
+        return Mono.subscriberContext()
+                .map(context -> context.get(SecurityContext.class));
     }
 
     protected Mono<LoggedUser> loginUser(String username, String password) {
