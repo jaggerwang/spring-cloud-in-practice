@@ -4,6 +4,7 @@ import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
 import net.jaggerwang.scip.common.usecase.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 
 public class RestExceptionConverter {
     public ResponseEntity<RootDto> convert(Throwable throwable) {
@@ -18,7 +19,8 @@ public class RestExceptionConverter {
         } else if (throwable instanceof UnauthenticatedException) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new RootDto("unauthenticated", throwable.getMessage()));
-        } else if (throwable instanceof UnauthorizedException) {
+        } else if (throwable instanceof UnauthorizedException ||
+                throwable instanceof AccessDeniedException) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(new RootDto("unauthorized", throwable.getMessage()));
         } else if (throwable instanceof UsecaseException) {

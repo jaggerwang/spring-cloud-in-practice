@@ -7,13 +7,14 @@ import org.springframework.web.reactive.function.client.ExchangeFunction;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.Set;
+import java.util.Arrays;
+import java.util.List;
 
-public class HeadersRelayFilter implements ExchangeFilterFunction {
-    private Set<String> headers;
+public class HeadersRelayExchangeFilter implements ExchangeFilterFunction {
+    private List<String> headers;
 
-    public HeadersRelayFilter(Set<String> headers) {
-        this.headers = headers;
+    public HeadersRelayExchangeFilter(String... headers) {
+        this.headers = Arrays.asList(headers);
     }
 
     @Override

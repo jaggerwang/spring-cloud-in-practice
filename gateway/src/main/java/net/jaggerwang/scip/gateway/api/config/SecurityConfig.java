@@ -2,14 +2,12 @@ package net.jaggerwang.scip.gateway.api.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
-import net.jaggerwang.scip.gateway.api.security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
-import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
@@ -24,14 +22,11 @@ import java.io.IOException;
 
 @Configuration
 @EnableWebFluxSecurity
-@EnableReactiveMethodSecurity
 public class SecurityConfig {
     private ObjectMapper objectMapper;
-    private ReactiveUserDetailsService userDetailsService;
 
-    public SecurityConfig(ObjectMapper objectMapper, CustomUserDetailsService userDetailsService) {
+    public SecurityConfig(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
-        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -40,10 +35,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public ReactiveAuthenticationManager authManager() {
-        var authManager = new UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService);
-        authManager.setPasswordEncoder(passwordEncoder());
-        return authManager;
+    public ReactiveAuthenticationManager authenticationManager(
+            ReactiveUserDetailsService userDetailsService) {
+        var authenticationManager = new UserDetailsRepositoryReactiveAuthenticationManager(
+                userDetailsService);
+        authenticationManager.setPasswordEncoder(passwordEncoder());
+        return authenticationManager;
     }
 
     private Mono<Void> responseJson(ServerWebExchange exchange, HttpStatus status, RootDto data) {
@@ -62,7 +59,6 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         return http
                 .csrf(csrf -> csrf.disable())
-                .authenticationManager(authManager())
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((exchange, exception) ->
                                 responseJson(exchange, HttpStatus.UNAUTHORIZED,

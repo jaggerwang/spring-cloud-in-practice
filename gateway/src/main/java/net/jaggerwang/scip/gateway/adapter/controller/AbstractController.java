@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Mono;
@@ -14,7 +14,7 @@ import static org.springframework.security.web.server.context.WebSessionServerSe
 
 abstract public class AbstractController {
     @Autowired
-    private ReactiveAuthenticationManager authManager;
+    private ReactiveAuthenticationManager authenticationManager;
 
     protected Mono<ServerWebExchange> getServerWebExchange() {
         return Mono.subscriberContext()
@@ -26,29 +26,26 @@ abstract public class AbstractController {
                 .flatMap(exchange -> exchange.getSession());
     }
 
-    protected Mono<SecurityContext> getSecurityContext() {
-        return Mono.subscriberContext()
-                .map(context -> context.get(SecurityContext.class));
-    }
-
     protected Mono<LoggedUser> loginUser(String username, String password) {
-        return authManager.authenticate(new UsernamePasswordAuthenticationToken(username, password))
-                .flatMap(auth -> getSecurityContext()
-                        .flatMap(context -> getWebSession()
+        return authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password))
+                .flatMap(auth -> ReactiveSecurityContextHolder.getContext()
+                        .flatMap(securityContext -> getWebSession()
                                 .map(session -> {
-                                    context.setAuthentication(auth);
+                                    securityContext.setAuthentication(auth);
                                     session.getAttributes().put(
-                                            DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME, context);
+                                            DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME,
+                                            securityContext);
                                     return (LoggedUser) auth.getPrincipal();
                                 })));
     }
 
     protected Mono<LoggedUser> logoutUser() {
         return loggedUser()
-                .flatMap(loggedUser -> getSecurityContext()
-                        .flatMap(context -> getWebSession()
+                .flatMap(loggedUser -> ReactiveSecurityContextHolder.getContext()
+                        .flatMap(securityContext -> getWebSession()
                                 .map(session -> {
-                                    context.setAuthentication(null);
+                                    securityContext.setAuthentication(null);
                                     session.getAttributes().remove(
                                             DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME);
                                     return loggedUser;
@@ -56,7 +53,7 @@ abstract public class AbstractController {
     }
 
     protected Mono<LoggedUser> loggedUser() {
-        return getSecurityContext()
+        return ReactiveSecurityContextHolder.getContext()
                 .flatMap(context -> {
                     var auth = context.getAuthentication();
                     if (auth == null || auth instanceof AnonymousAuthenticationToken ||

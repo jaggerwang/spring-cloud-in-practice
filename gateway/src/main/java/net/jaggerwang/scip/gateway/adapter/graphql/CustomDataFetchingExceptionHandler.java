@@ -10,6 +10,7 @@ import net.jaggerwang.scip.common.usecase.exception.NotFoundException;
 import net.jaggerwang.scip.common.usecase.exception.UnauthenticatedException;
 import net.jaggerwang.scip.common.usecase.exception.UnauthorizedException;
 import net.jaggerwang.scip.common.usecase.exception.UsecaseException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -59,7 +60,8 @@ public class CustomDataFetchingExceptionHandler implements DataFetcherExceptionH
                 code = "not_found";
             } else if (throwable instanceof UnauthenticatedException) {
                 code = "unauthenticated";
-            } else if (throwable instanceof UnauthorizedException) {
+            } else if (throwable instanceof UnauthorizedException ||
+                    throwable instanceof AccessDeniedException) {
                 code = "unauthorized";
             }
             extensions.put("code", code);

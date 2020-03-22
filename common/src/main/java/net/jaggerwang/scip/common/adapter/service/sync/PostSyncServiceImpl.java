@@ -6,7 +6,6 @@ import net.jaggerwang.scip.common.usecase.port.service.sync.PostSyncService;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Optional;
@@ -15,11 +14,6 @@ public class PostSyncServiceImpl extends InternalSyncService implements PostSync
     public PostSyncServiceImpl(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
                                ObjectMapper objectMapper) {
         super(restTemplate, cbFactory, objectMapper);
-    }
-
-    public PostSyncServiceImpl(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
-                               ObjectMapper objectMapper, HttpServletRequest upstreamRequest) {
-        super(restTemplate, cbFactory, objectMapper, upstreamRequest);
     }
 
     @Override

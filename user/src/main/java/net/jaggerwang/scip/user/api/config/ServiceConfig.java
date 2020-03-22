@@ -5,6 +5,7 @@ import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
 import net.jaggerwang.scip.common.adapter.service.sync.FileSyncServiceImpl;
 import net.jaggerwang.scip.common.adapter.service.sync.StatSyncServiceImpl;
+import net.jaggerwang.scip.common.api.interceptor.HeadersRelayRequestInterceptor;
 import net.jaggerwang.scip.common.usecase.port.service.sync.FileSyncService;
 import net.jaggerwang.scip.common.usecase.port.service.sync.StatSyncService;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,9 +18,7 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.context.annotation.RequestScope;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.Duration;
 
 @Configuration(proxyBeanMethods = false)
@@ -46,30 +45,32 @@ public class ServiceConfig {
     @LoadBalanced
     @Bean
     public RestTemplate fileServiceRestTemplate(RestTemplateBuilder builder) {
-        return builder.rootUri("http://spring-cloud-in-practice-file").build();
+        return builder
+                .rootUri("http://spring-cloud-in-practice-file")
+                .interceptors(new HeadersRelayRequestInterceptor("X-User-Id"))
+                .build();
     }
 
     @Bean
-    @RequestScope
     public FileSyncService fileSyncService(@Qualifier("fileServiceRestTemplate") RestTemplate restTemplate,
                                            CircuitBreakerFactory cbFactory,
-                                           ObjectMapper objectMapper,
-                                           HttpServletRequest request) {
-        return new FileSyncServiceImpl(restTemplate, cbFactory, objectMapper, request);
+                                           ObjectMapper objectMapper) {
+        return new FileSyncServiceImpl(restTemplate, cbFactory, objectMapper);
     }
 
     @LoadBalanced
     @Bean
     public RestTemplate statServiceRestTemplate(RestTemplateBuilder builder) {
-        return builder.rootUri("http://spring-cloud-in-practice-stat").build();
+        return builder
+                .rootUri("http://spring-cloud-in-practice-stat")
+                .interceptors(new HeadersRelayRequestInterceptor("X-User-Id"))
+                .build();
     }
 
     @Bean
-    @RequestScope
     public StatSyncService statSyncService(@Qualifier("statServiceRestTemplate") RestTemplate restTemplate,
                                            CircuitBreakerFactory cbFactory,
-                                           ObjectMapper objectMapper,
-                                           HttpServletRequest request) {
-        return new StatSyncServiceImpl(restTemplate, cbFactory, objectMapper, request);
+                                           ObjectMapper objectMapper) {
+        return new StatSyncServiceImpl(restTemplate, cbFactory, objectMapper);
     }
 }

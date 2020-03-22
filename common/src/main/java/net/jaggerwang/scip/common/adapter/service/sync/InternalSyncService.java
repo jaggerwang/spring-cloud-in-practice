@@ -6,7 +6,6 @@ import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
 import net.jaggerwang.scip.common.usecase.exception.InternalApiException;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -16,37 +15,17 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
 public abstract class InternalSyncService extends SyncService {
     protected ObjectMapper objectMapper;
-    protected HttpServletRequest upstreamRequest;
 
     public InternalSyncService(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
                                ObjectMapper objectMapper) {
         super(restTemplate, cbFactory);
         this.objectMapper = objectMapper;
-    }
-
-    public InternalSyncService(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
-                               ObjectMapper objectMapper, HttpServletRequest upstreamRequest) {
-        this(restTemplate, cbFactory, objectMapper);
-        this.upstreamRequest = upstreamRequest;
-    }
-
-    private MultiValueMap<String, String> passThroughHeaders() {
-        var headers = new LinkedMultiValueMap<String, String>();
-        if (upstreamRequest != null) {
-            headers.addAll(HttpHeaders.AUTHORIZATION,
-                    Collections.list(upstreamRequest.getHeaders(HttpHeaders.AUTHORIZATION)));
-            headers.addAll(HttpHeaders.COOKIE,
-                    Collections.list(upstreamRequest.getHeaders(HttpHeaders.COOKIE)));
-        }
-        return headers;
     }
 
     private ResponseEntity<RootDto> fallback(Throwable throwable) {
@@ -74,8 +53,7 @@ public abstract class InternalSyncService extends SyncService {
     }
 
     public Map<String, Object> getData(URI uri) {
-        var requestEntity = new HttpEntity<>(passThroughHeaders());
-        var response = get(uri, requestEntity, RootDto.class, this::fallback);
+        var response = get(uri, null, RootDto.class, this::fallback);
         return handleResponse(response);
     }
 
@@ -101,7 +79,7 @@ public abstract class InternalSyncService extends SyncService {
     }
 
     public <T> Map<String, Object> postData(URI uri, @Nullable T body) {
-        var requestEntity = new HttpEntity<>(body, passThroughHeaders());
+        var requestEntity = new HttpEntity<>(body);
         var response = post(uri, requestEntity, RootDto.class, this::fallback);
         return handleResponse(response);
     }

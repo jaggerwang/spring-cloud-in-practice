@@ -1,6 +1,7 @@
 package net.jaggerwang.scip.gateway.adapter.controller;
 
 import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -9,9 +10,9 @@ import reactor.core.publisher.Mono;
 public class IndexController extends AbstractController {
     @GetMapping("/")
     public Mono<RootDto> index() {
-        return getSecurityContext()
-                .map(context -> {
-                    var auth = context.getAuthentication();
+        return ReactiveSecurityContextHolder.getContext()
+                .map(securityContext -> {
+                    var auth = securityContext.getAuthentication();
                     return new RootDto().addDataEntry("authentication", auth);
                 });
     }

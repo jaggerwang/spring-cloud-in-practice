@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
 import net.jaggerwang.scip.common.adapter.service.sync.UserSyncServiceImpl;
+import net.jaggerwang.scip.common.api.interceptor.HeadersRelayRequestInterceptor;
 import net.jaggerwang.scip.common.usecase.port.service.sync.UserSyncService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -15,9 +16,7 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.context.annotation.RequestScope;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.Duration;
 
 @Configuration(proxyBeanMethods = false)
@@ -44,15 +43,16 @@ public class ServiceConfig {
     @LoadBalanced
     @Bean
     public RestTemplate userServiceRestTemplate(RestTemplateBuilder builder) {
-        return builder.rootUri("http://spring-cloud-in-practice-user").build();
+        return builder
+                .rootUri("http://spring-cloud-in-practice-user")
+                .interceptors(new HeadersRelayRequestInterceptor("X-User-Id"))
+                .build();
     }
 
     @Bean
-    @RequestScope
     public UserSyncService userSyncService(@Qualifier("userServiceRestTemplate") RestTemplate restTemplate,
                                            CircuitBreakerFactory cbFactory,
-                                           ObjectMapper objectMapper,
-                                           HttpServletRequest request) {
-        return new UserSyncServiceImpl(restTemplate, cbFactory, objectMapper, request);
+                                           ObjectMapper objectMapper) {
+        return new UserSyncServiceImpl(restTemplate, cbFactory, objectMapper);
     }
 }

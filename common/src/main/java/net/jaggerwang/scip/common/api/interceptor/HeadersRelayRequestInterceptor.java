@@ -1,6 +1,5 @@
 package net.jaggerwang.scip.common.api.interceptor;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -9,14 +8,15 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
-public class HeadersRelayInterceptor implements ClientHttpRequestInterceptor {
-    private Set<String> headers;
+public class HeadersRelayRequestInterceptor implements ClientHttpRequestInterceptor {
+    private List<String> headers;
 
-    public HeadersRelayInterceptor(Set<String> headers) {
-        this.headers = headers;
+    public HeadersRelayRequestInterceptor(String... headers) {
+        this.headers = Arrays.asList(headers);
     }
 
     @Override

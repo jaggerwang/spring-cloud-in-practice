@@ -3,6 +3,7 @@ package net.jaggerwang.scip.gateway.api.security;
 import net.jaggerwang.scip.common.usecase.exception.InternalApiException;
 import net.jaggerwang.scip.common.usecase.port.service.async.UserAsyncService;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Primary
 public class CustomUserDetailsService implements ReactiveUserDetailsService {
     private UserAsyncService userAsyncService;
 

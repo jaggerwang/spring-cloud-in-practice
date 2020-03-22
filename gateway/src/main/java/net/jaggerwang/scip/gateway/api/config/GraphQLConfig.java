@@ -7,7 +7,9 @@ import graphql.schema.*;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
-import net.jaggerwang.scip.gateway.adapter.graphql.*;
+import net.jaggerwang.scip.gateway.adapter.graphql.CustomDataFetchingExceptionHandler;
+import net.jaggerwang.scip.gateway.adapter.graphql.type.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,30 +32,23 @@ public class GraphQLConfig {
 
     private CustomDataFetchingExceptionHandler exceptionHandler;
 
-    private QueryDataFetcher queryDataFetcher;
-    private MutationDataFetcher mutationDataFetcher;
-    private UserDataFetcher userDataFetcher;
-    private PostDataFetcher postDataFetcher;
-    private FileDataFetcher fileDataFetchers;
-    private UserStatDataFetcher userStatDataFetcher;
-    private PostStatDataFetcher postStatDataFetcher;
+    @Autowired
+    QueryType queryType;
+    @Autowired
+    MutationType mutationType;
+    @Autowired
+    UserType userType;
+    @Autowired
+    PostType postType;
+    @Autowired
+    FileType fileType;
+    @Autowired
+    UserStatType userStatType;
+    @Autowired
+    PostStatType postStatType;
 
-    public GraphQLConfig(CustomDataFetchingExceptionHandler exceptionHandler,
-                         QueryDataFetcher queryDataFetcher,
-                         MutationDataFetcher mutationDataFetcher,
-                         UserDataFetcher userDataFetcher,
-                         PostDataFetcher postDataFetcher,
-                         FileDataFetcher fileDataFetchers,
-                         UserStatDataFetcher userStatDataFetcher,
-                         PostStatDataFetcher postStatDataFetcher) {
+    public GraphQLConfig(CustomDataFetchingExceptionHandler exceptionHandler) {
         this.exceptionHandler = exceptionHandler;
-        this.queryDataFetcher = queryDataFetcher;
-        this.mutationDataFetcher = mutationDataFetcher;
-        this.userDataFetcher = userDataFetcher;
-        this.postDataFetcher = postDataFetcher;
-        this.fileDataFetchers = fileDataFetchers;
-        this.userStatDataFetcher = userStatDataFetcher;
-        this.postStatDataFetcher = postStatDataFetcher;
     }
 
     @PostConstruct
@@ -75,14 +70,15 @@ public class GraphQLConfig {
     }
 
     private RuntimeWiring buildWiring() {
-        return RuntimeWiring.newRuntimeWiring().scalar(ExtendedScalars.Json)
-                .type(newTypeWiring("Query").dataFetchers(queryDataFetcher.toMap()))
-                .type(newTypeWiring("Mutation").dataFetchers(mutationDataFetcher.toMap()))
-                .type(newTypeWiring("User").dataFetchers(userDataFetcher.toMap()))
-                .type(newTypeWiring("Post").dataFetchers(postDataFetcher.toMap()))
-                .type(newTypeWiring("File").dataFetchers(fileDataFetchers.toMap()))
-                .type(newTypeWiring("UserStat").dataFetchers(userStatDataFetcher.toMap()))
-                .type(newTypeWiring("PostStat").dataFetchers(postStatDataFetcher.toMap()))
+        return RuntimeWiring.newRuntimeWiring()
+                .scalar(ExtendedScalars.Json)
+                .type(newTypeWiring("Query").dataFetchers(queryType.dataFetchers()))
+                .type(newTypeWiring("Mutation").dataFetchers(mutationType.dataFetchers()))
+                .type(newTypeWiring("User").dataFetchers(userType.dataFetchers()))
+                .type(newTypeWiring("Post").dataFetchers(postType.dataFetchers()))
+                .type(newTypeWiring("File").dataFetchers(fileType.dataFetchers()))
+                .type(newTypeWiring("UserStat").dataFetchers(userStatType.dataFetchers()))
+                .type(newTypeWiring("PostStat").dataFetchers(postStatType.dataFetchers()))
                 .build();
     }
 
