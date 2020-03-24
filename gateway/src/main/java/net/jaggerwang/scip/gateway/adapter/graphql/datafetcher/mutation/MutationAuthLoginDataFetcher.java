@@ -5,7 +5,6 @@ import graphql.schema.DataFetchingEnvironment;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
 import net.jaggerwang.scip.gateway.adapter.graphql.datafetcher.AbstractDataFetcher;
 import net.jaggerwang.scip.gateway.api.security.annotation.PermitAll;
-import net.jaggerwang.scip.common.entity.UserEntity;
 import net.jaggerwang.scip.common.usecase.exception.UsecaseException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -32,7 +31,7 @@ public class MutationAuthLoginDataFetcher extends AbstractDataFetcher implements
             throw new UsecaseException("密码不能为空");
         }
 
-        return monoWithContext(loginUser(username, password)
-                .flatMap(loggedUser -> userAsyncService.info(loggedUser.getId())), env);
+        return loginUser(username, password)
+                .flatMap(loggedUser -> userAsyncService.info(loggedUser.getId()));
     }
 }

@@ -4,7 +4,6 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import net.jaggerwang.scip.common.usecase.port.service.dto.PostDto;
 import net.jaggerwang.scip.gateway.adapter.graphql.datafetcher.AbstractDataFetcher;
-import net.jaggerwang.scip.common.entity.PostEntity;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -15,7 +14,7 @@ public class PostImagesDataFetcher extends AbstractDataFetcher implements DataFe
     @Override
     public Object get(DataFetchingEnvironment env) {
         PostDto postDto = env.getSource();
-        if (postDto.getImageIds().isEmpty()) return monoWithContext(Mono.just(List.of()), env);
-        return monoWithContext(fileAsyncService.infos(postDto.getImageIds(), false), env);
+        if (postDto.getImageIds().isEmpty()) return Mono.just(List.of());
+        return fileAsyncService.infos(postDto.getImageIds(), false);
     }
 }

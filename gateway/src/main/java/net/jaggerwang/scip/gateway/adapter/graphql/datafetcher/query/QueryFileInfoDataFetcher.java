@@ -10,6 +10,6 @@ public class QueryFileInfoDataFetcher extends AbstractDataFetcher implements Dat
     @Override
     public Object get(DataFetchingEnvironment env) {
         var id = Long.valueOf((Integer) env.getArgument("id"));
-        return monoWithContext(fileAsyncService.info(id), env);
+        return fileAsyncService.info(id);
     }
 }

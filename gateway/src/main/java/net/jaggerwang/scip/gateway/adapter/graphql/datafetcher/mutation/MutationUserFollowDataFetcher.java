@@ -11,6 +11,6 @@ public class MutationUserFollowDataFetcher extends AbstractDataFetcher implement
     @Override
     public Object get(DataFetchingEnvironment env) {
         var userId = Long.valueOf((Integer) env.getArgument("userId"));
-        return monoWithContext(userAsyncService.follow(userId).then(Mono.just(true)), env);
+        return userAsyncService.follow(userId).then(Mono.just(true));
     }
 }

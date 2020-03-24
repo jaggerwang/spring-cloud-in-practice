@@ -68,9 +68,10 @@ public class SecurityConfig {
                                         new RootDto("unauthorized", "未授权")))
                 )
                 .authorizeExchange(authorizeExchange -> authorizeExchange
-                        .pathMatchers("/favicon.ico", "/*/actuator/**", "/", "/graphql", "/login",
-                                "/logout", "/auth/login", "/auth/logout", "/auth/logged",
-                                "/user/register").permitAll()
+                        .pathMatchers("/favicon.ico", "/csrf", "/vendor/**", "/webjars/**",
+                                "/*/actuator/**", "/", "/graphql", "/login", "/logout",
+                                "/auth/login", "/auth/logout", "/auth/logged",
+                                "/user/register", "/files/**").permitAll()
                         .anyExchange().authenticated())
                 .formLogin(formLogin -> {})
                 .logout(logout -> {})

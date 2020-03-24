@@ -10,6 +10,6 @@ public class QueryPostInfoDataFetcher extends AbstractDataFetcher implements Dat
     @Override
     public Object get(DataFetchingEnvironment env) {
         var id = Long.valueOf((Integer) env.getArgument("id"));
-        return monoWithContext(postAsyncService.info(id), env);
+        return postAsyncService.info(id);
     }
 }

@@ -92,10 +92,4 @@ abstract public class AbstractDataFetcher {
         return loggedUser()
                 .map(loggedUser -> loggedUser.getId());
     }
-
-    protected <T> CompletableFuture<T> monoWithContext(Mono<T> mono, DataFetchingEnvironment env) {
-        return mono
-                .subscriberContext(context -> env.getContext())
-                .toFuture();
-    }
 }

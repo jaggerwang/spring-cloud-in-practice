@@ -11,6 +11,6 @@ public class QueryPostPublishedCountDataFetcher extends AbstractDataFetcher impl
     public Object get(DataFetchingEnvironment env) {
         var userId = env.getArgument("userId") != null ?
                 Long.valueOf((Integer) env.getArgument("userId")) : null;
-        return monoWithContext(postAsyncService.publishedCount(userId), env);
+        return postAsyncService.publishedCount(userId);
     }
 }

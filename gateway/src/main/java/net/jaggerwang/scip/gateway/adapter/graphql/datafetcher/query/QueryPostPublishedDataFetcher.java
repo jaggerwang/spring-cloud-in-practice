@@ -15,6 +15,6 @@ public class QueryPostPublishedDataFetcher extends AbstractDataFetcher implement
                 Long.valueOf((Integer) env.getArgument("limit")) : null;
         var offset = env.getArgument("offset") != null ?
                 Long.valueOf((Integer) env.getArgument("offset")) : null;
-        return monoWithContext(postAsyncService.published(userId, limit, offset), env);
+        return postAsyncService.published(userId, limit, offset);
     }
 }

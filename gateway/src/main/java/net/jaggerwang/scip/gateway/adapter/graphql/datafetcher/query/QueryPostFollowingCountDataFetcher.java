@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 public class QueryPostFollowingCountDataFetcher extends AbstractDataFetcher implements DataFetcher {
     @Override
     public Object get(DataFetchingEnvironment env) {
-        return monoWithContext(postAsyncService.followingCount(), env);
+        return postAsyncService.followingCount();
     }
 }

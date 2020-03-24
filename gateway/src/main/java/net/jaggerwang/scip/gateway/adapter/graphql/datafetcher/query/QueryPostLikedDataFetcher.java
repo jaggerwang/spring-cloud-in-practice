@@ -15,6 +15,6 @@ public class QueryPostLikedDataFetcher extends AbstractDataFetcher implements Da
                 Long.valueOf((Integer) env.getArgument("limit")) : null;
         var offset = env.getArgument("offset") != null ?
                 Long.valueOf((Integer) env.getArgument("offset")) : null;
-        return monoWithContext(postAsyncService.liked(userId, limit, offset), env);
+        return postAsyncService.liked(userId, limit, offset);
     }
 }

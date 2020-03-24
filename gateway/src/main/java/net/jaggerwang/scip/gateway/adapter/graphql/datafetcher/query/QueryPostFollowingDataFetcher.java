@@ -15,6 +15,6 @@ public class QueryPostFollowingDataFetcher extends AbstractDataFetcher implement
                 Long.valueOf((Integer) env.getArgument("beforeId")) : null;
         var afterId = env.getArgument("afterId") != null ?
                 Long.valueOf((Integer) env.getArgument("afterId")) : null;
-        return monoWithContext(postAsyncService.following(limit, beforeId, afterId), env);
+        return postAsyncService.following(limit, beforeId, afterId);
     }
 }

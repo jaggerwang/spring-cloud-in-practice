@@ -4,7 +4,6 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import net.jaggerwang.scip.common.usecase.port.service.dto.PostDto;
 import net.jaggerwang.scip.gateway.adapter.graphql.datafetcher.AbstractDataFetcher;
-import net.jaggerwang.scip.common.entity.PostEntity;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,6 +11,6 @@ public class PostUserDataFetcher extends AbstractDataFetcher implements DataFetc
     @Override
     public Object get(DataFetchingEnvironment env) {
         PostDto postDto = env.getSource();
-        return monoWithContext(userAsyncService.info(postDto.getUserId()), env);
+        return userAsyncService.info(postDto.getUserId());
     }
 }

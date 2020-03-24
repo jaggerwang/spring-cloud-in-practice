@@ -11,6 +11,6 @@ public class QueryUserFollowerCountDataFetcher extends AbstractDataFetcher imple
     public Object get(DataFetchingEnvironment env) {
         var userId = env.getArgument("userId") != null ?
                 Long.valueOf((Integer) env.getArgument("userId")) : null;
-        return monoWithContext(userAsyncService.followerCount(userId), env);
+        return userAsyncService.followerCount(userId);
     }
 }

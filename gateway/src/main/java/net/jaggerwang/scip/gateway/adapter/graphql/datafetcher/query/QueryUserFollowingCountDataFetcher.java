@@ -11,6 +11,6 @@ public class QueryUserFollowingCountDataFetcher extends AbstractDataFetcher impl
     public Object get(DataFetchingEnvironment env) {
         var userId = env.getArgument("userId") != null ?
                 Long.valueOf((Integer) env.getArgument("userId")) : null;
-        return monoWithContext(userAsyncService.followingCount(userId), env);
+        return userAsyncService.followingCount(userId);
     }
 }

@@ -11,6 +11,6 @@ public class MutationPostUnlikeDataFetcher extends AbstractDataFetcher implement
     @Override
     public Object get(DataFetchingEnvironment env) {
         var postId = Long.valueOf((Integer) env.getArgument("postId"));
-        return monoWithContext(postAsyncService.unlike(postId).then(Mono.just(true)), env);
+        return postAsyncService.unlike(postId).then(Mono.just(true));
     }
 }

@@ -11,6 +11,6 @@ public class MutationPostDeleteDataFetcher extends AbstractDataFetcher implement
     @Override
     public Object get(DataFetchingEnvironment env) {
         var id = Long.valueOf((Integer) env.getArgument("id"));
-        return monoWithContext(postAsyncService.delete(id).then(Mono.just(true)), env);
+        return postAsyncService.delete(id).then(Mono.just(true));
     }
 }

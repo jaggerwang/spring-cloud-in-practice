@@ -11,6 +11,6 @@ public class UserStatDataFetcher extends AbstractDataFetcher implements DataFetc
     @Override
     public Object get(DataFetchingEnvironment env) {
         UserDto userDto = env.getSource();
-        return monoWithContext(statAsyncService.ofUser(userDto.getId()), env);
+        return statAsyncService.ofUser(userDto.getId());
     }
 }

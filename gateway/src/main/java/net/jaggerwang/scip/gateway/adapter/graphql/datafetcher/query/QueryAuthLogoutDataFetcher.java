@@ -11,7 +11,7 @@ public class QueryAuthLogoutDataFetcher extends AbstractDataFetcher implements D
     @Override
     @PermitAll
     public Object get(DataFetchingEnvironment env) {
-        return monoWithContext(logoutUser()
-                .flatMap(loggedUser -> userAsyncService.info(loggedUser.getId())), env);
+        return logoutUser()
+                .flatMap(loggedUser -> userAsyncService.info(loggedUser.getId()));
     }
 }

@@ -15,6 +15,6 @@ public class QueryUserFollowingDataFetcher extends AbstractDataFetcher implement
                 Long.valueOf((Integer) env.getArgument("limit")) : null;
         var offset = env.getArgument("offset") != null ?
                 Long.valueOf((Integer) env.getArgument("offset")) : null;
-        return monoWithContext(userAsyncService.following(userId, limit, offset), env);
+        return userAsyncService.following(userId, limit, offset);
     }
 }

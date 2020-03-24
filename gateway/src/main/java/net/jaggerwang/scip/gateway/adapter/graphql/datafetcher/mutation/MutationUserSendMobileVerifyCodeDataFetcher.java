@@ -11,6 +11,6 @@ public class MutationUserSendMobileVerifyCodeDataFetcher extends AbstractDataFet
     public Object get(DataFetchingEnvironment env) {
         String type = env.getArgument("type");
         String mobile = env.getArgument("mobile");
-        return monoWithContext(userAsyncService.sendMobileVerifyCode(type, mobile), env);
+        return userAsyncService.sendMobileVerifyCode(type, mobile);
     }
 }

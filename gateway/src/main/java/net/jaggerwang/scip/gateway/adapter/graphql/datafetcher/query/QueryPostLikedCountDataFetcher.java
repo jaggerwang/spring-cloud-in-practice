@@ -11,6 +11,6 @@ public class QueryPostLikedCountDataFetcher extends AbstractDataFetcher implemen
     public Object get(DataFetchingEnvironment env) {
         var userId = env.getArgument("userId") != null ?
                 Long.valueOf((Integer) env.getArgument("userId")) : null;
-        return monoWithContext(postAsyncService.likedCount(userId), env);
+        return postAsyncService.likedCount(userId);
     }
 }

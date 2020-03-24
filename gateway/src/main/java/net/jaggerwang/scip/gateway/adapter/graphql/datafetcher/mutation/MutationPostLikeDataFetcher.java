@@ -11,6 +11,6 @@ public class MutationPostLikeDataFetcher extends AbstractDataFetcher implements 
     @Override
     public Object get(DataFetchingEnvironment env) {
         var postId = Long.valueOf((Integer) env.getArgument("postId"));
-        return monoWithContext(postAsyncService.like(postId).then(Mono.just(true)), env);
+        return postAsyncService.like(postId).then(Mono.just(true));
     }
 }
