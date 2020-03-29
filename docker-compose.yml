@@ -34,7 +34,7 @@ services:
       SCIP_SPRING_REDIS_PASSWORD:
       SCIP_SPRING_CLOUD_CONSUL_HOST: consul
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
-      SCIP_SERVICE_FILE_BASE_URL: http://localhost:9080/files
+      SCIP_SERVICE_FILE_BASE_URL: http://localhost:8080/files
       SCIP_SERVICE_HYDRA_URL: http://hydra:4444/
       SCIP_SERVICE_HYDRA_ADMIN_URL: http://hydra:4445/
     ports:

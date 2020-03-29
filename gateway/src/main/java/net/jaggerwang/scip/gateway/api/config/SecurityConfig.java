@@ -59,14 +59,15 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         return http
                 .csrf(csrf -> csrf.disable())
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .authenticationEntryPoint((exchange, exception) ->
-                                responseJson(exchange, HttpStatus.UNAUTHORIZED,
-                                        new RootDto("unauthenticated", "未认证")))
-                        .accessDeniedHandler((exchange, accessDeniedException) ->
-                                responseJson(exchange, HttpStatus.FORBIDDEN,
-                                        new RootDto("unauthorized", "未授权")))
-                )
+                // TODO: It will cause '/login' page not found.
+//                .exceptionHandling(exceptionHandling -> exceptionHandling
+//                        .authenticationEntryPoint((exchange, exception) ->
+//                                responseJson(exchange, HttpStatus.UNAUTHORIZED,
+//                                        new RootDto("unauthenticated", "未认证")))
+//                        .accessDeniedHandler((exchange, accessDeniedException) ->
+//                                responseJson(exchange, HttpStatus.FORBIDDEN,
+//                                        new RootDto("unauthorized", "未授权")))
+//                )
                 .authorizeExchange(authorizeExchange -> authorizeExchange
                         .pathMatchers("/favicon.ico", "/csrf", "/vendor/**", "/webjars/**",
                                 "/*/actuator/**", "/", "/graphql", "/login", "/logout",
