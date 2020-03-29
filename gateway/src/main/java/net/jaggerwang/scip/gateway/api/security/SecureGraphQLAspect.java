@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 @Aspect
 public class SecureGraphQLAspect {
     @Around("allDataFetchers() && isInApplication()")
-    public Object doSecurityCheck(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object doSecurityCheck(ProceedingJoinPoint joinPoint) {
         var args = joinPoint.getArgs();
         var env = (DataFetchingEnvironment) args[0];
         return ReactiveSecurityContextHolder.getContext()
@@ -34,7 +34,15 @@ public class SecureGraphQLAspect {
                         }
                     }
                 })
-                .then((Mono) joinPoint.proceed())
+                .flatMap(securityContext -> {
+                    Object result;
+                    try {
+                        result = joinPoint.proceed();
+                    } catch (Throwable e) {
+                        return Mono.error(new RuntimeException(e));
+                    }
+                    return result instanceof Mono ? (Mono) result : Mono.just(result);
+                })
                 .subscriberContext(context -> env.getContext())
                 .toFuture();
     }
@@ -45,9 +53,5 @@ public class SecureGraphQLAspect {
 
     @Pointcut("within(net.jaggerwang.scip.gateway.adapter.graphql..*)")
     private void isInApplication() {
-    }
-
-    @Pointcut("@annotation(net.jaggerwang.scip.gateway.api.security.annotation.PermitAll)")
-    private void isPermitAll() {
     }
 }

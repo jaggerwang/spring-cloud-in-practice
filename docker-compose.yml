@@ -5,8 +5,6 @@ services:
     environment:
       TZ: Asia/Shanghai
       MYSQL_ROOT_PASSWORD: 123456
-    ports:
-      - 9010:3306
     volumes:
       - ~/data/spring-cloud-in-practice/mysql:/var/lib/mysql
       - ./initdb:/docker-entrypoint-initdb.d
@@ -14,8 +12,6 @@ services:
     image: redis:5.0
     environment:
       TZ: Asia/Shanghai
-    ports:
-      - 9020:6379
     volumes:
       - ~/data/spring-cloud-in-practice/redis:/data
   consul:
@@ -23,40 +19,8 @@ services:
     command: agent -dev -client 0.0.0.0 -log-level INFO
     environment:
       TZ: Asia/Shanghai
-    ports:
-      - 9030:8500
     volumes:
       - ~/data/spring-cloud-in-practice/consul:/consul/data
-  hydra-migrate:
-    image: oryd/hydra:v1.2
-    command: migrate sql -e --yes
-    environment:
-      TZ: Asia/Shanghai
-      DSN: mysql://scip_auth:123456@tcp(mysql:3306)/scip_auth
-    depends_on:
-      - mysql
-  hydra:
-    image: oryd/hydra:v1.2
-    command: serve all --dangerous-force-http --dangerous-allow-insecure-redirect-urls http://localhost:9080/hydra/login,http://localhost:9080/hydra/consent,http://localhost:9080/hydra/logout
-    environment:
-      TZ: Asia/Shanghai
-      STRATEGIES_ACCESS_TOKEN: jwt
-      LOG_LEVEL: info
-      SECRETS_SYSTEM: a2N4m0XL659TIrB2V3fJBxUED5Zv5zUQ
-      DSN: mysql://scip_auth:123456@tcp(mysql:3306)/scip_auth
-      URLS_SELF_ISSUER: http://localhost:9090/
-      URLS_LOGIN: http://localhost:9080/hydra/login
-      URLS_CONSENT: http://localhost:9080/hydra/consent
-      URLS_LOGOUT: http://localhost:9080/hydra/logout
-      TTL_ACCESS_TOKEN: 12h
-      TTL_REFRESH_TOKEN: 720h
-    ports:
-      - 9090:4444
-      - 9091:4445
-    volumes:
-      - ~/data/spring-cloud-in-practice/hydra:/data
-    depends_on:
-      - hydra-migrate
   gateway:
     image: spring-cloud-in-practice-gateway
     build: ./gateway
@@ -68,17 +32,13 @@ services:
       SCIP_SPRING_REDIS_HOST: redis
       SCIP_SPRING_REDIS_PORT: 6379
       SCIP_SPRING_REDIS_PASSWORD:
-      SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_AUTHORIZATION_URI: http://localhost:9090/oauth2/auth
-      SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_TOKEN_URI: http://hydra:4444/oauth2/token
-      SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_USER_INFO_URI: http://hydra:4444/userinfo
-      SCIP_SPRING_SECURITY_OAUTH2_PROVIDER_HYDRA_JWK_SET_URI: http://hydra:4444/.well-known/jwks.json
       SCIP_SPRING_CLOUD_CONSUL_HOST: consul
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
       SCIP_SERVICE_FILE_BASE_URL: http://localhost:9080/files
       SCIP_SERVICE_HYDRA_URL: http://hydra:4444/
       SCIP_SERVICE_HYDRA_ADMIN_URL: http://hydra:4445/
     ports:
-      - 9080:8080
+      - 8080:8080
     volumes:
       - ~/data/spring-cloud-in-practice/gateway:/data
     depends_on:
@@ -95,13 +55,10 @@ services:
       SCIP_SPRING_DATASOURCE_URL: jdbc:mysql://mysql/scip_user
       SCIP_SPRING_DATASOURCE_USERNAME: scip_user
       SCIP_SPRING_DATASOURCE_PASSWORD: 123456
-      SCIP_SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://hydra:4444/.well-known/jwks.json
       SCIP_SPRING_CLOUD_CONSUL_HOST: consul
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
       SCIP_SERVICE_HYDRA_URL: http://hydra:4444/
       SCIP_SERVICE_HYDRA_ADMIN_URL: http://hydra:4445/
-    ports:
-      - 9081:8081
     volumes:
       - ~/data/spring-cloud-in-practice/user:/data
     depends_on:
@@ -118,11 +75,8 @@ services:
       SCIP_SPRING_DATASOURCE_URL: jdbc:mysql://mysql/scip_post
       SCIP_SPRING_DATASOURCE_USERNAME: scip_post
       SCIP_SPRING_DATASOURCE_PASSWORD: 123456
-      SCIP_SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://hydra:4444/.well-known/jwks.json
       SCIP_SPRING_CLOUD_CONSUL_HOST: consul
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
-    ports:
-      - 9082:8082
     volumes:
       - ~/data/spring-cloud-in-practice/post:/data
     depends_on:
@@ -139,12 +93,9 @@ services:
       SCIP_SPRING_DATASOURCE_URL: jdbc:mysql://mysql/scip_file
       SCIP_SPRING_DATASOURCE_USERNAME: scip_file
       SCIP_SPRING_DATASOURCE_PASSWORD: 123456
-      SCIP_SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://hydra:4444/.well-known/jwks.json
       SCIP_SPRING_CLOUD_CONSUL_HOST: consul
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
       SCIP_FILE_UPLOAD_DIR: /data/upload
-    ports:
-      - 9083:8083
     volumes:
       - ~/data/spring-cloud-in-practice/file:/data
     depends_on:
@@ -161,11 +112,8 @@ services:
       SCIP_SPRING_DATASOURCE_URL: jdbc:mysql://mysql/scip_stat
       SCIP_SPRING_DATASOURCE_USERNAME: scip_stat
       SCIP_SPRING_DATASOURCE_PASSWORD: 123456
-      SCIP_SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://hydra:4444/.well-known/jwks.json
       SCIP_SPRING_CLOUD_CONSUL_HOST: consul
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
-    ports:
-      - 9084:8084
     volumes:
       - ~/data/spring-cloud-in-practice/stat:/data
     depends_on:
