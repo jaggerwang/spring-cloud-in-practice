@@ -1,11 +1,8 @@
 package net.jaggerwang.scip.gateway.api.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -14,21 +11,11 @@ import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import java.io.IOException;
+import org.springframework.security.web.server.authentication.HttpStatusServerEntryPoint;
 
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityConfig {
-    private ObjectMapper objectMapper;
-
-    public SecurityConfig(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -43,31 +30,15 @@ public class SecurityConfig {
         return authenticationManager;
     }
 
-    private Mono<Void> responseJson(ServerWebExchange exchange, HttpStatus status, RootDto data) {
-        var response = exchange.getResponse();
-        response.setStatusCode(status);
-        response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-        var body = new byte[0];
-        try {
-            body = objectMapper.writeValueAsBytes(data);
-        } catch (IOException e) {
-        }
-        return response.writeWith(Flux.just(response.bufferFactory().wrap(body)));
-    }
-
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         return http
                 .csrf(csrf -> csrf.disable())
-                // TODO: It will cause '/login' page not found.
-//                .exceptionHandling(exceptionHandling -> exceptionHandling
-//                        .authenticationEntryPoint((exchange, exception) ->
-//                                responseJson(exchange, HttpStatus.UNAUTHORIZED,
-//                                        new RootDto("unauthenticated", "未认证")))
-//                        .accessDeniedHandler((exchange, accessDeniedException) ->
-//                                responseJson(exchange, HttpStatus.FORBIDDEN,
-//                                        new RootDto("unauthorized", "未授权")))
-//                )
+                // TODO: This config will disable form login.
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint(new HttpStatusServerEntryPoint(
+                                HttpStatus.UNAUTHORIZED))
+                )
                 .authorizeExchange(authorizeExchange -> authorizeExchange
                         .pathMatchers("/favicon.ico", "/csrf", "/vendor/**", "/webjars/**",
                                 "/*/actuator/**", "/", "/graphql", "/login", "/logout",
@@ -75,7 +46,6 @@ public class SecurityConfig {
                                 "/user/register", "/files/**").permitAll()
                         .anyExchange().authenticated())
                 .formLogin(formLogin -> {})
-                .logout(logout -> {})
                 .build();
     }
 }

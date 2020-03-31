@@ -51,6 +51,5 @@ public class CustomUserDetailsService implements ReactiveUserDetailsService {
                     return new LoggedUser(userDto.getId(), userDto.getUsername(),
                             userDto.getPassword(), authorities);
                 }));
-
     }
 }
