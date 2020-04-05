@@ -42,8 +42,7 @@ public class SecurityConfig {
                 .authorizeExchange(authorizeExchange -> authorizeExchange
                         .pathMatchers("/favicon.ico", "/csrf", "/vendor/**", "/webjars/**",
                                 "/*/actuator/**", "/", "/graphql", "/login", "/logout",
-                                "/auth/login", "/auth/logout", "/auth/logged",
-                                "/user/register", "/files/**").permitAll()
+                                "/auth/**", "/user/register", "/files/**").permitAll()
                         .anyExchange().authenticated())
                 .formLogin(formLogin -> {})
                 .build();
