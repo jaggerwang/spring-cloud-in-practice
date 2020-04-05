@@ -204,6 +204,8 @@ hydra token user --auth-url 'http://localhost:4444/oauth2/auth' --token-url 'htt
 
 It will auto open `http://localhost:4446` to commence OAuth2 authorize flow.
 
-### Test OAuth2 login with gateway client
+### Test OAuth2 login with any OAuth2 client
 
-Open login page at `http://localhost:8080/login` to commence an OAuth2 authorization flow.
+The gateway can also be used as an OAuth2 client, open login page at `http://localhost:8080/login` to commence an OAuth2 authorization flow.
+
+> Right now there is a bug which make OAuth2 login not working, you need remove config `exceptionHandling` in `net.jaggerwang.scip.gateway.api.config.SecurityConfig`.
