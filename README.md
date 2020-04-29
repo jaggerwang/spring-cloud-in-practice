@@ -15,6 +15,16 @@ This project can be used as a starter for spring cloud micro services developmen
 1. [Spring Cloud Circuit Breaker](https://spring.io/projects/spring-cloud-circuitbreaker) Circuit breaker
 1. [ORY/Hydra](https://github.com/ory/hydra) OAuth2 server
 
+## Microservice Architecture
+
+### With Session
+
+![spring-cloud-micro-service-architecture](https://user-images.githubusercontent.com/1255011/80553599-06adb500-89fd-11ea-9cf8-f887e156e51b.png)
+
+### With OAuth2
+
+![spring-cloud-micro-service-with-oauth2-architecture](https://user-images.githubusercontent.com/1255011/80553605-0e6d5980-89fd-11ea-838e-b181658ef39f.png)
+
 ## APIs
 
 ### Rest
