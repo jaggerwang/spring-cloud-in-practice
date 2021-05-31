@@ -8,7 +8,6 @@ This project can be used as a starter for spring cloud micro services developmen
 1. [Spring Data JPA](https://spring.io/projects/spring-data-jpa) Access database
 1. [Querydsl JPA](https://github.com/querydsl/querydsl/tree/master/querydsl-jpa) Type safe dynamic sql builder
 1. [Spring Security](https://spring.io/projects/spring-security) Authenticate and authrorize
-1. [GraphQL Java](https://github.com/graphql-java/graphql-java) Graphql for java
 1. [Flyway](https://flywaydb.org/) Database migration
 1. [Spring Cloud Gateway](https://spring.io/projects/spring-cloud-gateway) Api gateway
 1. [Spring Cloud Consul](https://spring.io/projects/spring-cloud-consul) Service discovery
