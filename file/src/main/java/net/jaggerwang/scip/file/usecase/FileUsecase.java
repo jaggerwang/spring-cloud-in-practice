@@ -7,16 +7,16 @@ import java.util.Optional;
 
 import net.jaggerwang.scip.common.usecase.exception.*;
 import net.jaggerwang.scip.common.entity.FileEntity;
-import net.jaggerwang.scip.file.usecase.port.repository.FileRepository;
+import net.jaggerwang.scip.file.usecase.port.dao.FileDAO;
 import net.jaggerwang.scip.file.usecase.port.service.StorageService;
 
 public class FileUsecase {
-    private FileRepository fileRepository;
+    private FileDAO fileDAO;
 
     private StorageService storageService;
 
-    public FileUsecase(FileRepository fileRepository, StorageService storageService) {
-        this.fileRepository = fileRepository;
+    public FileUsecase(FileDAO fileDAO, StorageService storageService) {
+        this.fileDAO = fileDAO;
         this.storageService = storageService;
     }
 
@@ -31,15 +31,15 @@ public class FileUsecase {
         var file = FileEntity.builder().userId(fileEntity.getUserId())
                 .region(fileEntity.getRegion()).bucket(fileEntity.getBucket()).path(savedPath)
                 .meta(fileEntity.getMeta()).build();
-        return fileRepository.save(file);
+        return fileDAO.save(file);
     }
 
     public Optional<FileEntity> info(Long id) {
-        return fileRepository.findById(id);
+        return fileDAO.findById(id);
     }
 
     public List<FileEntity> infos(List<Long> ids, Boolean keepNull) {
-        var fileEntities = fileRepository.findAllById(ids);
+        var fileEntities = fileDAO.findAllById(ids);
 
         if (!keepNull) {
             fileEntities.removeIf(Objects::isNull);

@@ -47,6 +47,3 @@ service:
   hydra:
     url: ${SCIP_SERVICE_HYDRA_URL:http://localhost:4444/}
     admin-url: ${SCIP_SERVICE_HYDRA_ADMIN_URL:http://localhost:4445/}
-
-graphql:
-  url: /graphql

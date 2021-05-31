@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import net.jaggerwang.scip.common.adapter.generator.IdGenerator;
+import net.jaggerwang.scip.common.util.generator.IdGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import net.jaggerwang.scip.common.entity.FileEntity.Meta;

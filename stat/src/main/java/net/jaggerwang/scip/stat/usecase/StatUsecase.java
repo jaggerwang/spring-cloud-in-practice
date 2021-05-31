@@ -3,22 +3,22 @@ package net.jaggerwang.scip.stat.usecase;
 import java.time.LocalDateTime;
 import net.jaggerwang.scip.common.entity.PostStatEntity;
 import net.jaggerwang.scip.common.entity.UserStatEntity;
-import net.jaggerwang.scip.stat.usecase.port.repository.PostStatRepository;
-import net.jaggerwang.scip.stat.usecase.port.repository.UserStatRepository;
+import net.jaggerwang.scip.stat.usecase.port.dao.PostStatDAO;
+import net.jaggerwang.scip.stat.usecase.port.dao.UserStatDAO;
 
 public class StatUsecase {
-    private UserStatRepository userStatRepository;
+    private UserStatDAO userStatDAO;
 
-    private PostStatRepository postStatRepository;
+    private PostStatDAO postStatDAO;
 
-    public StatUsecase(UserStatRepository userStatRepository,
-                       PostStatRepository postStatRepository) {
-        this.userStatRepository = userStatRepository;
-        this.postStatRepository = postStatRepository;
+    public StatUsecase(UserStatDAO userStatDAO,
+                       PostStatDAO postStatDAO) {
+        this.userStatDAO = userStatDAO;
+        this.postStatDAO = postStatDAO;
     }
 
     public UserStatEntity userStatInfoByUserId(Long userId) {
-        var userStatEntity = userStatRepository.findByUserId(userId);
+        var userStatEntity = userStatDAO.findByUserId(userId);
         return userStatEntity.orElseGet(() -> UserStatEntity.builder()
                 .id(0L)
                 .userId(userId)
@@ -28,7 +28,7 @@ public class StatUsecase {
     }
 
     public PostStatEntity postStatInfoByPostId(Long postId) {
-        var postStatEntity = postStatRepository.findByPostId(postId);
+        var postStatEntity = postStatDAO.findByPostId(postId);
         return postStatEntity.orElseGet(() -> PostStatEntity.builder()
                 .id(0L)
                 .postId(postId)

@@ -4,36 +4,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import net.jaggerwang.scip.common.adapter.encoder.PasswordEncoder;
-import net.jaggerwang.scip.common.adapter.generator.RandomGenerator;
+import net.jaggerwang.scip.common.util.encoder.PasswordEncoder;
+import net.jaggerwang.scip.common.util.generator.RandomGenerator;
 import net.jaggerwang.scip.common.entity.RoleEntity;
 import net.jaggerwang.scip.common.usecase.exception.*;
 import net.jaggerwang.scip.common.entity.UserEntity;
-import net.jaggerwang.scip.user.usecase.port.repository.RoleRepository;
-import net.jaggerwang.scip.user.usecase.port.repository.UserRepository;
+import net.jaggerwang.scip.user.usecase.port.dao.RoleDAO;
+import net.jaggerwang.scip.user.usecase.port.dao.UserDAO;
 
 public class UserUsecase {
     private static HashMap<String, String> mobileVerifyCodes = new HashMap<>();
     private static HashMap<String, String> emailVerifyCodes = new HashMap<>();
 
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
+    private UserDAO userDAO;
+    private RoleDAO roleDAO;
     private RandomGenerator randomGenerator = new RandomGenerator();
     private PasswordEncoder passwordEncoder = new PasswordEncoder();
 
-    public UserUsecase(UserRepository userRepository, RoleRepository roleRepository) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+    public UserUsecase(UserDAO userDAO, RoleDAO roleDAO) {
+        this.userDAO = userDAO;
+        this.roleDAO = roleDAO;
     }
 
     public UserEntity register(UserEntity userEntity) {
-        if (userRepository.findByUsername(userEntity.getUsername()).isPresent()) {
+        if (userDAO.findByUsername(userEntity.getUsername()).isPresent()) {
             throw new UsecaseException("用户名重复");
         }
 
         var user = UserEntity.builder().username(userEntity.getUsername())
                 .password(passwordEncoder.encode(userEntity.getPassword())).build();
-        return userRepository.save(user);
+        return userDAO.save(user);
     }
 
     public Boolean matchPassword(String rawPassword, String encodedPassword) {
@@ -41,13 +41,13 @@ public class UserUsecase {
     }
 
     public UserEntity modify(Long id, UserEntity userEntity) {
-        var user = userRepository.findById(id).orElse(null);
+        var user = userDAO.findById(id).orElse(null);
         if (user == null) {
             throw new NotFoundException("用户未找到");
         }
 
         if (userEntity.getUsername() != null) {
-            if (userRepository.findByUsername(userEntity.getUsername()).isPresent()) {
+            if (userDAO.findByUsername(userEntity.getUsername()).isPresent()) {
                 throw new UsecaseException("用户名重复");
             }
             user.setUsername(userEntity.getUsername());
@@ -56,13 +56,13 @@ public class UserUsecase {
             user.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         }
         if (userEntity.getMobile() != null) {
-            if (userRepository.findByMobile(userEntity.getMobile()).isPresent()) {
+            if (userDAO.findByMobile(userEntity.getMobile()).isPresent()) {
                 throw new UsecaseException("手机重复");
             }
             user.setMobile(userEntity.getMobile());
         }
         if (userEntity.getEmail() != null) {
-            if (userRepository.findByEmail(userEntity.getEmail()).isPresent()) {
+            if (userDAO.findByEmail(userEntity.getEmail()).isPresent()) {
                 throw new UsecaseException("邮箱重复");
             }
             user.setEmail(userEntity.getEmail());
@@ -74,7 +74,7 @@ public class UserUsecase {
             user.setIntro(userEntity.getIntro());
         }
 
-        return userRepository.save(user);
+        return userDAO.save(user);
     }
 
     public String sendMobileVerifyCode(String type, String mobile) {
@@ -116,50 +116,50 @@ public class UserUsecase {
     }
 
     public Optional<UserEntity> info(Long id) {
-        return userRepository.findById(id);
+        return userDAO.findById(id);
     }
 
     public Optional<UserEntity> infoByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userDAO.findByUsername(username);
     }
 
     public Optional<UserEntity> infoByMobile(String mobile) {
-        return userRepository.findByMobile(mobile);
+        return userDAO.findByMobile(mobile);
     }
 
     public Optional<UserEntity> infoByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return userDAO.findByEmail(email);
     }
 
     public List<RoleEntity> roles(String username) {
-        return roleRepository.rolesOfUser(username);
+        return roleDAO.rolesOfUser(username);
     }
 
     public void follow(Long followerId, Long followingId) {
-        userRepository.follow(followerId, followingId);
+        userDAO.follow(followerId, followingId);
     }
 
     public void unfollow(Long followerId, Long followingId) {
-        userRepository.unfollow(followerId, followingId);
+        userDAO.unfollow(followerId, followingId);
     }
 
     public Boolean isFollowing(Long followerId, Long followingId) {
-        return userRepository.isFollowing(followerId, followingId);
+        return userDAO.isFollowing(followerId, followingId);
     }
 
     public List<UserEntity> following(Long followerId, Long limit, Long offset) {
-        return userRepository.following(followerId, limit, offset);
+        return userDAO.following(followerId, limit, offset);
     }
 
     public Long followingCount(Long followerId) {
-        return userRepository.followingCount(followerId);
+        return userDAO.followingCount(followerId);
     }
 
     public List<UserEntity> follower(Long followingId, Long limit, Long offset) {
-        return userRepository.follower(followingId, limit, offset);
+        return userDAO.follower(followingId, limit, offset);
     }
 
     public Long followerCount(Long followingId) {
-        return userRepository.followerCount(followingId);
+        return userDAO.followerCount(followingId);
     }
 }

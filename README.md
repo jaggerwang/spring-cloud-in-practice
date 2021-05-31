@@ -1,6 +1,6 @@
 # Spring Cloud in Practice
 
-This project can be used as a starter for spring cloud micro services development. It is the micro services version of [Spring Boot in Practice](https://github.com/jaggerwang/spring-boot-in-practice). It use [Spring Cloud Consul](https://cloud.spring.io/spring-cloud-consul/reference/html/) for service discovery, [Spring Cloud Gateway](https://cloud.spring.io/spring-cloud-gateway/reference/html/) to implement api gateway, and [ORY/Hydra](https://github.com/ory/hydra) for running an optional OAuth2 server. The graphql api service exposed by gateway can be used as the backend api service for this flutter app [Flutter in Practice](https://github.com/jaggerwang/flutter-in-practice). There is an article [Spring Cloud 微服务开发指南](https://blog.jaggerwang.net/spring-cloud-micro-service-develop-tour/) for learning this project.
+This project can be used as a starter for spring cloud micro services development. It is the micro services version of [Spring Boot in Practice](https://github.com/jaggerwang/spring-boot-in-practice). It use [Spring Cloud Consul](https://cloud.spring.io/spring-cloud-consul/reference/html/) for service discovery, [Spring Cloud Gateway](https://cloud.spring.io/spring-cloud-gateway/reference/html/) to implement api gateway, and [ORY/Hydra](https://github.com/ory/hydra) for running an optional OAuth2 server. The apis exposed by gateway can be used as the backend api service for this flutter app [Flutter in Practice](https://github.com/jaggerwang/flutter-in-practice). There is an article [Spring Cloud 微服务开发指南](https://blog.jaggerwang.net/spring-cloud-micro-service-develop-tour/) for learning this project.
 
 ## Dependent frameworks and packages
 
@@ -27,8 +27,6 @@ This project can be used as a starter for spring cloud micro services developmen
 
 ## APIs
 
-### Rest
-
 | Path  | Method | Description |
 | ------------- | ------------- | ------------- |
 | /auth/login | POST | Login |
@@ -54,44 +52,6 @@ This project can be used as a starter for spring cloud micro services developmen
 | /file/info | GET | Get file meta info |
 
 The rest api service only return top objects, not return nested objects compared to the original monolith one.
-
-### GraphQL
-
-```graphql
-type Query {
-    authLogout: User
-    authLogged: User
-    userInfo(id: Int!): User!
-    userFollowing(userId: Int, limit: Int, offset: Int): [User!]!
-    userFollowingCount(userId: Int): Int!
-    userFollower(userId: Int, limit: Int, offset: Int): [User!]!
-    userFollowerCount(userId: Int): Int!
-
-    postInfo(id: Int!): Post!
-    postPublished(userId: Int, limit: Int, offset: Int): [Post!]!
-    postPublishedCount(userId: Int): Int!
-    postLiked(userId: Int, limit: Int, offset: Int): [Post!]!
-    postLikedCount(userId: Int): Int!
-    postFollowing(limit: Int, beforeId: Int, afterId: Int): [Post!]!
-    postFollowingCount: Int!
-
-    fileInfo(id: Int!): File!
-}
-
-type Mutation {
-    authLogin(user: UserInput!): User!
-    userRegister(user: UserInput!): User!
-    userModify(user: UserInput!, code: String): User!
-    userSendMobileVerifyCode(type: String!, mobile: String!): String!
-    userFollow(userId: Int!): Boolean!
-    userUnfollow(userId: Int!): Boolean!
-
-    postPublish(post: PostInput!): Post!
-    postDelete(id: Int!): Boolean!
-    postLike(postId: Int!): Boolean!
-    postUnlike(postId: Int!): Boolean!
-}
-```
 
 ## How to run
 
@@ -218,4 +178,4 @@ It will auto open `http://localhost:4446` to commence OAuth2 authorize flow.
 
 The gateway can also be used as an OAuth2 client, open login page at `http://localhost:8080/login` to commence an OAuth2 authorization flow.
 
-> Right now there is a bug which make OAuth2 login not working, you need remove config `exceptionHandling` in `net.jaggerwang.scip.gateway.api.config.SecurityConfig`.
+> Right now there is a bug which make OAuth2 login not working, you need remove config `exceptionHandling` in `net.jaggerwang.scip.gateway.adapter.api.config.SecurityConfig`.
