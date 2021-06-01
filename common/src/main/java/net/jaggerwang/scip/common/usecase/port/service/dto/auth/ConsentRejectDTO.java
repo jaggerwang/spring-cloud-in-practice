@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginRejectDto {
+public class ConsentRejectDTO {
     private String error;
 
     @JsonProperty("error_description")

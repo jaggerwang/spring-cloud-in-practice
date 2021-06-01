@@ -4,23 +4,23 @@ import net.jaggerwang.scip.common.usecase.port.service.dto.auth.*;
 import reactor.core.publisher.Mono;
 
 public interface HydraAsyncService {
-    Mono<LoginRequestDto> getLoginRequest(String challenge);
+    Mono<LoginRequestDTO> getLoginRequest(String challenge);
 
-    Mono<String> directlyAcceptLoginRequest(String challenge, LoginAcceptDto accept);
+    Mono<String> directlyAcceptLoginRequest(String challenge, LoginAcceptDTO accept);
 
-    Mono<String> acceptLoginRequest(String challenge, LoginAcceptDto accept);
+    Mono<String> acceptLoginRequest(String challenge, LoginAcceptDTO accept);
 
-    Mono<String> rejectLoginRequest(String challenge, LoginRejectDto reject);
+    Mono<String> rejectLoginRequest(String challenge, LoginRejectDTO reject);
 
-    Mono<ConsentRequestDto> getConsentRequest(String challenge);
+    Mono<ConsentRequestDTO> getConsentRequest(String challenge);
 
-    Mono<String> directlyAcceptConsentRequest(String challenge, ConsentAcceptDto accept);
+    Mono<String> directlyAcceptConsentRequest(String challenge, ConsentAcceptDTO accept);
 
-    Mono<String> acceptConsentRequest(String challenge, ConsentAcceptDto accept);
+    Mono<String> acceptConsentRequest(String challenge, ConsentAcceptDTO accept);
 
-    Mono<String> rejectConsentRequest(String challenge, ConsentRejectDto reject);
+    Mono<String> rejectConsentRequest(String challenge, ConsentRejectDTO reject);
 
-    Mono<LogoutRequestDto> getLogoutRequest(String challenge);
+    Mono<LogoutRequestDTO> getLogoutRequest(String challenge);
 
     Mono<String> acceptLogoutRequest(String challenge);
 

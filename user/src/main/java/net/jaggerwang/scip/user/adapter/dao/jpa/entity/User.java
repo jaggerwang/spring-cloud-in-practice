@@ -7,12 +7,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
-import javax.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.jaggerwang.scip.common.entity.UserEntity;
+import net.jaggerwang.scip.common.entity.UserBO;
 
 @Entity
 @Data
@@ -43,15 +43,15 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static User fromEntity(UserEntity userEntity) {
-        return User.builder().id(userEntity.getId()).username(userEntity.getUsername())
-                .password(userEntity.getPassword()).mobile(userEntity.getMobile()).email(userEntity.getEmail())
-                .avatarId(userEntity.getAvatarId()).intro(userEntity.getIntro()).createdAt(userEntity.getCreatedAt())
-                .updatedAt(userEntity.getUpdatedAt()).build();
+    public static User fromEntity(UserBO userBO) {
+        return User.builder().id(userBO.getId()).username(userBO.getUsername())
+                .password(userBO.getPassword()).mobile(userBO.getMobile()).email(userBO.getEmail())
+                .avatarId(userBO.getAvatarId()).intro(userBO.getIntro()).createdAt(userBO.getCreatedAt())
+                .updatedAt(userBO.getUpdatedAt()).build();
     }
 
-    public UserEntity toEntity() {
-        return UserEntity.builder().id(id).username(username).password(password).mobile(mobile).email(email)
+    public UserBO toEntity() {
+        return UserBO.builder().id(id).username(username).password(password).mobile(mobile).email(email)
                 .avatarId(avatarId).intro(intro).createdAt(createdAt).updatedAt(updatedAt).build();
     }
 

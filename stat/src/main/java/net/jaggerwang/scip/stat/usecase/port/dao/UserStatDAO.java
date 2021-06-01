@@ -2,12 +2,12 @@ package net.jaggerwang.scip.stat.usecase.port.dao;
 
 import java.util.Optional;
 
-import net.jaggerwang.scip.common.entity.UserStatEntity;
+import net.jaggerwang.scip.common.entity.UserStatBO;
 
 public interface UserStatDAO {
-    UserStatEntity save(UserStatEntity userStatEntity);
+    UserStatBO save(UserStatBO userStatBO);
 
-    Optional<UserStatEntity> findById(Long id);
+    Optional<UserStatBO> findById(Long id);
 
-    Optional<UserStatEntity> findByUserId(Long userId);
+    Optional<UserStatBO> findByUserId(Long userId);
 }

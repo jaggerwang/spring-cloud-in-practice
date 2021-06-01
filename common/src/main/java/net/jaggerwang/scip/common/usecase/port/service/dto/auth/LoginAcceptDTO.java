@@ -10,9 +10,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConsentRejectDto {
-    private String error;
+public class LoginAcceptDTO {
+    private String subject;
 
-    @JsonProperty("error_description")
-    private String errorDescription;
+    @Builder.Default
+    private Boolean remember = false;
+
+    @JsonProperty("remember_for")
+    @Builder.Default
+    private Integer rememberFor = 3600;
+
+    private String acr;
 }

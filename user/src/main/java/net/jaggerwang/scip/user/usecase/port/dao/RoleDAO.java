@@ -3,16 +3,16 @@ package net.jaggerwang.scip.user.usecase.port.dao;
 import java.util.List;
 import java.util.Optional;
 
-import net.jaggerwang.scip.common.entity.RoleEntity;
+import net.jaggerwang.scip.common.entity.RoleBO;
 
 public interface RoleDAO {
-    RoleEntity save(RoleEntity userEntity);
+    RoleBO save(RoleBO userEntity);
 
-    Optional<RoleEntity> findById(Long id);
+    Optional<RoleBO> findById(Long id);
 
-    Optional<RoleEntity> findByName(String name);
+    Optional<RoleBO> findByName(String name);
 
-    List<RoleEntity> rolesOfUser(Long userId);
+    List<RoleBO> rolesOfUser(Long userId);
 
-    List<RoleEntity> rolesOfUser(String username);
+    List<RoleBO> rolesOfUser(String username);
 }

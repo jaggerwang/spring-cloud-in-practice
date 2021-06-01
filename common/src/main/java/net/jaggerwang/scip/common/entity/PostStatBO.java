@@ -8,10 +8,13 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleEntity {
+public class PostStatBO {
     private Long id;
 
-    private String name;
+    private Long postId;
+
+    @Builder.Default
+    private Long likeCount = 0L;
 
     private LocalDateTime createdAt;
 

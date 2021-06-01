@@ -7,12 +7,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
-import javax.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.jaggerwang.scip.common.entity.RoleEntity;
+import net.jaggerwang.scip.common.entity.RoleBO;
 
 @Entity
 @Data
@@ -32,13 +32,13 @@ public class Role {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static Role fromEntity(RoleEntity roleEntity) {
-        return Role.builder().id(roleEntity.getId()).name(roleEntity.getName()).createdAt(roleEntity.getCreatedAt())
-                .updatedAt(roleEntity.getUpdatedAt()).build();
+    public static Role fromEntity(RoleBO roleBO) {
+        return Role.builder().id(roleBO.getId()).name(roleBO.getName()).createdAt(roleBO.getCreatedAt())
+                .updatedAt(roleBO.getUpdatedAt()).build();
     }
 
-    public RoleEntity toEntity() {
-        return RoleEntity.builder().id(id).name(name).createdAt(createdAt).updatedAt(updatedAt).build();
+    public RoleBO toEntity() {
+        return RoleBO.builder().id(id).name(name).createdAt(createdAt).updatedAt(updatedAt).build();
     }
 
     @PrePersist

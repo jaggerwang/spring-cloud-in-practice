@@ -1,10 +1,10 @@
 package net.jaggerwang.scip.user.adapter.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
 import net.jaggerwang.scip.common.usecase.port.service.FileSyncService;
 import net.jaggerwang.scip.common.usecase.port.service.StatSyncService;
-import net.jaggerwang.scip.common.entity.UserEntity;
+import net.jaggerwang.scip.common.entity.UserBO;
 import net.jaggerwang.scip.user.usecase.UserUsecase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -34,8 +34,8 @@ abstract public class AbstractController {
         return Long.parseLong(xUserId);
     }
 
-    protected Map<String, Object> fullUserDto(UserEntity userEntity) {
-        var userDto = UserDto.fromEntity(userEntity);
+    protected Map<String, Object> fullUserDto(UserBO userBO) {
+        var userDto = UserDTO.fromEntity(userBO);
         var m = objectMapper.convertValue(userDto, Map.class);
 
         if (userDto.getAvatarId() != null) {

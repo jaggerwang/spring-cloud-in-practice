@@ -1,7 +1,7 @@
 package net.jaggerwang.scip.common.adapter.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.jaggerwang.scip.common.usecase.port.service.dto.PostDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.PostDTO;
 import net.jaggerwang.scip.common.usecase.port.service.PostSyncService;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.web.client.RestTemplate;
@@ -22,10 +22,10 @@ public class PostSyncServiceImpl extends InternalSyncService implements PostSync
     }
 
     @Override
-    public PostDto info(Long id) {
+    public PostDTO info(Long id) {
         var params = new HashMap<String, String>();
         params.put("id", id.toString());
         var response = getData("/post/info", params);
-        return objectMapper.convertValue(response.get("post"), PostDto.class);
+        return objectMapper.convertValue(response.get("post"), PostDTO.class);
     }
 }

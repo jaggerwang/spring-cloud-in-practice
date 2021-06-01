@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.jaggerwang.scip.common.entity.PostStatEntity;
+import net.jaggerwang.scip.common.entity.PostStatBO;
 
 @Entity
 @Table(name = "post_stat")
@@ -37,14 +37,14 @@ public class PostStat {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static PostStat fromEntity(PostStatEntity fileEntity) {
+    public static PostStat fromEntity(PostStatBO fileEntity) {
         return PostStat.builder().id(fileEntity.getId()).postId(fileEntity.getPostId())
                 .likeCount(fileEntity.getLikeCount()).createdAt(fileEntity.getCreatedAt())
                 .updatedAt(fileEntity.getUpdatedAt()).build();
     }
 
-    public PostStatEntity toEntity() {
-        return PostStatEntity.builder().id(id).postId(postId).likeCount(likeCount)
+    public PostStatBO toEntity() {
+        return PostStatBO.builder().id(id).postId(postId).likeCount(likeCount)
                 .createdAt(createdAt).updatedAt(updatedAt).build();
     }
 

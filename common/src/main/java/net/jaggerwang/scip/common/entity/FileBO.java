@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileEntity {
+public class FileBO {
     public static enum Region {
         LOCAL
     }

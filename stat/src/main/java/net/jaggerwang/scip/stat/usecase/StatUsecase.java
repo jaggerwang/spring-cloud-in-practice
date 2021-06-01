@@ -1,8 +1,8 @@
 package net.jaggerwang.scip.stat.usecase;
 
 import java.time.LocalDateTime;
-import net.jaggerwang.scip.common.entity.PostStatEntity;
-import net.jaggerwang.scip.common.entity.UserStatEntity;
+import net.jaggerwang.scip.common.entity.PostStatBO;
+import net.jaggerwang.scip.common.entity.UserStatBO;
 import net.jaggerwang.scip.stat.usecase.port.dao.PostStatDAO;
 import net.jaggerwang.scip.stat.usecase.port.dao.UserStatDAO;
 
@@ -17,9 +17,9 @@ public class StatUsecase {
         this.postStatDAO = postStatDAO;
     }
 
-    public UserStatEntity userStatInfoByUserId(Long userId) {
+    public UserStatBO userStatInfoByUserId(Long userId) {
         var userStatEntity = userStatDAO.findByUserId(userId);
-        return userStatEntity.orElseGet(() -> UserStatEntity.builder()
+        return userStatEntity.orElseGet(() -> UserStatBO.builder()
                 .id(0L)
                 .userId(userId)
                 .createdAt(LocalDateTime.now())
@@ -27,9 +27,9 @@ public class StatUsecase {
 
     }
 
-    public PostStatEntity postStatInfoByPostId(Long postId) {
+    public PostStatBO postStatInfoByPostId(Long postId) {
         var postStatEntity = postStatDAO.findByPostId(postId);
-        return postStatEntity.orElseGet(() -> PostStatEntity.builder()
+        return postStatEntity.orElseGet(() -> PostStatBO.builder()
                 .id(0L)
                 .postId(postId)
                 .createdAt(LocalDateTime.now())

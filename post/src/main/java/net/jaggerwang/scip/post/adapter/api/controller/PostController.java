@@ -4,8 +4,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import net.jaggerwang.scip.common.usecase.port.service.dto.PostDto;
-import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.PostDTO;
+import net.jaggerwang.scip.common.usecase.port.service.dto.RootDTO;
 import net.jaggerwang.scip.common.usecase.exception.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,21 +13,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import net.jaggerwang.scip.common.entity.PostEntity;
+import net.jaggerwang.scip.common.entity.PostBO;
 
 @RestController
 @RequestMapping("/post")
 public class PostController extends AbstractController {
     @PostMapping("/publish")
-    public RootDto publish(@RequestBody PostEntity postInput) {
+    public RootDTO publish(@RequestBody PostBO postInput) {
         postInput.setUserId(loggedUserId());
         var postEntity = postUsecase.publish(postInput);
 
-        return new RootDto().addDataEntry("post", PostDto.fromEntity(postEntity));
+        return new RootDTO().addDataEntry("post", PostDTO.fromEntity(postEntity));
     }
 
     @PostMapping("/delete")
-    public RootDto delete(@RequestBody Map<String, Object> input) {
+    public RootDTO delete(@RequestBody Map<String, Object> input) {
         var id = objectMapper.convertValue(input.get("id"), Long.class);
 
         var postEntity = postUsecase.info(id);
@@ -40,92 +40,92 @@ public class PostController extends AbstractController {
 
         postUsecase.delete(id);
 
-        return new RootDto();
+        return new RootDTO();
     }
 
     @GetMapping("/info")
-    public RootDto info(@RequestParam Long id) {
+    public RootDTO info(@RequestParam Long id) {
         var postEntity = postUsecase.info(id);
         if (postEntity.isEmpty()) {
             throw new NotFoundException("动态未找到");
         }
 
-        return new RootDto().addDataEntry("post", postEntity.map(PostDto::fromEntity).get());
+        return new RootDTO().addDataEntry("post", postEntity.map(PostDTO::fromEntity).get());
     }
 
     @GetMapping("/published")
-    public RootDto published(@RequestParam(required = false) Long userId,
+    public RootDTO published(@RequestParam(required = false) Long userId,
                              @RequestParam(defaultValue = "10") Long limit,
                              @RequestParam(defaultValue = "0") Long offset) {
         var postEntities = postUsecase.published(userId, limit, offset);
 
-        return new RootDto().addDataEntry("posts", postEntities.stream()
-                .map(PostDto::fromEntity).collect(Collectors.toList()));
+        return new RootDTO().addDataEntry("posts", postEntities.stream()
+                .map(PostDTO::fromEntity).collect(Collectors.toList()));
     }
 
     @GetMapping("/publishedCount")
-    public RootDto publishedCount(@RequestParam(required = false) Long userId) {
+    public RootDTO publishedCount(@RequestParam(required = false) Long userId) {
         var count = postUsecase.publishedCount(userId);
 
-        return new RootDto().addDataEntry("count", count);
+        return new RootDTO().addDataEntry("count", count);
     }
 
     @PostMapping("/like")
-    public RootDto like(@RequestBody Map<String, Object> input) {
+    public RootDTO like(@RequestBody Map<String, Object> input) {
         var postId = objectMapper.convertValue(input.get("postId"), Long.class);
 
         postUsecase.like(loggedUserId(), postId);
 
-        return new RootDto();
+        return new RootDTO();
     }
 
     @PostMapping("/unlike")
-    public RootDto unlike(@RequestBody Map<String, Object> input) {
+    public RootDTO unlike(@RequestBody Map<String, Object> input) {
         var postId = objectMapper.convertValue(input.get("postId"), Long.class);
 
         postUsecase.unlike(loggedUserId(), postId);
 
-        return new RootDto();
+        return new RootDTO();
     }
 
     @GetMapping("/isLiked")
-    public RootDto isLiked(@RequestParam Long postId) {
+    public RootDTO isLiked(@RequestParam Long postId) {
         var isLiked = postUsecase.isLiked(loggedUserId(), postId);
 
-        return new RootDto().addDataEntry("isLiked", isLiked);
+        return new RootDTO().addDataEntry("isLiked", isLiked);
     }
 
     @GetMapping("/liked")
-    public RootDto liked(@RequestParam(required = false) Long userId,
+    public RootDTO liked(@RequestParam(required = false) Long userId,
                          @RequestParam(defaultValue = "10") Long limit,
                          @RequestParam(defaultValue = "0") Long offset) {
         var postEntities = postUsecase.liked(userId, limit, offset);
 
-        return new RootDto().addDataEntry("posts", postEntities.stream()
-                .map(PostDto::fromEntity).collect(Collectors.toList()));
+        return new RootDTO().addDataEntry("posts", postEntities.stream()
+                .map(PostDTO::fromEntity).collect(Collectors.toList()));
     }
 
     @GetMapping("/likedCount")
-    public RootDto likedCount(@RequestParam(required = false) Long userId) {
+    public RootDTO likedCount(@RequestParam(required = false) Long userId) {
         var count = postUsecase.likedCount(userId);
 
-        return new RootDto().addDataEntry("count", count);
+        return new RootDTO().addDataEntry("count", count);
     }
 
     @GetMapping("/following")
-    public RootDto following(@RequestParam(defaultValue = "10") Long limit,
+    public RootDTO following(@RequestParam(defaultValue = "10") Long limit,
                              @RequestParam(required = false) Long beforeId,
                              @RequestParam(required = false) Long afterId) {
         var postEntities = postUsecase.following(loggedUserId(), limit, beforeId, afterId);
 
-        return new RootDto().addDataEntry("posts", postEntities.stream()
-                .map(PostDto::fromEntity).collect(Collectors.toList()));
+        return new RootDTO().addDataEntry("posts", postEntities.stream()
+                .map(PostDTO::fromEntity).collect(Collectors.toList()));
     }
 
     @GetMapping("/followingCount")
-    public RootDto followingCount() {
+    public RootDTO followingCount() {
         var count = postUsecase.followingCount(loggedUserId());
 
-        return new RootDto().addDataEntry("count", count);
+        return new RootDTO().addDataEntry("count", count);
     }
 }

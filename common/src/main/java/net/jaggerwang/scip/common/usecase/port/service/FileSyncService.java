@@ -1,11 +1,11 @@
 package net.jaggerwang.scip.common.usecase.port.service;
 
-import net.jaggerwang.scip.common.usecase.port.service.dto.FileDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.FileDTO;
 
 import java.util.List;
 
 public interface FileSyncService {
-    FileDto info(Long id);
+    FileDTO info(Long id);
 
-    List<FileDto> infos(List<Long> ids, Boolean keepNull);
+    List<FileDTO> infos(List<Long> ids, Boolean keepNull);
 }

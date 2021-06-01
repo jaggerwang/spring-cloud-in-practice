@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.jaggerwang.scip.common.entity.UserStatEntity;
+import net.jaggerwang.scip.common.entity.UserStatBO;
 
 @Entity
 @Table(name = "user_stat")
@@ -46,7 +46,7 @@ public class UserStat {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static UserStat fromEntity(UserStatEntity fileEntity) {
+    public static UserStat fromEntity(UserStatBO fileEntity) {
         return UserStat.builder().id(fileEntity.getId()).userId(fileEntity.getUserId())
                 .postCount(fileEntity.getPostCount()).likeCount(fileEntity.getLikeCount())
                 .followingCount(fileEntity.getFollowingCount())
@@ -54,8 +54,8 @@ public class UserStat {
                 .updatedAt(fileEntity.getUpdatedAt()).build();
     }
 
-    public UserStatEntity toEntity() {
-        return UserStatEntity.builder().id(id).userId(userId).postCount(postCount)
+    public UserStatBO toEntity() {
+        return UserStatBO.builder().id(id).userId(userId).postCount(postCount)
                 .likeCount(likeCount).followingCount(followingCount).followerCount(followerCount)
                 .createdAt(createdAt).updatedAt(updatedAt).build();
     }

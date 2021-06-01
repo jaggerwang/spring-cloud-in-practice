@@ -15,13 +15,13 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ConsentRequestDto {
+public class LoginRequestDTO {
     @Builder.Default
     private Boolean skip = false;
 
     private String subject;
 
-    private ClientDto client;
+    private ClientDTO client;
 
     @JsonProperty("request_url")
     private String requestUrl;
@@ -29,10 +29,6 @@ public class ConsentRequestDto {
     @JsonProperty("requested_scope")
     @Builder.Default
     private List<String> requestedScope = List.of();
-
-    @JsonProperty("requested_access_token_audience")
-    @Builder.Default
-    private List<String> requestedAccessTokenAudience = List.of();
 
     @JsonProperty("oidc_context")
     @Builder.Default

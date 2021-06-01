@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.jaggerwang.scip.common.entity.UserStatEntity;
+import net.jaggerwang.scip.common.entity.UserStatBO;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserStatDto {
+public class UserStatDTO {
     private Long id;
 
     private Long userId;
@@ -33,17 +33,17 @@ public class UserStatDto {
 
     private LocalDateTime updatedAt;
 
-    public static UserStatDto fromEntity(UserStatEntity userStatEntity) {
-        return UserStatDto.builder().id(userStatEntity.getId()).userId(userStatEntity.getUserId())
-                .postCount(userStatEntity.getPostCount()).likeCount(userStatEntity.getLikeCount())
-                .followingCount(userStatEntity.getFollowingCount())
-                .followerCount(userStatEntity.getFollowerCount())
-                .createdAt(userStatEntity.getCreatedAt()).updatedAt(userStatEntity.getUpdatedAt())
+    public static UserStatDTO fromEntity(UserStatBO userStatBO) {
+        return UserStatDTO.builder().id(userStatBO.getId()).userId(userStatBO.getUserId())
+                .postCount(userStatBO.getPostCount()).likeCount(userStatBO.getLikeCount())
+                .followingCount(userStatBO.getFollowingCount())
+                .followerCount(userStatBO.getFollowerCount())
+                .createdAt(userStatBO.getCreatedAt()).updatedAt(userStatBO.getUpdatedAt())
                 .build();
     }
 
-    public UserStatEntity toEntity() {
-        return UserStatEntity.builder().id(id).userId(userId).postCount(postCount)
+    public UserStatBO toEntity() {
+        return UserStatBO.builder().id(id).userId(userId).postCount(postCount)
                 .likeCount(likeCount).followingCount(followingCount).followerCount(followerCount)
                 .createdAt(createdAt).updatedAt(updatedAt).build();
     }

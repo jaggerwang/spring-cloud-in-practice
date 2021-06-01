@@ -3,28 +3,28 @@ package net.jaggerwang.scip.user.usecase.port.dao;
 import java.util.List;
 import java.util.Optional;
 
-import net.jaggerwang.scip.common.entity.UserEntity;
+import net.jaggerwang.scip.common.entity.UserBO;
 
 public interface UserDAO {
-    UserEntity save(UserEntity userEntity);
+    UserBO save(UserBO userBO);
 
-    Optional<UserEntity> findById(Long id);
+    Optional<UserBO> findById(Long id);
 
-    Optional<UserEntity> findByUsername(String username);
+    Optional<UserBO> findByUsername(String username);
 
-    Optional<UserEntity> findByMobile(String mobile);
+    Optional<UserBO> findByMobile(String mobile);
 
-    Optional<UserEntity> findByEmail(String email);
+    Optional<UserBO> findByEmail(String email);
 
     void follow(Long followerId, Long followingId);
 
     void unfollow(Long followerId, Long followingId);
 
-    List<UserEntity> following(Long followerId, Long limit, Long offset);
+    List<UserBO> following(Long followerId, Long limit, Long offset);
 
     Long followingCount(Long followerId);
 
-    List<UserEntity> follower(Long followingId, Long limit, Long offset);
+    List<UserBO> follower(Long followingId, Long limit, Long offset);
 
     Long followerCount(Long followingId);
 

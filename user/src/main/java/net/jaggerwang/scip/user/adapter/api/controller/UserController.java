@@ -4,29 +4,29 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import net.jaggerwang.scip.common.usecase.port.service.dto.RoleDto;
-import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.RoleDTO;
+import net.jaggerwang.scip.common.usecase.port.service.dto.RootDTO;
 import net.jaggerwang.scip.common.usecase.exception.*;
-import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
-import net.jaggerwang.scip.common.entity.UserEntity;
+import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
+import net.jaggerwang.scip.common.entity.UserBO;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
 public class UserController extends AbstractController {
     @PostMapping("/register")
-    public RootDto register(@RequestBody UserDto userDto) {
+    public RootDTO register(@RequestBody UserDTO userDto) {
         var userEntity = userUsecase.register(userDto.toEntity());
 
-        return new RootDto().addDataEntry("user", UserDto.fromEntity(userEntity));
+        return new RootDTO().addDataEntry("user", UserDTO.fromEntity(userEntity));
     }
 
     @GetMapping("/verifyPassword")
-    public RootDto verifyPassword(@RequestParam(required = false) String username,
+    public RootDTO verifyPassword(@RequestParam(required = false) String username,
                                   @RequestParam(required = false) String mobile,
                                   @RequestParam(required = false) String email,
                                   @RequestParam String password) {
-        Optional<UserEntity> userEntity;
+        Optional<UserBO> userEntity;
         if (username != null) {
             userEntity = userUsecase.infoByUsername(username);
         } else if (mobile != null) {
@@ -42,12 +42,12 @@ public class UserController extends AbstractController {
             throw new UsecaseException("用户名或密码错误");
         }
 
-        return new RootDto().addDataEntry("user", UserDto.fromEntity(userEntity.get()));
+        return new RootDTO().addDataEntry("user", UserDTO.fromEntity(userEntity.get()));
     }
 
     @PostMapping("/modify")
-    public RootDto modify(@RequestBody Map<String, Object> input) {
-        var userDto = objectMapper.convertValue(input.get("user"), UserDto.class);
+    public RootDTO modify(@RequestBody Map<String, Object> input) {
+        var userDto = objectMapper.convertValue(input.get("user"), UserDTO.class);
         var code = objectMapper.convertValue(input.get("code"), String.class);
 
         if ((userDto.getMobile() != null
@@ -59,139 +59,139 @@ public class UserController extends AbstractController {
 
         var userEntity = userUsecase.modify(loggedUserId(), userDto.toEntity());
 
-        return new RootDto().addDataEntry("user", UserDto.fromEntity(userEntity));
+        return new RootDTO().addDataEntry("user", UserDTO.fromEntity(userEntity));
     }
 
     @GetMapping("/info")
-    public RootDto info(@RequestParam Long id,
+    public RootDTO info(@RequestParam Long id,
                         @RequestParam(defaultValue = "false") Boolean full) {
         var userEntity = userUsecase.info(id);
         if (userEntity.isEmpty()) {
             throw new NotFoundException("用户未找到");
         }
 
-        return new RootDto().addDataEntry("user",
-                full ? fullUserDto(userEntity.get()) : UserDto.fromEntity(userEntity.get()));
+        return new RootDTO().addDataEntry("user",
+                full ? fullUserDto(userEntity.get()) : UserDTO.fromEntity(userEntity.get()));
     }
 
     @GetMapping("/infoByUsername")
-    public RootDto infoByUsername(@RequestParam String username,
-                        @RequestParam(defaultValue = "false") Boolean withPassword) {
+    public RootDTO infoByUsername(@RequestParam String username,
+                                  @RequestParam(defaultValue = "false") Boolean withPassword) {
         var userEntity = userUsecase.infoByUsername(username);
         if (userEntity.isEmpty()) {
             throw new NotFoundException("用户未找到");
         }
 
-        return new RootDto().addDataEntry("user",
-                UserDto.fromEntity(userEntity.get(), withPassword));
+        return new RootDTO().addDataEntry("user",
+                UserDTO.fromEntity(userEntity.get(), withPassword));
     }
 
     @GetMapping("/infoByMobile")
-    public RootDto infoByMobile(@RequestParam String mobile,
+    public RootDTO infoByMobile(@RequestParam String mobile,
                                 @RequestParam(defaultValue = "false") Boolean withPassword) {
         var userEntity = userUsecase.infoByMobile(mobile);
         if (userEntity.isEmpty()) {
             throw new NotFoundException("用户未找到");
         }
 
-        return new RootDto().addDataEntry("user",
-                UserDto.fromEntity(userEntity.get(), withPassword));
+        return new RootDTO().addDataEntry("user",
+                UserDTO.fromEntity(userEntity.get(), withPassword));
     }
 
     @GetMapping("/infoByEmail")
-    public RootDto infoByEmail(@RequestParam String email,
+    public RootDTO infoByEmail(@RequestParam String email,
                                @RequestParam(defaultValue = "false") Boolean withPassword) {
         var userEntity = userUsecase.infoByEmail(email);
         if (userEntity.isEmpty()) {
             throw new NotFoundException("用户未找到");
         }
 
-        return new RootDto().addDataEntry("user",
-                UserDto.fromEntity(userEntity.get(), withPassword));
+        return new RootDTO().addDataEntry("user",
+                UserDTO.fromEntity(userEntity.get(), withPassword));
     }
 
     @GetMapping("/roles")
-    public RootDto roles(@RequestParam String username) {
+    public RootDTO roles(@RequestParam String username) {
         var roleEntities = userUsecase.roles(username);
 
-        return new RootDto().addDataEntry("roles",
-                roleEntities.stream().map(RoleDto::fromEntity).collect(Collectors.toList()));
+        return new RootDTO().addDataEntry("roles",
+                roleEntities.stream().map(RoleDTO::fromEntity).collect(Collectors.toList()));
     }
 
     @PostMapping("/follow")
-    public RootDto follow(@RequestBody Map<String, Object> input) {
+    public RootDTO follow(@RequestBody Map<String, Object> input) {
         var userId = objectMapper.convertValue(input.get("userId"), Long.class);
         userUsecase.follow(loggedUserId(), userId);
 
-        return new RootDto();
+        return new RootDTO();
     }
 
     @PostMapping("/unfollow")
-    public RootDto unfollow(@RequestBody Map<String, Object> input) {
+    public RootDTO unfollow(@RequestBody Map<String, Object> input) {
         var userId = objectMapper.convertValue(input.get("userId"), Long.class);
         userUsecase.unfollow(loggedUserId(), userId);
 
-        return new RootDto();
+        return new RootDTO();
     }
 
     @GetMapping("/isFollowing")
-    public RootDto isFollowing(@RequestParam Long userId) {
+    public RootDTO isFollowing(@RequestParam Long userId) {
         var isFollowing = userUsecase.isFollowing(loggedUserId(), userId);
 
-        return new RootDto().addDataEntry("isFollowing", isFollowing);
+        return new RootDTO().addDataEntry("isFollowing", isFollowing);
     }
 
     @GetMapping("/following")
-    public RootDto following(@RequestParam(required = false) Long userId,
+    public RootDTO following(@RequestParam(required = false) Long userId,
                              @RequestParam(defaultValue = "20") Long limit,
                              @RequestParam(defaultValue = "0") Long offset) {
         var userEntities = userUsecase.following(userId, limit, offset);
 
-        return new RootDto().addDataEntry("users", userEntities.stream()
-                .map(UserDto::fromEntity).collect(Collectors.toList()));
+        return new RootDTO().addDataEntry("users", userEntities.stream()
+                .map(UserDTO::fromEntity).collect(Collectors.toList()));
     }
 
     @GetMapping("/followingCount")
-    public RootDto followingCount(@RequestParam(required = false) Long userId) {
+    public RootDTO followingCount(@RequestParam(required = false) Long userId) {
         var count = userUsecase.followingCount(userId);
 
-        return new RootDto().addDataEntry("count", count);
+        return new RootDTO().addDataEntry("count", count);
     }
 
     @GetMapping("/follower")
-    public RootDto follower(@RequestParam(required = false) Long userId,
+    public RootDTO follower(@RequestParam(required = false) Long userId,
                             @RequestParam(defaultValue = "20") Long limit,
                             @RequestParam(defaultValue = "0") Long offset) {
         var userEntities = userUsecase.follower(userId, limit, offset);
 
-        return new RootDto().addDataEntry("users", userEntities.stream()
-                .map(UserDto::fromEntity).collect(Collectors.toList()));
+        return new RootDTO().addDataEntry("users", userEntities.stream()
+                .map(UserDTO::fromEntity).collect(Collectors.toList()));
     }
 
     @GetMapping("/followerCount")
-    public RootDto followerCount(@RequestParam(required = false) Long userId) {
+    public RootDTO followerCount(@RequestParam(required = false) Long userId) {
         var count = userUsecase.followerCount(userId);
 
-        return new RootDto().addDataEntry("count", count);
+        return new RootDTO().addDataEntry("count", count);
     }
 
     @PostMapping("/sendMobileVerifyCode")
-    public RootDto sendMobileVerifyCode(@RequestBody Map<String, Object> input) {
+    public RootDTO sendMobileVerifyCode(@RequestBody Map<String, Object> input) {
         var type = objectMapper.convertValue(input.get("type"), String.class);
         var mobile = objectMapper.convertValue(input.get("mobile"), String.class);
 
         var verifyCode = userUsecase.sendMobileVerifyCode(type, mobile);
 
-        return new RootDto().addDataEntry("verifyCode", verifyCode);
+        return new RootDTO().addDataEntry("verifyCode", verifyCode);
     }
 
     @PostMapping("/sendEmailVerifyCode")
-    public RootDto sendEmailVerifyCode(@RequestBody Map<String, Object> input) {
+    public RootDTO sendEmailVerifyCode(@RequestBody Map<String, Object> input) {
         var type = objectMapper.convertValue(input.get("type"), String.class);
         var email = objectMapper.convertValue(input.get("email"), String.class);
 
         var verifyCode = userUsecase.sendEmailVerifyCode(type, email);
 
-        return new RootDto().addDataEntry("verifyCode", verifyCode);
+        return new RootDTO().addDataEntry("verifyCode", verifyCode);
     }
 }

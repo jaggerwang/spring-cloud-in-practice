@@ -3,23 +3,23 @@ package net.jaggerwang.scip.common.usecase.port.service;
 import net.jaggerwang.scip.common.usecase.port.service.dto.auth.*;
 
 public interface HydraSyncService {
-    LoginRequestDto getLoginRequest(String challenge);
+    LoginRequestDTO getLoginRequest(String challenge);
 
-    String directlyAcceptLoginRequest(String challenge, LoginAcceptDto accept);
+    String directlyAcceptLoginRequest(String challenge, LoginAcceptDTO accept);
 
-    String acceptLoginRequest(String challenge, LoginAcceptDto accept);
+    String acceptLoginRequest(String challenge, LoginAcceptDTO accept);
 
-    String rejectLoginRequest(String challenge, LoginRejectDto reject);
+    String rejectLoginRequest(String challenge, LoginRejectDTO reject);
 
-    ConsentRequestDto getConsentRequest(String challenge);
+    ConsentRequestDTO getConsentRequest(String challenge);
 
-    String directlyAcceptConsentRequest(String challenge, ConsentAcceptDto accept);
+    String directlyAcceptConsentRequest(String challenge, ConsentAcceptDTO accept);
 
-    String acceptConsentRequest(String challenge, ConsentAcceptDto accept);
+    String acceptConsentRequest(String challenge, ConsentAcceptDTO accept);
 
-    String rejectConsentRequest(String challenge, ConsentRejectDto reject);
+    String rejectConsentRequest(String challenge, ConsentRejectDTO reject);
 
-    LogoutRequestDto getLogoutRequest(String challenge);
+    LogoutRequestDTO getLogoutRequest(String challenge);
 
     String acceptLogoutRequest(String challenge);
 

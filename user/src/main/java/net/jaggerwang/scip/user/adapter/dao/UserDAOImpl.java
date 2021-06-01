@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import net.jaggerwang.scip.user.adapter.dao.jpa.UserRepository;
 import net.jaggerwang.scip.user.adapter.dao.jpa.entity.QUser;
 import net.jaggerwang.scip.user.adapter.dao.jpa.entity.QUserFollow;
-import net.jaggerwang.scip.common.entity.UserEntity;
+import net.jaggerwang.scip.common.entity.UserBO;
 
 @Component
 public class UserDAOImpl implements UserDAO {
@@ -31,27 +31,27 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public UserEntity save(UserEntity userEntity) {
-        return userRepository.save(User.fromEntity(userEntity)).toEntity();
+    public UserBO save(UserBO userBO) {
+        return userRepository.save(User.fromEntity(userBO)).toEntity();
     }
 
     @Override
-    public Optional<UserEntity> findById(Long id) {
+    public Optional<UserBO> findById(Long id) {
         return userRepository.findById(id).map(User::toEntity);
     }
 
     @Override
-    public Optional<UserEntity> findByUsername(String username) {
+    public Optional<UserBO> findByUsername(String username) {
         return userRepository.findByUsername(username).map(User::toEntity);
     }
 
     @Override
-    public Optional<UserEntity> findByEmail(String email) {
+    public Optional<UserBO> findByEmail(String email) {
         return userRepository.findByEmail(email).map(User::toEntity);
     }
 
     @Override
-    public Optional<UserEntity> findByMobile(String mobile) {
+    public Optional<UserBO> findByMobile(String mobile) {
         return userRepository.findByMobile(mobile).map(User::toEntity);
     }
 
@@ -75,7 +75,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public List<UserEntity> following(Long followerId, Long limit, Long offset) {
+    public List<UserBO> following(Long followerId, Long limit, Long offset) {
         var query = followingQuery(followerId);
         query.orderBy(QUserFollow.userFollow.createdAt.desc());
         if (limit != null) {
@@ -103,7 +103,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public List<UserEntity> follower(Long followingId, Long limit, Long offset) {
+    public List<UserBO> follower(Long followingId, Long limit, Long offset) {
         var query = followerQuery(followingId);
         query.orderBy(QUserFollow.userFollow.createdAt.desc());
         if (limit != null) {

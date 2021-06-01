@@ -12,15 +12,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LogoutRequestDto {
-    private String subject;
+public class ClientDTO {
+    @JsonProperty("client_id")
+    private String id;
 
-    private String sid;
+    @JsonProperty("client_name")
+    private String name;
 
-    @JsonProperty("request_url")
-    private String requestUrl;
+    @JsonProperty("logo_uri")
+    private String logoUri;
 
-    @JsonProperty("rp_initiated")
-    @Builder.Default
-    private Boolean rpInitiated = false;
+    @JsonProperty("policy_uri")
+    private String policyUri;
+
+    @JsonProperty("tos_uri")
+    private String tosUri;
 }

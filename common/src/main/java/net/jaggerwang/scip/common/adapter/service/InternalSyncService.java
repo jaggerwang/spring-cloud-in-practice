@@ -2,7 +2,7 @@ package net.jaggerwang.scip.common.adapter.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.RootDTO;
 import net.jaggerwang.scip.common.usecase.exception.InternalApiException;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.http.HttpEntity;
@@ -28,14 +28,14 @@ public abstract class InternalSyncService extends SyncService {
         this.objectMapper = objectMapper;
     }
 
-    private ResponseEntity<RootDto> fallback(Throwable throwable) {
+    private ResponseEntity<RootDTO> fallback(Throwable throwable) {
         var status = HttpStatus.SERVICE_UNAVAILABLE;
-        var body = new RootDto("fail", throwable.toString());
+        var body = new RootDTO("fail", throwable.toString());
         if (throwable instanceof HttpStatusCodeException) {
             var sce = (HttpStatusCodeException) throwable;
             status = sce.getStatusCode();
             try {
-                body = objectMapper.readValue(sce.getResponseBodyAsString(), RootDto.class);
+                body = objectMapper.readValue(sce.getResponseBodyAsString(), RootDTO.class);
             } catch (JsonProcessingException e) {
             }
         } else {
@@ -44,7 +44,7 @@ public abstract class InternalSyncService extends SyncService {
         return ResponseEntity.status(status).body(body);
     }
 
-    private Map<String, Object> handleResponse(ResponseEntity<RootDto> response) {
+    private Map<String, Object> handleResponse(ResponseEntity<RootDTO> response) {
         if (!Objects.equals(response.getBody().getCode(), "ok")) {
             throw new InternalApiException(response.getStatusCode(), response.getBody().getCode(),
                     response.getBody().getMessage(), response.getBody().getData());
@@ -53,7 +53,7 @@ public abstract class InternalSyncService extends SyncService {
     }
 
     public Map<String, Object> getData(URI uri) {
-        var response = get(uri, null, RootDto.class, this::fallback);
+        var response = get(uri, null, RootDTO.class, this::fallback);
         return handleResponse(response);
     }
 
@@ -80,7 +80,7 @@ public abstract class InternalSyncService extends SyncService {
 
     public <T> Map<String, Object> postData(URI uri, @Nullable T body) {
         var requestEntity = new HttpEntity<>(body);
-        var response = post(uri, requestEntity, RootDto.class, this::fallback);
+        var response = post(uri, requestEntity, RootDTO.class, this::fallback);
         return handleResponse(response);
     }
 

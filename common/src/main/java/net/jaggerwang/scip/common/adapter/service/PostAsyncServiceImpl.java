@@ -3,7 +3,7 @@ package net.jaggerwang.scip.common.adapter.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.PostAsyncService;
-import net.jaggerwang.scip.common.usecase.port.service.dto.PostDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.PostDTO;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -27,9 +27,9 @@ public class PostAsyncServiceImpl extends InternalAsyncService implements PostAs
     }
 
     @Override
-    public Mono<PostDto> publish(PostDto postDto) {
+    public Mono<PostDTO> publish(PostDTO postDto) {
         return postData("/post/publish", postDto)
-                .map(data -> objectMapper.convertValue(data.get("post"), PostDto.class));
+                .map(data -> objectMapper.convertValue(data.get("post"), PostDTO.class));
     }
 
     @Override
@@ -39,13 +39,13 @@ public class PostAsyncServiceImpl extends InternalAsyncService implements PostAs
     }
 
     @Override
-    public Mono<PostDto> info(Long id) {
+    public Mono<PostDTO> info(Long id) {
         return getData("/post/info", Map.of("id", id.toString()))
-                .map(data -> objectMapper.convertValue(data.get("post"), PostDto.class));
+                .map(data -> objectMapper.convertValue(data.get("post"), PostDTO.class));
     }
 
     @Override
-    public Mono<List<PostDto>> published(@Nullable Long userId, @Nullable Long limit,
+    public Mono<List<PostDTO>> published(@Nullable Long userId, @Nullable Long limit,
                                          @Nullable Long offset) {
         var params = new HashMap<String, String>();
         if (userId != null) {
@@ -90,7 +90,7 @@ public class PostAsyncServiceImpl extends InternalAsyncService implements PostAs
     }
 
     @Override
-    public Mono<List<PostDto>> liked(@Nullable Long userId, @Nullable Long limit,
+    public Mono<List<PostDTO>> liked(@Nullable Long userId, @Nullable Long limit,
                                      @Nullable Long offset) {
         var params = new HashMap<String, String>();
         if (userId != null) {
@@ -117,7 +117,7 @@ public class PostAsyncServiceImpl extends InternalAsyncService implements PostAs
     }
 
     @Override
-    public Mono<List<PostDto>> following(@Nullable Long limit, @Nullable Long beforeId,
+    public Mono<List<PostDTO>> following(@Nullable Long limit, @Nullable Long beforeId,
                                          @Nullable Long afterId) {
         var params = new HashMap<String, String>();
         if (limit != null) {

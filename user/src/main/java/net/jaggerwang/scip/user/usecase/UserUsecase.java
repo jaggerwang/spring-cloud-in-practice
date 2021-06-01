@@ -6,9 +6,9 @@ import java.util.Optional;
 
 import net.jaggerwang.scip.common.util.encoder.PasswordEncoder;
 import net.jaggerwang.scip.common.util.generator.RandomGenerator;
-import net.jaggerwang.scip.common.entity.RoleEntity;
+import net.jaggerwang.scip.common.entity.RoleBO;
 import net.jaggerwang.scip.common.usecase.exception.*;
-import net.jaggerwang.scip.common.entity.UserEntity;
+import net.jaggerwang.scip.common.entity.UserBO;
 import net.jaggerwang.scip.user.usecase.port.dao.RoleDAO;
 import net.jaggerwang.scip.user.usecase.port.dao.UserDAO;
 
@@ -26,13 +26,13 @@ public class UserUsecase {
         this.roleDAO = roleDAO;
     }
 
-    public UserEntity register(UserEntity userEntity) {
-        if (userDAO.findByUsername(userEntity.getUsername()).isPresent()) {
+    public UserBO register(UserBO userBO) {
+        if (userDAO.findByUsername(userBO.getUsername()).isPresent()) {
             throw new UsecaseException("用户名重复");
         }
 
-        var user = UserEntity.builder().username(userEntity.getUsername())
-                .password(passwordEncoder.encode(userEntity.getPassword())).build();
+        var user = UserBO.builder().username(userBO.getUsername())
+                .password(passwordEncoder.encode(userBO.getPassword())).build();
         return userDAO.save(user);
     }
 
@@ -40,38 +40,38 @@ public class UserUsecase {
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
-    public UserEntity modify(Long id, UserEntity userEntity) {
+    public UserBO modify(Long id, UserBO userBO) {
         var user = userDAO.findById(id).orElse(null);
         if (user == null) {
             throw new NotFoundException("用户未找到");
         }
 
-        if (userEntity.getUsername() != null) {
-            if (userDAO.findByUsername(userEntity.getUsername()).isPresent()) {
+        if (userBO.getUsername() != null) {
+            if (userDAO.findByUsername(userBO.getUsername()).isPresent()) {
                 throw new UsecaseException("用户名重复");
             }
-            user.setUsername(userEntity.getUsername());
+            user.setUsername(userBO.getUsername());
         }
-        if (userEntity.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        if (userBO.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(userBO.getPassword()));
         }
-        if (userEntity.getMobile() != null) {
-            if (userDAO.findByMobile(userEntity.getMobile()).isPresent()) {
+        if (userBO.getMobile() != null) {
+            if (userDAO.findByMobile(userBO.getMobile()).isPresent()) {
                 throw new UsecaseException("手机重复");
             }
-            user.setMobile(userEntity.getMobile());
+            user.setMobile(userBO.getMobile());
         }
-        if (userEntity.getEmail() != null) {
-            if (userDAO.findByEmail(userEntity.getEmail()).isPresent()) {
+        if (userBO.getEmail() != null) {
+            if (userDAO.findByEmail(userBO.getEmail()).isPresent()) {
                 throw new UsecaseException("邮箱重复");
             }
-            user.setEmail(userEntity.getEmail());
+            user.setEmail(userBO.getEmail());
         }
-        if (userEntity.getAvatarId() != null) {
-            user.setAvatarId(userEntity.getAvatarId());
+        if (userBO.getAvatarId() != null) {
+            user.setAvatarId(userBO.getAvatarId());
         }
-        if (userEntity.getIntro() != null) {
-            user.setIntro(userEntity.getIntro());
+        if (userBO.getIntro() != null) {
+            user.setIntro(userBO.getIntro());
         }
 
         return userDAO.save(user);
@@ -115,23 +115,23 @@ public class UserUsecase {
         }
     }
 
-    public Optional<UserEntity> info(Long id) {
+    public Optional<UserBO> info(Long id) {
         return userDAO.findById(id);
     }
 
-    public Optional<UserEntity> infoByUsername(String username) {
+    public Optional<UserBO> infoByUsername(String username) {
         return userDAO.findByUsername(username);
     }
 
-    public Optional<UserEntity> infoByMobile(String mobile) {
+    public Optional<UserBO> infoByMobile(String mobile) {
         return userDAO.findByMobile(mobile);
     }
 
-    public Optional<UserEntity> infoByEmail(String email) {
+    public Optional<UserBO> infoByEmail(String email) {
         return userDAO.findByEmail(email);
     }
 
-    public List<RoleEntity> roles(String username) {
+    public List<RoleBO> roles(String username) {
         return roleDAO.rolesOfUser(username);
     }
 
@@ -147,7 +147,7 @@ public class UserUsecase {
         return userDAO.isFollowing(followerId, followingId);
     }
 
-    public List<UserEntity> following(Long followerId, Long limit, Long offset) {
+    public List<UserBO> following(Long followerId, Long limit, Long offset) {
         return userDAO.following(followerId, limit, offset);
     }
 
@@ -155,7 +155,7 @@ public class UserUsecase {
         return userDAO.followingCount(followerId);
     }
 
-    public List<UserEntity> follower(Long followingId, Long limit, Long offset) {
+    public List<UserBO> follower(Long followingId, Long limit, Long offset) {
         return userDAO.follower(followingId, limit, offset);
     }
 

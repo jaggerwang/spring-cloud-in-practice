@@ -15,7 +15,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.jaggerwang.scip.file.adapter.dao.jpa.converter.FileMetaConverter;
-import net.jaggerwang.scip.common.entity.FileEntity;
+import net.jaggerwang.scip.common.entity.FileBO;
 
 @Entity
 @Data
@@ -31,14 +31,14 @@ public class File {
     private Long userId;
 
     @Enumerated(EnumType.STRING)
-    private FileEntity.Region region;
+    private FileBO.Region region;
 
     private String bucket;
 
     private String path;
 
     @Convert(converter = FileMetaConverter.class)
-    private FileEntity.Meta meta;
+    private FileBO.Meta meta;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -46,15 +46,15 @@ public class File {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static File fromEntity(FileEntity fileEntity) {
-        return File.builder().id(fileEntity.getId()).userId(fileEntity.getUserId())
-                .region(fileEntity.getRegion()).bucket(fileEntity.getBucket())
-                .path(fileEntity.getPath()).meta(fileEntity.getMeta())
-                .createdAt(fileEntity.getCreatedAt()).updatedAt(fileEntity.getUpdatedAt()).build();
+    public static File fromEntity(FileBO fileBO) {
+        return File.builder().id(fileBO.getId()).userId(fileBO.getUserId())
+                .region(fileBO.getRegion()).bucket(fileBO.getBucket())
+                .path(fileBO.getPath()).meta(fileBO.getMeta())
+                .createdAt(fileBO.getCreatedAt()).updatedAt(fileBO.getUpdatedAt()).build();
     }
 
-    public FileEntity toEntity() {
-        return FileEntity.builder().id(id).userId(userId).region(region).bucket(bucket).path(path)
+    public FileBO toEntity() {
+        return FileBO.builder().id(id).userId(userId).region(region).bucket(bucket).path(path)
                 .meta(meta).createdAt(createdAt).updatedAt(updatedAt).build();
     }
 

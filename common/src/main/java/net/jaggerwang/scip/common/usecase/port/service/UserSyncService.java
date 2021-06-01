@@ -1,14 +1,13 @@
 package net.jaggerwang.scip.common.usecase.port.service;
 
-import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserSyncService {
-    UserDto info(Long id);
+    UserDTO info(Long id);
 
-    List<UserDto> following(Long userId, Long limit, Long offset);
+    List<UserDTO> following(Long userId, Long limit, Long offset);
 
     Long followingCount(Long userId);
 }

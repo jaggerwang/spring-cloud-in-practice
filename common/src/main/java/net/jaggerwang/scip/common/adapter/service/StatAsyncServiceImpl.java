@@ -2,8 +2,8 @@ package net.jaggerwang.scip.common.adapter.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.StatAsyncService;
-import net.jaggerwang.scip.common.usecase.port.service.dto.PostStatDto;
-import net.jaggerwang.scip.common.usecase.port.service.dto.UserStatDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.PostStatDTO;
+import net.jaggerwang.scip.common.usecase.port.service.dto.UserStatDTO;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -24,14 +24,14 @@ public class StatAsyncServiceImpl extends InternalAsyncService implements StatAs
     }
 
     @Override
-    public Mono<UserStatDto> ofUser(Long userId) {
+    public Mono<UserStatDTO> ofUser(Long userId) {
         return getData("/stat/ofUser", Map.of("userId", userId.toString()))
-                .map(data -> objectMapper.convertValue(data.get("userStat"), UserStatDto.class));
+                .map(data -> objectMapper.convertValue(data.get("userStat"), UserStatDTO.class));
     }
 
     @Override
-    public Mono<PostStatDto> ofPost(Long postId) {
+    public Mono<PostStatDTO> ofPost(Long postId) {
         return getData("/stat/ofPost", Map.of("postId", postId.toString()))
-                .map(data -> objectMapper.convertValue(data.get("postStat"), PostStatDto.class));
+                .map(data -> objectMapper.convertValue(data.get("postStat"), PostStatDTO.class));
     }
 }

@@ -2,7 +2,7 @@ package net.jaggerwang.scip.gateway.adapter.api.security;
 
 import net.jaggerwang.scip.common.usecase.exception.InternalApiException;
 import net.jaggerwang.scip.common.usecase.port.service.UserAsyncService;
-import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements ReactiveUserDetailsService {
 
     @Override
     public Mono<UserDetails> findByUsername(String username) {
-        Mono<UserDto> mono;
+        Mono<UserDTO> mono;
         try {
             if (username.matches("[0-9]+")) {
                 mono = userAsyncService.infoByMobile(username, true);

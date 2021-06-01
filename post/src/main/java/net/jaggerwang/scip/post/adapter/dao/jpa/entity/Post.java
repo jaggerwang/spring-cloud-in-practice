@@ -16,7 +16,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.jaggerwang.scip.post.adapter.dao.jpa.converter.PostImageIdsConverter;
-import net.jaggerwang.scip.common.entity.PostEntity;
+import net.jaggerwang.scip.common.entity.PostBO;
 
 @Entity
 @Data
@@ -32,7 +32,7 @@ public class Post {
     private Long userId;
 
     @Enumerated(EnumType.STRING)
-    private PostEntity.Type type;
+    private PostBO.Type type;
 
     private String text;
 
@@ -49,15 +49,15 @@ public class Post {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static Post fromEntity(PostEntity userEntity) {
+    public static Post fromEntity(PostBO userEntity) {
         return Post.builder().id(userEntity.getId()).userId(userEntity.getUserId())
                 .type(userEntity.getType()).text(userEntity.getText())
                 .imageIds(userEntity.getImageIds()).videoId(userEntity.getVideoId())
                 .createdAt(userEntity.getCreatedAt()).updatedAt(userEntity.getUpdatedAt()).build();
     }
 
-    public PostEntity toEntity() {
-        return PostEntity.builder().id(id).userId(userId).type(type).text(text).imageIds(imageIds)
+    public PostBO toEntity() {
+        return PostBO.builder().id(id).userId(userId).type(type).text(text).imageIds(imageIds)
                 .videoId(videoId).createdAt(createdAt).updatedAt(updatedAt).build();
     }
 

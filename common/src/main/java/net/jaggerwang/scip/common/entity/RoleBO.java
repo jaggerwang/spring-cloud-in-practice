@@ -8,20 +8,10 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEntity {
+public class RoleBO {
     private Long id;
 
-    private String username;
-
-    private String password;
-
-    private String mobile;
-
-    private String email;
-
-    private Long avatarId;
-
-    private String intro;
+    private String name;
 
     private LocalDateTime createdAt;
 

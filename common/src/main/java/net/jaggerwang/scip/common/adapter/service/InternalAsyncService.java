@@ -2,7 +2,7 @@ package net.jaggerwang.scip.common.adapter.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.RootDTO;
 import net.jaggerwang.scip.common.usecase.exception.InternalApiException;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.http.HttpHeaders;
@@ -35,7 +35,7 @@ public abstract class InternalAsyncService extends AsyncService {
         var body = "";
         try {
             body = objectMapper.writeValueAsString(
-                    new RootDto("fail", status.toString() + " " + throwable.toString()));
+                    new RootDTO("fail", status.toString() + " " + throwable.toString()));
         } catch (JsonProcessingException e) {
         }
         var response = ClientResponse.create(status)
@@ -50,7 +50,7 @@ public abstract class InternalAsyncService extends AsyncService {
 
     private Mono<Map<String, Object>> handleResponse(ClientResponse response) {
         return response
-                .bodyToMono(RootDto.class)
+                .bodyToMono(RootDTO.class)
                 // Handle invalid body, such as wrong content type
                 .doOnError(throwable -> {
                     throw new InternalApiException(response.statusCode(), "fail",

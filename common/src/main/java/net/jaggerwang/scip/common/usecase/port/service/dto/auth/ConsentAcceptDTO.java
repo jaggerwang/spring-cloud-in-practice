@@ -6,12 +6,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Map;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginAcceptDto {
-    private String subject;
+public class ConsentAcceptDTO {
+    @JsonProperty("grant_scope")
+    @Builder.Default
+    private List<String> grantScope = List.of();
+
+    @JsonProperty("grant_access_token_audience")
+    @Builder.Default
+    private List<String> grantAccessTokenAudience = List.of();
 
     @Builder.Default
     private Boolean remember = false;
@@ -20,5 +29,6 @@ public class LoginAcceptDto {
     @Builder.Default
     private Integer rememberFor = 3600;
 
-    private String acr;
+    @Builder.Default
+    private Map<String, Object> session = Map.of();
 }

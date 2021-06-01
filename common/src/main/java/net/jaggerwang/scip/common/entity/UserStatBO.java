@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserStatEntity {
+public class UserStatBO {
     private Long id;
 
     private Long userId;

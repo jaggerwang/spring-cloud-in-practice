@@ -28,16 +28,16 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
     }
 
     @Override
-    public LoginRequestDto getLoginRequest(String challenge) {
+    public LoginRequestDTO getLoginRequest(String challenge) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/login")
                 .queryParam("login_challenge", challenge)
                 .build();
-        return get(uri, null, LoginRequestDto.class, null).getBody();
+        return get(uri, null, LoginRequestDTO.class, null).getBody();
     }
 
     @Override
-    public String directlyAcceptLoginRequest(String challenge, LoginAcceptDto accept) {
+    public String directlyAcceptLoginRequest(String challenge, LoginAcceptDTO accept) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/login/accept")
                 .queryParam("login_challenge", challenge)
@@ -50,7 +50,7 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
     }
 
     @Override
-    public String acceptLoginRequest(String challenge, LoginAcceptDto accept) {
+    public String acceptLoginRequest(String challenge, LoginAcceptDTO accept) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/login/accept")
                 .queryParam("login_challenge", challenge)
@@ -64,7 +64,7 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
     }
 
     @Override
-    public String rejectLoginRequest(String challenge, LoginRejectDto reject) {
+    public String rejectLoginRequest(String challenge, LoginRejectDTO reject) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/login/reject")
                 .queryParam("login_challenge", challenge)
@@ -78,17 +78,17 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
     }
 
     @Override
-    public ConsentRequestDto getConsentRequest(String challenge) {
+    public ConsentRequestDTO getConsentRequest(String challenge) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/consent")
                 .queryParam("consent_challenge", challenge)
                 .build();
-        return get(uri, null, ConsentRequestDto.class, null)
+        return get(uri, null, ConsentRequestDTO.class, null)
                 .getBody();
     }
 
     @Override
-    public String directlyAcceptConsentRequest(String challenge, ConsentAcceptDto accept) {
+    public String directlyAcceptConsentRequest(String challenge, ConsentAcceptDTO accept) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/consent/accept")
                 .queryParam("consent_challenge", challenge)
@@ -103,7 +103,7 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
     }
 
     @Override
-    public String acceptConsentRequest(String challenge, ConsentAcceptDto accept) {
+    public String acceptConsentRequest(String challenge, ConsentAcceptDTO accept) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/consent/accept")
                 .queryParam("consent_challenge", challenge)
@@ -119,7 +119,7 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
     }
 
     @Override
-    public String rejectConsentRequest(String challenge, ConsentRejectDto reject) {
+    public String rejectConsentRequest(String challenge, ConsentRejectDTO reject) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/consent/reject")
                 .queryParam("consent_challenge", challenge)
@@ -133,12 +133,12 @@ public class HydraSyncServiceImpl extends SyncService implements HydraSyncServic
     }
 
     @Override
-    public LogoutRequestDto getLogoutRequest(String challenge) {
+    public LogoutRequestDTO getLogoutRequest(String challenge) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/logout")
                 .queryParam("logout_challenge", challenge)
                 .build();
-        return get(uri, null, LogoutRequestDto.class, null)
+        return get(uri, null, LogoutRequestDTO.class, null)
                 .getBody();
     }
 

@@ -3,8 +3,8 @@ package net.jaggerwang.scip.common.adapter.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.UserAsyncService;
-import net.jaggerwang.scip.common.usecase.port.service.dto.RoleDto;
-import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.RoleDTO;
+import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -28,13 +28,13 @@ public class UserAsyncServiceImpl extends InternalAsyncService implements UserAs
     }
 
     @Override
-    public Mono<UserDto> register(UserDto userDto) {
+    public Mono<UserDTO> register(UserDTO userDto) {
         return postData("/user/register", userDto)
-                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
+                .map(data -> objectMapper.convertValue(data.get("user"), UserDTO.class));
     }
 
     @Override
-    public Mono<UserDto> verifyPassword(UserDto userDto) {
+    public Mono<UserDTO> verifyPassword(UserDTO userDto) {
         var params = new HashMap<String, String>();
         if (userDto.getUsername() != null) params.put("username", userDto.getUsername());
         if (userDto.getMobile() != null) params.put("mobile", userDto.getMobile());
@@ -42,50 +42,50 @@ public class UserAsyncServiceImpl extends InternalAsyncService implements UserAs
         params.put("password", userDto.getPassword());
 
         return getData("/user/verifyPassword", params)
-                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
+                .map(data -> objectMapper.convertValue(data.get("user"), UserDTO.class));
     }
 
     @Override
-    public Mono<UserDto> modify(UserDto userDto) {
+    public Mono<UserDTO> modify(UserDTO userDto) {
         return postData("/user/modify", Map.of("user", userDto))
-                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
+                .map(data -> objectMapper.convertValue(data.get("user"), UserDTO.class));
     }
 
     @Override
-    public Mono<UserDto> modify(UserDto userDto, String code) {
+    public Mono<UserDTO> modify(UserDTO userDto, String code) {
         return postData("/user/modify", Map.of("user", userDto, "code", code))
-                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
+                .map(data -> objectMapper.convertValue(data.get("user"), UserDTO.class));
     }
 
     @Override
-    public Mono<UserDto> info(Long id) {
+    public Mono<UserDTO> info(Long id) {
         return getData("/user/info", Map.of("id", id.toString()))
-                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
+                .map(data -> objectMapper.convertValue(data.get("user"), UserDTO.class));
     }
 
     @Override
-    public Mono<UserDto> infoByUsername(String username, Boolean withPassword) {
+    public Mono<UserDTO> infoByUsername(String username, Boolean withPassword) {
         return getData("/user/infoByUsername", Map.of("username", username,
                 "withPassword", withPassword.toString()))
-                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
+                .map(data -> objectMapper.convertValue(data.get("user"), UserDTO.class));
     }
 
     @Override
-    public Mono<UserDto> infoByMobile(String mobile, Boolean withPassword) {
+    public Mono<UserDTO> infoByMobile(String mobile, Boolean withPassword) {
         return getData("/user/infoByMobile", Map.of("mobile", mobile,
                 "withPassword", withPassword.toString()))
-                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
+                .map(data -> objectMapper.convertValue(data.get("user"), UserDTO.class));
     }
 
     @Override
-    public Mono<UserDto> infoByEmail(String email, Boolean withPassword) {
+    public Mono<UserDTO> infoByEmail(String email, Boolean withPassword) {
         return getData("/user/infoByEmail", Map.of("email", email,
                 "withPassword", withPassword.toString()))
-                .map(data -> objectMapper.convertValue(data.get("user"), UserDto.class));
+                .map(data -> objectMapper.convertValue(data.get("user"), UserDTO.class));
     }
 
     @Override
-    public Mono<List<RoleDto>> roles(String username) {
+    public Mono<List<RoleDTO>> roles(String username) {
         return getData("/user/roles", Map.of("username", username))
                 .map(data -> objectMapper.convertValue(data.get("roles"), new TypeReference<>() {}));
     }
@@ -109,7 +109,7 @@ public class UserAsyncServiceImpl extends InternalAsyncService implements UserAs
     }
 
     @Override
-    public Mono<List<UserDto>> following(@Nullable Long userId, @Nullable Long limit,
+    public Mono<List<UserDTO>> following(@Nullable Long userId, @Nullable Long limit,
                                          @Nullable Long offset) {
         var params = new HashMap<String, String>();
         if (userId != null) {
@@ -136,7 +136,7 @@ public class UserAsyncServiceImpl extends InternalAsyncService implements UserAs
     }
 
     @Override
-    public Mono<List<UserDto>> follower(@Nullable Long userId, @Nullable Long limit,
+    public Mono<List<UserDTO>> follower(@Nullable Long userId, @Nullable Long limit,
                                         @Nullable Long offset) {
         var params = new HashMap<String, String>();
         if (userId != null) {

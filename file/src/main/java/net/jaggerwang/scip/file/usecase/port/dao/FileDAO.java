@@ -3,12 +3,12 @@ package net.jaggerwang.scip.file.usecase.port.dao;
 import java.util.List;
 import java.util.Optional;
 
-import net.jaggerwang.scip.common.entity.FileEntity;
+import net.jaggerwang.scip.common.entity.FileBO;
 
 public interface FileDAO {
-    FileEntity save(FileEntity fileEntity);
+    FileBO save(FileBO fileBO);
 
-    Optional<FileEntity> findById(Long id);
+    Optional<FileBO> findById(Long id);
 
-    List<FileEntity> findAllById(List<Long> ids);
+    List<FileBO> findAllById(List<Long> ids);
 }

@@ -1,18 +1,18 @@
 package net.jaggerwang.scip.common.usecase.port.service;
 
-import net.jaggerwang.scip.common.usecase.port.service.dto.PostDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.PostDTO;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 public interface PostAsyncService {
-    Mono<PostDto> publish(PostDto postDto);
+    Mono<PostDTO> publish(PostDTO postDto);
 
     Mono<Void> delete(Long id);
 
-    Mono<PostDto> info(Long id);
+    Mono<PostDTO> info(Long id);
 
-    Mono<List<PostDto>> published(Long userId, Long limit, Long offset);
+    Mono<List<PostDTO>> published(Long userId, Long limit, Long offset);
 
     Mono<Long> publishedCount(Long userId);
 
@@ -22,11 +22,11 @@ public interface PostAsyncService {
 
     Mono<Boolean> isLiked(Long postId);
 
-    Mono<List<PostDto>> liked(Long userId, Long limit, Long offset);
+    Mono<List<PostDTO>> liked(Long userId, Long limit, Long offset);
 
     Mono<Long> likedCount(Long userId);
 
-    Mono<List<PostDto>> following(Long limit, Long beforeId, Long afterId);
+    Mono<List<PostDTO>> following(Long limit, Long beforeId, Long afterId);
 
     Mono<Long> followingCount();
 }

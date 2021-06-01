@@ -3,7 +3,7 @@ package net.jaggerwang.scip.common.adapter.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.FileAsyncService;
-import net.jaggerwang.scip.common.usecase.port.service.dto.FileDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.FileDTO;
 import org.springframework.cloud.client.circuitbreaker.ReactiveCircuitBreakerFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +28,7 @@ public class FileAsyncServiceImpl extends InternalAsyncService implements FileAs
     }
 
     @Override
-    public Mono<List<FileDto>> upload(String region, String bucket, String path,
+    public Mono<List<FileDTO>> upload(String region, String bucket, String path,
                                       List<MultipartFile> files) {
         var params = new LinkedMultiValueMap<String, Object>();
         params.add("region", region);
@@ -40,18 +40,18 @@ public class FileAsyncServiceImpl extends InternalAsyncService implements FileAs
     }
 
     @Override
-    public Mono<List<FileDto>> upload(List<MultipartFile> files) {
+    public Mono<List<FileDTO>> upload(List<MultipartFile> files) {
         return upload(null, null, null, files);
     }
 
     @Override
-    public Mono<FileDto> info(Long id) {
+    public Mono<FileDTO> info(Long id) {
         return getData("/file/info", Map.of("id", id.toString()))
-                .map(data -> objectMapper.convertValue(data.get("file"), FileDto.class));
+                .map(data -> objectMapper.convertValue(data.get("file"), FileDTO.class));
     }
 
     @Override
-    public Mono<List<FileDto>> infos(List<Long> ids, Boolean keepNull) {
+    public Mono<List<FileDTO>> infos(List<Long> ids, Boolean keepNull) {
         return getData("/file/infos", Map.of(
                     "ids", String.join(",", ids.stream()
                         .map(id -> id.toString())

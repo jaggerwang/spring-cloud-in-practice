@@ -1,31 +1,27 @@
 package net.jaggerwang.scip.common.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import lombok.*;
-
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostEntity {
-    public enum Type {
-        TEXT, IMAGE, VIDEO
-    }
-
+public class UserBO {
     private Long id;
 
-    private Long userId;
+    private String username;
 
-    private Type type;
+    private String password;
 
-    private String text;
+    private String mobile;
 
-    private List<Long> imageIds;
+    private String email;
 
-    private Long videoId;
+    private Long avatarId;
+
+    private String intro;
 
     private LocalDateTime createdAt;
 

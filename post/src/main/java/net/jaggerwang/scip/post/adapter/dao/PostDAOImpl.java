@@ -15,7 +15,7 @@ import net.jaggerwang.scip.post.adapter.dao.jpa.entity.Post;
 import net.jaggerwang.scip.post.adapter.dao.jpa.entity.QPost;
 import net.jaggerwang.scip.post.adapter.dao.jpa.entity.QPostLike;
 import net.jaggerwang.scip.post.adapter.dao.jpa.PostLikeRepository;
-import net.jaggerwang.scip.common.entity.PostEntity;
+import net.jaggerwang.scip.common.entity.PostBO;
 import net.jaggerwang.scip.post.usecase.port.dao.PostDAO;
 
 @Component
@@ -30,8 +30,8 @@ public class PostDAOImpl implements PostDAO {
     protected JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public PostEntity save(PostEntity postEntity) {
-        return postRepository.save(Post.fromEntity(postEntity)).toEntity();
+    public PostBO save(PostBO postBO) {
+        return postRepository.save(Post.fromEntity(postBO)).toEntity();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class PostDAOImpl implements PostDAO {
     }
 
     @Override
-    public Optional<PostEntity> findById(Long id) {
+    public Optional<PostBO> findById(Long id) {
         return postRepository.findById(id).map(post -> post.toEntity());
     }
 
@@ -53,7 +53,7 @@ public class PostDAOImpl implements PostDAO {
     }
 
     @Override
-    public List<PostEntity> published(Long userId, Long limit, Long offset) {
+    public List<PostBO> published(Long userId, Long limit, Long offset) {
         var query = publishedQuery(userId);
         query.orderBy(QPost.post.createdAt.desc());
         if (limit != null) {
@@ -91,7 +91,7 @@ public class PostDAOImpl implements PostDAO {
     }
 
     @Override
-    public List<PostEntity> liked(Long userId, Long limit, Long offset) {
+    public List<PostBO> liked(Long userId, Long limit, Long offset) {
         var query = likedQuery(userId);
         query.orderBy(QPostLike.postLike.createdAt.desc());
         if (limit != null) {
@@ -121,7 +121,7 @@ public class PostDAOImpl implements PostDAO {
     }
 
     @Override
-    public List<PostEntity> following(List<Long> userIds, Long limit, Long beforeId, Long afterId) {
+    public List<PostBO> following(List<Long> userIds, Long limit, Long beforeId, Long afterId) {
         var query = followingQuery(userIds);
         query.orderBy(QPost.post.createdAt.desc());
         if (limit != null) {

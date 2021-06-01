@@ -2,7 +2,7 @@ package net.jaggerwang.scip.common.adapter.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
 import net.jaggerwang.scip.common.usecase.port.service.UserSyncService;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.lang.Nullable;
@@ -25,15 +25,15 @@ public class UserSyncServiceImpl extends InternalSyncService implements UserSync
     }
 
     @Override
-    public UserDto info(Long id) {
+    public UserDTO info(Long id) {
         var params = new HashMap<String, String>();
         params.put("id", id.toString());
         var response = getData("/user/info", params);
-        return objectMapper.convertValue(response.get("user"), UserDto.class);
+        return objectMapper.convertValue(response.get("user"), UserDTO.class);
     }
 
     @Override
-    public List<UserDto> following(Long userId, @Nullable Long limit, @Nullable Long offset) {
+    public List<UserDTO> following(Long userId, @Nullable Long limit, @Nullable Long offset) {
         var params = new HashMap<String, String>();
         params.put("userId", userId.toString());
         if (limit != null) {

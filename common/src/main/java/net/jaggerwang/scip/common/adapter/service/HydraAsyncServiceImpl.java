@@ -23,17 +23,17 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
     }
 
     @Override
-    public Mono<LoginRequestDto> getLoginRequest(String challenge) {
+    public Mono<LoginRequestDTO> getLoginRequest(String challenge) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/login")
                 .queryParam("login_challenge", challenge)
                 .build();
         return get(uri, null, null)
-                .flatMap(response -> response.bodyToMono(LoginRequestDto.class));
+                .flatMap(response -> response.bodyToMono(LoginRequestDTO.class));
     }
 
     @Override
-    public Mono<String> directlyAcceptLoginRequest(String challenge, LoginAcceptDto accept) {
+    public Mono<String> directlyAcceptLoginRequest(String challenge, LoginAcceptDTO accept) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/login/accept")
                 .queryParam("login_challenge", challenge)
@@ -45,7 +45,7 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
     }
 
     @Override
-    public Mono<String> acceptLoginRequest(String challenge, LoginAcceptDto accept) {
+    public Mono<String> acceptLoginRequest(String challenge, LoginAcceptDTO accept) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/login/accept")
                 .queryParam("login_challenge", challenge)
@@ -58,7 +58,7 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
     }
 
     @Override
-    public Mono<String> rejectLoginRequest(String challenge, LoginRejectDto reject) {
+    public Mono<String> rejectLoginRequest(String challenge, LoginRejectDTO reject) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/login/reject")
                 .queryParam("login_challenge", challenge)
@@ -71,17 +71,17 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
     }
 
     @Override
-    public Mono<ConsentRequestDto> getConsentRequest(String challenge) {
+    public Mono<ConsentRequestDTO> getConsentRequest(String challenge) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/consent")
                 .queryParam("consent_challenge", challenge)
                 .build();
         return get(uri, null, null)
-                .flatMap(response -> response.bodyToMono(ConsentRequestDto.class));
+                .flatMap(response -> response.bodyToMono(ConsentRequestDTO.class));
     }
 
     @Override
-    public Mono<String> directlyAcceptConsentRequest(String challenge, ConsentAcceptDto accept) {
+    public Mono<String> directlyAcceptConsentRequest(String challenge, ConsentAcceptDTO accept) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/consent/accept")
                 .queryParam("consent_challenge", challenge)
@@ -95,7 +95,7 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
     }
 
     @Override
-    public Mono<String> acceptConsentRequest(String challenge, ConsentAcceptDto accept) {
+    public Mono<String> acceptConsentRequest(String challenge, ConsentAcceptDTO accept) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/consent/accept")
                 .queryParam("consent_challenge", challenge)
@@ -110,7 +110,7 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
     }
 
     @Override
-    public Mono<String> rejectConsentRequest(String challenge, ConsentRejectDto reject) {
+    public Mono<String> rejectConsentRequest(String challenge, ConsentRejectDTO reject) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/consent/reject")
                 .queryParam("consent_challenge", challenge)
@@ -123,13 +123,13 @@ public class HydraAsyncServiceImpl extends AsyncService implements HydraAsyncSer
     }
 
     @Override
-    public Mono<LogoutRequestDto> getLogoutRequest(String challenge) {
+    public Mono<LogoutRequestDTO> getLogoutRequest(String challenge) {
         var uri = new DefaultUriBuilderFactory().builder()
                 .path("/oauth2/auth/requests/logout")
                 .queryParam("logout_challenge", challenge)
                 .build();
         return get(uri, null, null)
-                .flatMap(response -> response.bodyToMono(LogoutRequestDto.class));
+                .flatMap(response -> response.bodyToMono(LogoutRequestDTO.class));
     }
 
     @Override

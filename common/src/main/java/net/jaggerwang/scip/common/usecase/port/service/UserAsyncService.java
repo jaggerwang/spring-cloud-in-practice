@@ -1,29 +1,29 @@
 package net.jaggerwang.scip.common.usecase.port.service;
 
-import net.jaggerwang.scip.common.usecase.port.service.dto.RoleDto;
-import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.RoleDTO;
+import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 public interface UserAsyncService {
-    Mono<UserDto> register(UserDto userDto);
+    Mono<UserDTO> register(UserDTO userDto);
 
-    Mono<UserDto> verifyPassword(UserDto userDto);
+    Mono<UserDTO> verifyPassword(UserDTO userDto);
 
-    Mono<UserDto> modify(UserDto userDto);
+    Mono<UserDTO> modify(UserDTO userDto);
 
-    Mono<UserDto> modify(UserDto userDto, String code);
+    Mono<UserDTO> modify(UserDTO userDto, String code);
 
-    Mono<UserDto> info(Long id);
+    Mono<UserDTO> info(Long id);
 
-    Mono<UserDto> infoByUsername(String username, Boolean withPassword);
+    Mono<UserDTO> infoByUsername(String username, Boolean withPassword);
 
-    Mono<UserDto> infoByMobile(String mobile, Boolean withPassword);
+    Mono<UserDTO> infoByMobile(String mobile, Boolean withPassword);
 
-    Mono<UserDto> infoByEmail(String email, Boolean withPassword);
+    Mono<UserDTO> infoByEmail(String email, Boolean withPassword);
 
-    Mono<List<RoleDto>> roles(String username);
+    Mono<List<RoleDTO>> roles(String username);
 
     Mono<Void> follow(Long userId);
 
@@ -31,11 +31,11 @@ public interface UserAsyncService {
 
     Mono<Boolean> isFollowing(Long userId);
 
-    Mono<List<UserDto>> following(Long userId, Long limit, Long offset);
+    Mono<List<UserDTO>> following(Long userId, Long limit, Long offset);
 
     Mono<Long> followingCount(Long userId);
 
-    Mono<List<UserDto>> follower(Long userId, Long limit, Long offset);
+    Mono<List<UserDTO>> follower(Long userId, Long limit, Long offset);
 
     Mono<Long> followerCount(Long userId);
 

@@ -2,8 +2,8 @@ package net.jaggerwang.scip.gateway.adapter.api.controller;
 
 import net.jaggerwang.scip.common.usecase.exception.UsecaseException;
 import net.jaggerwang.scip.common.usecase.port.service.UserAsyncService;
-import net.jaggerwang.scip.common.usecase.port.service.dto.RootDto;
-import net.jaggerwang.scip.common.usecase.port.service.dto.UserDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.RootDTO;
+import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -18,7 +18,7 @@ public class AuthController extends AbstractController {
     }
 
     @PostMapping("/login")
-    public Mono<RootDto> login(@RequestBody UserDto userDto) {
+    public Mono<RootDTO> login(@RequestBody UserDTO userDto) {
         String username = null;
         if (userDto.getUsername() != null)  {
             username = userDto.getUsername();
@@ -37,22 +37,22 @@ public class AuthController extends AbstractController {
 
         return loginUser(username, password)
                 .flatMap(loggedUser -> userAsyncService.info(loggedUser.getId()))
-                .map(user -> new RootDto().addDataEntry("user", user));
+                .map(user -> new RootDTO().addDataEntry("user", user));
     }
 
     @GetMapping("/logout")
-    public Mono<RootDto> logout() {
+    public Mono<RootDTO> logout() {
         return logoutUser()
                 .flatMap(loggedUser -> userAsyncService.info(loggedUser.getId()))
-                .map(user -> new RootDto().addDataEntry("user", user))
-                .defaultIfEmpty(new RootDto().addDataEntry("user", null));
+                .map(user -> new RootDTO().addDataEntry("user", user))
+                .defaultIfEmpty(new RootDTO().addDataEntry("user", null));
     }
 
     @GetMapping("/logged")
-    public Mono<RootDto> logged() {
+    public Mono<RootDTO> logged() {
         return loggedUserId()
                 .flatMap(userId -> userAsyncService.info(userId))
-                .map(user -> new RootDto().addDataEntry("user", user))
-                .defaultIfEmpty(new RootDto().addDataEntry("user", null));
+                .map(user -> new RootDTO().addDataEntry("user", user))
+                .defaultIfEmpty(new RootDTO().addDataEntry("user", null));
     }
 }

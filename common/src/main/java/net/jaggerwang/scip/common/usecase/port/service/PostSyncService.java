@@ -1,7 +1,7 @@
 package net.jaggerwang.scip.common.usecase.port.service;
 
-import net.jaggerwang.scip.common.usecase.port.service.dto.PostDto;
+import net.jaggerwang.scip.common.usecase.port.service.dto.PostDTO;
 
 public interface PostSyncService {
-    PostDto info(Long id);
+    PostDTO info(Long id);
 }
