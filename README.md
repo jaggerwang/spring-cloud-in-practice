@@ -1,6 +1,6 @@
 # Spring Cloud in Practice
 
-This project can be used as a starter for spring cloud micro services development. It is the micro services version of [Spring Boot in Practice](https://github.com/jaggerwang/spring-boot-in-practice). It use [Spring Cloud Consul](https://cloud.spring.io/spring-cloud-consul/reference/html/) for service discovery, [Spring Cloud Gateway](https://cloud.spring.io/spring-cloud-gateway/reference/html/) to implement api gateway, and [ORY/Hydra](https://github.com/ory/hydra) for running an optional OAuth2 server. The apis exposed by gateway can be used as the backend api service for this flutter app [Flutter in Practice](https://github.com/jaggerwang/flutter-in-practice). There is an article [Spring Cloud 微服务开发指南](https://blog.jaggerwang.net/spring-cloud-micro-service-develop-tour/) for learning this project.
+This project can be used as a starter for spring cloud microservices development. It is the microservices version of [Spring Boot in Practice](https://github.com/jaggerwang/spring-boot-in-practice). It use [Spring Cloud Consul](https://cloud.spring.io/spring-cloud-consul/reference/html/) for service discovery and config management, [Spring Cloud Gateway](https://cloud.spring.io/spring-cloud-gateway/reference/html/) to implement api gateway, and [ORY/Hydra](https://github.com/ory/hydra) for running an optional OAuth2 server. The apis exposed by gateway can be used as the backend api service for this flutter app [Flutter in Practice](https://github.com/jaggerwang/flutter-in-practice). There is an article [Spring Cloud 微服务开发指南](https://blog.jaggerwang.net/spring-cloud-micro-service-develop-tour/) for learning this project.
 
 ## Dependent frameworks and packages
 
@@ -8,7 +8,6 @@ This project can be used as a starter for spring cloud micro services developmen
 1. [Spring Data JPA](https://spring.io/projects/spring-data-jpa) Access database
 1. [Querydsl JPA](https://github.com/querydsl/querydsl/tree/master/querydsl-jpa) Type safe dynamic sql builder
 1. [Spring Security](https://spring.io/projects/spring-security) Authenticate and authrorize
-1. [Flyway](https://flywaydb.org/) Database migration
 1. [Spring Cloud Gateway](https://spring.io/projects/spring-cloud-gateway) Api gateway
 1. [Spring Cloud Consul](https://spring.io/projects/spring-cloud-consul) Service discovery
 1. [Spring Cloud Circuit Breaker](https://spring.io/projects/spring-cloud-circuitbreaker) Circuit breaker
@@ -60,16 +59,11 @@ This project need java 11+.
 
 #### Run a mysql service
 
-If you use macOS, you can use `brew install mysql` to install mysql, and use `brew services start mysql` to start service at port `3306`. Then we need to create databases for each micro service. 
+If you use macOS, you can use `brew install mysql` to install mysql, and use `brew services start mysql` to start service at port `3306`. Then you should create databases and tables for each microservices using sql files under `db/migration/mysql`.
 
-```sql
-CREATE DATABASE `scip_user`;
-CREATE DATABASE `scip_post`;
-CREATE DATABASE `scip_file`;
-CREATE DATABASE `scip_stat`;
-```
-
-Suppose we can use `root` user without password to access these databases, if not you should change each application's config.
+1. Use `V1__Initial_create_dbs.sql` to create databases and accounts to access these databases;
+1. Use `V2__Initial_create_tables.sql` to create tables;
+1. \[Optional\] Use `V3__Initial_insert_data.sql` to insert some data for testing;
 
 #### Run a redis service
 

@@ -11,14 +11,13 @@ server:
 spring:
   application:
     name: spring-cloud-in-practice-gateway
+  config:
+    import: "optional:consul:"
   redis:
     host: ${SCIP_SPRING_REDIS_HOST:localhost}
     port: ${SCIP_SPRING_REDIS_PORT:6379}
     password: ${SCIP_SPRING_REDIS_PASSWORD:}
-    timeout: 1s
-    lettuce:
-      pool:
-        max-wait: 1s
+    connect-timeout: 5s
   session:
     timeout: 7d
     store-type: redis
@@ -34,6 +33,12 @@ spring:
       discovery:
         enabled: true
         register: false
+      config:
+        enabled: true
+        prefixes:
+          - spring-cloud-in-practice
+        name: gateway
+        format: YAML
 
 management:
   endpoints:
@@ -44,6 +49,3 @@ management:
 service:
   file:
     base-url: ${SCIP_SERVICE_FILE_BASE_URL:http://localhost:8080/files}
-  hydra:
-    url: ${SCIP_SERVICE_HYDRA_URL:http://localhost:4444/}
-    admin-url: ${SCIP_SERVICE_HYDRA_ADMIN_URL:http://localhost:4445/}

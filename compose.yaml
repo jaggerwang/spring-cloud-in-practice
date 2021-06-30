@@ -1,32 +1,48 @@
-version: '3'
 services:
   mysql:
     image: mysql:8.0
     environment:
       TZ: Asia/Shanghai
-      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     volumes:
-      - ~/data/spring-cloud-in-practice/mysql:/var/lib/mysql
-      - ./db/migration/mysql:/docker-entrypoint-initdb.d
+      - ~/data/spring-cloud-in-practice/mysql/data:/var/lib/mysql
+      - ./db/migration/mysql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-u", "root"]
+      start_period: 30s
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    cap_add:
+      - CAP_SYS_NICE
   redis:
-    image: redis:5.0
+    image: redis:6.2
     environment:
       TZ: Asia/Shanghai
     volumes:
-      - ~/data/spring-cloud-in-practice/redis:/data
+      - ~/data/spring-cloud-in-practice/redis/data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli" ,"ping"]
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 10
   consul:
-    image: consul:1.6
-    command: agent -dev -client 0.0.0.0 -log-level INFO
+    image: consul:1.10
+    command: agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
     environment:
       TZ: Asia/Shanghai
+    ports:
+      - 8500:8500
+      - 8600:8600
     volumes:
-      - ~/data/spring-cloud-in-practice/consul:/consul/data
+      - ~/data/spring-cloud-in-practice/consul/data:/consul/data
   gateway:
     image: spring-cloud-in-practice-gateway
     build: ./gateway
     environment:
       TZ: Asia/Shanghai
-      SCIP_DEBUG: 'false'
+      SCIP_DEBUG: "false"
       SCIP_LOGGING_FILE_PATH: /data/log
       SCIP_LOGGING_LEVEL_REQUEST: INFO
       SCIP_SPRING_REDIS_HOST: redis
@@ -35,21 +51,24 @@ services:
       SCIP_SPRING_CLOUD_CONSUL_HOST: consul
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
       SCIP_SERVICE_FILE_BASE_URL: http://localhost:8080/files
-      SCIP_SERVICE_HYDRA_URL: http://hydra:4444/
-      SCIP_SERVICE_HYDRA_ADMIN_URL: http://hydra:4445/
     ports:
       - 8080:8080
     volumes:
-      - ~/data/spring-cloud-in-practice/gateway:/data
+      - ~/data/spring-cloud-in-practice/gateway/data:/data
+      - ~/data/spring-cloud-in-practice/gateway/config:/app/config:ro
     depends_on:
-      - redis
-      - consul
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      consul:
+        condition: service_started
   user:
     image: spring-cloud-in-practice-user
     build: ./user
     environment:
       TZ: Asia/Shanghai
-      SCIP_DEBUG: 'false'
+      SCIP_DEBUG: "false"
       SCIP_LOGGING_FILE_PATH: /data/log
       SCIP_LOGGING_LEVEL_REQUEST: INFO
       SCIP_SPRING_DATASOURCE_URL: jdbc:mysql://mysql/scip_user
@@ -57,19 +76,22 @@ services:
       SCIP_SPRING_DATASOURCE_PASSWORD: 123456
       SCIP_SPRING_CLOUD_CONSUL_HOST: consul
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
-      SCIP_SERVICE_HYDRA_URL: http://hydra:4444/
-      SCIP_SERVICE_HYDRA_ADMIN_URL: http://hydra:4445/
     volumes:
-      - ~/data/spring-cloud-in-practice/user:/data
+      - ~/data/spring-cloud-in-practice/user/data:/data
+      - ~/data/spring-cloud-in-practice/user/config:/app/config:ro
     depends_on:
-      - mysql
-      - consul
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      consul:
+        condition: service_started
   post:
     image: spring-cloud-in-practice-post
     build: ./post
     environment:
       TZ: Asia/Shanghai
-      SCIP_DEBUG: 'false'
+      SCIP_DEBUG: "false"
       SCIP_LOGGING_FILE_PATH: /data/log
       SCIP_LOGGING_LEVEL_REQUEST: INFO
       SCIP_SPRING_DATASOURCE_URL: jdbc:mysql://mysql/scip_post
@@ -78,16 +100,21 @@ services:
       SCIP_SPRING_CLOUD_CONSUL_HOST: consul
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
     volumes:
-      - ~/data/spring-cloud-in-practice/post:/data
+      - ~/data/spring-cloud-in-practice/post/data:/data
+      - ~/data/spring-cloud-in-practice/post/config:/app/config:ro
     depends_on:
-      - mysql
-      - consul
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      consul:
+        condition: service_started
   file:
     image: spring-cloud-in-practice-file
     build: ./file
     environment:
       TZ: Asia/Shanghai
-      SCIP_DEBUG: 'false'
+      SCIP_DEBUG: "false"
       SCIP_LOGGING_FILE_PATH: /data/log
       SCIP_LOGGING_LEVEL_REQUEST: INFO
       SCIP_SPRING_DATASOURCE_URL: jdbc:mysql://mysql/scip_file
@@ -97,16 +124,21 @@ services:
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
       SCIP_FILE_UPLOAD_DIR: /data/upload
     volumes:
-      - ~/data/spring-cloud-in-practice/file:/data
+      - ~/data/spring-cloud-in-practice/file/data:/data
+      - ~/data/spring-cloud-in-practice/file/config:/app/config:ro
     depends_on:
-      - mysql
-      - consul
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      consul:
+        condition: service_started
   stat:
     image: spring-cloud-in-practice-stat
     build: ./stat
     environment:
       TZ: Asia/Shanghai
-      SCIP_DEBUG: 'false'
+      SCIP_DEBUG: "false"
       SCIP_LOGGING_FILE_PATH: /data/log
       SCIP_LOGGING_LEVEL_REQUEST: INFO
       SCIP_SPRING_DATASOURCE_URL: jdbc:mysql://mysql/scip_stat
@@ -115,7 +147,12 @@ services:
       SCIP_SPRING_CLOUD_CONSUL_HOST: consul
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
     volumes:
-      - ~/data/spring-cloud-in-practice/stat:/data
+      - ~/data/spring-cloud-in-practice/stat/data:/data
+      - ~/data/spring-cloud-in-practice/stat/config:/app/config:ro
     depends_on:
-      - mysql
-      - consul
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      consul:
+        condition: service_started

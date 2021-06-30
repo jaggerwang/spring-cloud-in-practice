@@ -11,15 +11,12 @@ server:
 spring:
   application:
     name: spring-cloud-in-practice-stat
+  config:
+    import: "optional:consul:"
   datasource:
     url: ${SCIP_SPRING_DATASOURCE_URL:jdbc:mysql://localhost/scip_stat}
     username: ${SCIP_SPRING_DATASOURCE_USERNAME:root}
     password: ${SCIP_SPRING_DATASOURCE_PASSWORD:}
-  flyway:
-    enabled: true
-    locations: classpath:db/migration/{vendor}
-    clean-disabled: true
-    baseline-on-migrate: true
   jpa:
     open-in-view: false
   cloud:
@@ -32,7 +29,12 @@ spring:
       discovery:
         enabled: true
         register: true
-        healthCheckPath: /actuator/health
+      config:
+        enabled: true
+        prefixes:
+          - spring-cloud-in-practice
+        name: stat
+        format: YAML
 
 management:
   endpoints:

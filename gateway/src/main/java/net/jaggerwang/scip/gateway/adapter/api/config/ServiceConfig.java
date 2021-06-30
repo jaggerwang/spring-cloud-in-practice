@@ -76,11 +76,4 @@ public class ServiceConfig {
         var webClient = builder.baseUrl("http://spring-cloud-in-practice-stat").build();
         return new StatAsyncServiceImpl(webClient, cbFactory, objectMapper);
     }
-
-    @Bean
-    public HydraAsyncService hydraAsyncService(@Value("${service.hydra.admin-url}") String baseUrl,
-                                               ReactiveCircuitBreakerFactory cbFactory) {
-        var webClient = WebClient.builder().baseUrl(baseUrl).build();
-        return new HydraAsyncServiceImpl(webClient, cbFactory);
-    }
 }
