@@ -9,7 +9,9 @@ import net.jaggerwang.scip.common.entity.FileBO;
 import net.jaggerwang.scip.common.usecase.exception.*;
 import net.jaggerwang.scip.file.usecase.port.dao.FileDAO;
 import net.jaggerwang.scip.file.usecase.port.service.StorageService;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FileUsecase {
     private FileDAO fileDAO;
 

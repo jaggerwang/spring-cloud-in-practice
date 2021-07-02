@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 import net.jaggerwang.scip.common.entity.PostBO;
 import net.jaggerwang.scip.common.usecase.port.service.UserSyncService;
 import net.jaggerwang.scip.post.usecase.port.dao.PostDAO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PostUsecase {
     private PostDAO postDAO;
     private UserSyncService userSyncService;

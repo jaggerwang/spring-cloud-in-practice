@@ -1,6 +1,6 @@
-package net.jaggerwang.scip.user.adapter.dao.jpa;
+package net.jaggerwang.scip.auth.adapter.dao.jpa;
 
-import net.jaggerwang.scip.user.adapter.dao.jpa.entity.UserRole;
+import net.jaggerwang.scip.auth.adapter.dao.jpa.entity.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;

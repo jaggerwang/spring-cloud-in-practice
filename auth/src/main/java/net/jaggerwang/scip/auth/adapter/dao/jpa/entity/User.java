@@ -1,4 +1,4 @@
-package net.jaggerwang.scip.user.adapter.dao.jpa.entity;
+package net.jaggerwang.scip.auth.adapter.dao.jpa.entity;
 
 import java.time.LocalDateTime;
 import javax.persistence.Column;

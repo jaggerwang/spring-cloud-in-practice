@@ -5,7 +5,9 @@ import net.jaggerwang.scip.common.entity.PostStatBO;
 import net.jaggerwang.scip.common.entity.UserStatBO;
 import net.jaggerwang.scip.stat.usecase.port.dao.PostStatDAO;
 import net.jaggerwang.scip.stat.usecase.port.dao.UserStatDAO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class StatUsecase {
     private UserStatDAO userStatDAO;
 

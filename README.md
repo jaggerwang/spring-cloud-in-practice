@@ -136,15 +136,15 @@ brew install ory/hydra/hydra
 Connect to your local mysql server and create a database for Hydra.
 
 ```sql
-CREATE DATABASE `scip_auth`;
+CREATE DATABASE `scip_hydra`;
 ```
 
 Then use the following commands to init database and run an OAuth2 server. 
 
 ```bash
-DSN=mysql://root:@tcp(localhost:3306)/scip_auth hydra migrate sql -e --yes
+DSN=mysql://root:@tcp(localhost:3306)/scip_hydra hydra migrate sql -e --yes
 
-STRATEGIES_ACCESS_TOKEN=jwt LOG_LEVEL=info SECRETS_SYSTEM=a2N4m0XL659TIrB2V3fJBxUED5Zv5zUQ DSN=mysql://root:@tcp(localhost:3306)/scip_auth URLS_SELF_ISSUER=http://localhost:4444/ URLS_LOGIN=http://localhost:8080/hydra/login URLS_CONSENT=http://localhost:8080/hydra/consent URLS_LOGOUT=http://localhost:8080/hydra/logout TTL_ACCESS_TOKEN=12h TTL_REFRESH_TOKEN=720h hydra serve all --dangerous-force-http --dangerous-allow-insecure-redirect-urls 'http://localhost:8080/hydra/login,http://localhost:8080/hydra/consent,http://localhost:8080/hydra/logout'
+STRATEGIES_ACCESS_TOKEN=jwt LOG_LEVEL=info SECRETS_SYSTEM=a2N4m0XL659TIrB2V3fJBxUED5Zv5zUQ DSN=mysql://scip_hydra:123456@tcp(localhost:3306)/scip_hydra URLS_SELF_ISSUER=http://localhost:4444/ URLS_LOGIN=http://localhost:8080/auth/hydra/login URLS_CONSENT=http://localhost:8080/auth/hydra/consent URLS_LOGOUT=http://localhost:8080/auth/hydra/logout TTL_ACCESS_TOKEN=12h TTL_REFRESH_TOKEN=720h hydra serve all --dangerous-force-http --dangerous-allow-insecure-redirect-urls 'http://localhost:8080/auth/hydra/login,http://localhost:8080/auth/hydra/consent,http://localhost:8080/auth/hydra/logout'
 ```
 
 > This step is not needed when run by docker compose.

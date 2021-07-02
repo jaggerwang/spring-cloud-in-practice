@@ -1,18 +1,18 @@
-package net.jaggerwang.scip.user.adapter.dao;
+package net.jaggerwang.scip.auth.adapter.dao;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import net.jaggerwang.scip.user.adapter.dao.jpa.RoleRepository;
+import net.jaggerwang.scip.auth.adapter.dao.jpa.RoleRepository;
 import org.springframework.stereotype.Component;
-import net.jaggerwang.scip.user.adapter.dao.jpa.entity.QRole;
-import net.jaggerwang.scip.user.adapter.dao.jpa.entity.QUser;
-import net.jaggerwang.scip.user.adapter.dao.jpa.entity.QUserRole;
-import net.jaggerwang.scip.user.adapter.dao.jpa.entity.Role;
+import net.jaggerwang.scip.auth.adapter.dao.jpa.entity.QRole;
+import net.jaggerwang.scip.auth.adapter.dao.jpa.entity.QUser;
+import net.jaggerwang.scip.auth.adapter.dao.jpa.entity.QUserRole;
+import net.jaggerwang.scip.auth.adapter.dao.jpa.entity.Role;
 import net.jaggerwang.scip.common.entity.RoleBO;
-import net.jaggerwang.scip.user.usecase.port.dao.RoleDAO;
+import net.jaggerwang.scip.auth.usecase.port.dao.RoleDAO;
 
 @Component
 public class RoleDAOImpl implements RoleDAO {

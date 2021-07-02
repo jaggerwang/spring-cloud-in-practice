@@ -10,4 +10,6 @@ public interface UserSyncService {
     List<UserDTO> following(Long userId, Long limit, Long offset);
 
     Long followingCount(Long userId);
+
+    Boolean isFollowing(Long userId);
 }

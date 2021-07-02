@@ -6,15 +6,15 @@ logging:
 
 server:
   address: 0.0.0.0
-  port: 8085
+  port: 8081
 
 spring:
   application:
-    name: spring-cloud-in-practice-stat
+    name: spring-cloud-in-practice-auth
   config:
     import: "optional:consul:"
   datasource:
-    url: ${SCIP_SPRING_DATASOURCE_URL:jdbc:mysql://localhost/scip_stat}
+    url: ${SCIP_SPRING_DATASOURCE_URL:jdbc:mysql://localhost/scip_user}
     username: ${SCIP_SPRING_DATASOURCE_USERNAME:root}
     password: ${SCIP_SPRING_DATASOURCE_PASSWORD:}
   jpa:
@@ -33,7 +33,7 @@ spring:
         enabled: true
         prefixes:
           - spring-cloud-in-practice
-        name: stat
+        name: auth
         format: YAML
 
 management:

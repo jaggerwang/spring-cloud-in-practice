@@ -8,10 +8,10 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>spring-cloud-in-practice-post</artifactId>
+    <artifactId>spring-cloud-in-practice-auth</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>spring-cloud-in-practice-post</name>
-    <description>Spring cloud in practice post</description>
+    <name>spring-cloud-in-practice-auth</name>
+    <description>Spring cloud in practice auth</description>
 
     <dependencies>
         <dependency>
@@ -71,7 +71,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+            <artifactId>spring-cloud-starter-circuitbreaker-reactor-resilience4j</artifactId>
         </dependency>
 
         <dependency>

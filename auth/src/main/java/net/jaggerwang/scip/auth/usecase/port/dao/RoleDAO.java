@@ -1,4 +1,4 @@
-package net.jaggerwang.scip.user.usecase.port.dao;
+package net.jaggerwang.scip.auth.usecase.port.dao;
 
 import java.util.List;
 import java.util.Optional;

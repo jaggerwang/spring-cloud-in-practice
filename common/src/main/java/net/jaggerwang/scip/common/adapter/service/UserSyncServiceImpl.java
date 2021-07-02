@@ -53,4 +53,12 @@ public class UserSyncServiceImpl extends InternalSyncService implements UserSync
         var response = getData("/user/followingCount", params);
         return objectMapper.convertValue(response.get("count"), Long.class);
     }
+
+    @Override
+    public Boolean isFollowing(Long userId) {
+        var params = new HashMap<String, String>();
+        params.put("userId", userId.toString());
+        var response = getData("/user/isFollowing", params);
+        return objectMapper.convertValue(response.get("isFollowing"), Boolean.class);
+    }
 }
