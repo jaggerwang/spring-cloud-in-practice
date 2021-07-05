@@ -13,6 +13,4 @@ public interface RoleDAO {
     Optional<RoleBO> findByName(String name);
 
     List<RoleBO> rolesOfUser(Long userId);
-
-    List<RoleBO> rolesOfUser(String username);
 }

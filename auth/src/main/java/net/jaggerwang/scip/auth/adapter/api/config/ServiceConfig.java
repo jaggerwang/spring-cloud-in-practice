@@ -59,36 +59,4 @@ public class ServiceConfig {
                                            ObjectMapper objectMapper) {
         return new UserSyncServiceImpl(restTemplate, cbFactory, objectMapper);
     }
-
-    @LoadBalanced
-    @Bean
-    public RestTemplate fileServiceRestTemplate(RestTemplateBuilder builder) {
-        return builder
-                .rootUri("http://spring-cloud-in-practice-file")
-                .interceptors(new HeadersRelayRequestInterceptor("X-User-Id"))
-                .build();
-    }
-
-    @Bean
-    public FileSyncService fileSyncService(@Qualifier("fileServiceRestTemplate") RestTemplate restTemplate,
-                                           CircuitBreakerFactory cbFactory,
-                                           ObjectMapper objectMapper) {
-        return new FileSyncServiceImpl(restTemplate, cbFactory, objectMapper);
-    }
-
-    @LoadBalanced
-    @Bean
-    public RestTemplate statServiceRestTemplate(RestTemplateBuilder builder) {
-        return builder
-                .rootUri("http://spring-cloud-in-practice-stat")
-                .interceptors(new HeadersRelayRequestInterceptor("X-User-Id"))
-                .build();
-    }
-
-    @Bean
-    public StatSyncService statSyncService(@Qualifier("statServiceRestTemplate") RestTemplate restTemplate,
-                                           CircuitBreakerFactory cbFactory,
-                                           ObjectMapper objectMapper) {
-        return new StatSyncServiceImpl(restTemplate, cbFactory, objectMapper);
-    }
 }

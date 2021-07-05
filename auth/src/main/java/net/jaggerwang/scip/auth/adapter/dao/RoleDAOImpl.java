@@ -8,7 +8,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import net.jaggerwang.scip.auth.adapter.dao.jpa.RoleRepository;
 import org.springframework.stereotype.Component;
 import net.jaggerwang.scip.auth.adapter.dao.jpa.entity.QRole;
-import net.jaggerwang.scip.auth.adapter.dao.jpa.entity.QUser;
 import net.jaggerwang.scip.auth.adapter.dao.jpa.entity.QUserRole;
 import net.jaggerwang.scip.auth.adapter.dao.jpa.entity.Role;
 import net.jaggerwang.scip.common.entity.RoleBO;
@@ -44,14 +43,6 @@ public class RoleDAOImpl implements RoleDAO {
         var query = jpaQueryFactory.selectFrom(QRole.role).join(QUserRole.userRole)
                 .on(QRole.role.id.eq(QUserRole.userRole.roleId))
                 .where(QUserRole.userRole.userId.eq(userId));
-        return query.fetch().stream().map(Role::toEntity).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<RoleBO> rolesOfUser(String username) {
-        var query = jpaQueryFactory.selectFrom(QRole.role).join(QUserRole.userRole)
-                .on(QRole.role.id.eq(QUserRole.userRole.roleId)).join(QUser.user)
-                .on(QUser.user.id.eq(QUserRole.userRole.userId)).where(QUser.user.username.eq(username));
         return query.fetch().stream().map(Role::toEntity).collect(Collectors.toList());
     }
 }

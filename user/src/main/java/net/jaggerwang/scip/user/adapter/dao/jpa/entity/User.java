@@ -1,18 +1,13 @@
-package net.jaggerwang.scip.auth.adapter.dao.jpa.entity;
-
-import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
+package net.jaggerwang.scip.user.adapter.dao.jpa.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.jaggerwang.scip.common.entity.UserBO;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data

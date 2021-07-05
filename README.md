@@ -1,6 +1,6 @@
 # Spring Cloud in Practice
 
-This project can be used as a starter for spring cloud microservices development. It is the microservices version of [Spring Boot in Practice](https://github.com/jaggerwang/spring-boot-in-practice). It use [Spring Cloud Consul](https://cloud.spring.io/spring-cloud-consul/reference/html/) for service discovery and config management, [Spring Cloud Gateway](https://cloud.spring.io/spring-cloud-gateway/reference/html/) to implement api gateway, and [ORY/Hydra](https://github.com/ory/hydra) for running an optional OAuth2 server. The apis exposed by gateway can be used as the backend api service for this flutter app [Flutter in Practice](https://github.com/jaggerwang/flutter-in-practice). There is an article [Spring Cloud 微服务开发指南](https://blog.jaggerwang.net/spring-cloud-micro-service-develop-tour/) for learning this project.
+This project can be used as a starter for spring cloud microservices development. It is the microservices version of [Spring Boot in Practice](https://github.com/jaggerwang/spring-boot-in-practice). It uses [Spring Cloud Consul](https://cloud.spring.io/spring-cloud-consul/reference/html/) for service discovery and config management, [Spring Cloud Gateway](https://cloud.spring.io/spring-cloud-gateway/reference/html/) to implement api gateway, and [ORY/Hydra](https://github.com/ory/hydra) for running an optional OAuth2 server. There is an article [Spring Cloud 微服务开发指南](https://blog.jaggerwang.net/spring-cloud-micro-service-develop-tour/) for learning this project.
 
 ## Dependent frameworks and packages
 
@@ -13,15 +13,19 @@ This project can be used as a starter for spring cloud microservices development
 1. [Spring Cloud Circuit Breaker](https://spring.io/projects/spring-cloud-circuitbreaker) Circuit breaker
 1. [ORY/Hydra](https://github.com/ory/hydra) OAuth2 server
 
-## Microservice Architecture
-
-### With Session
+## Architecture
 
 ![spring-cloud-micro-service-architecture](https://user-images.githubusercontent.com/1255011/80553599-06adb500-89fd-11ea-9cf8-f887e156e51b.png)
 
-### With OAuth2
+## Modules
 
-![spring-cloud-micro-service-with-oauth2-architecture](https://user-images.githubusercontent.com/1255011/80553605-0e6d5980-89fd-11ea-838e-b181658ef39f.png)
+| Name  | Description |
+| ------------- | ------------- |
+| Auth | Authentication and authorization |
+| User | User management, follow relationship |
+| Post | Post management |
+| File | File management |
+| Stat | Stat of user and post |
 
 ## APIs
 
@@ -30,14 +34,15 @@ This project can be used as a starter for spring cloud microservices development
 | /auth/login | POST | Login |
 | /auth/logout | GET | Logout |
 | /auth/logged | GET | Get logged user |
-| /user/register | POST | Register |
+| /user/register | POST | Register user |
 | /user/modify | POST | Modify logged user |
 | /user/info | GET | Get user info |
+| /user/sendMobileVerifyCode | POST | Send mobile verify code |
+| /user/sendEmailVerifyCode | POST | Send email verify code |
 | /user/follow | POST | Follow user |
 | /user/unfollow | POST | Unfollow user |
 | /user/following | GET | Following users of someone |
 | /user/follower | GET | Fans of some user |
-| /user/sendMobileVerifyCode | POST | Send mobile verify code |
 | /post/publish | POST | Publish post |
 | /post/delete | POST | Delete post |
 | /post/info | GET | Get post info |
@@ -45,9 +50,11 @@ This project can be used as a starter for spring cloud microservices development
 | /post/like | POST | Like post |
 | /post/unlike | POST | Unlike post |
 | /post/liked | GET | Liked posts of some user |
-| /post/following | GET | Posts of following users of someone |
+| /post/following | GET | Posts published by following users of someone |
 | /file/upload | POST | Upload file |
 | /file/info | GET | Get file meta info |
+| /stat/ofUser | GET | Get user stat info |
+| /stat/ofPost | GET | Get post stat info |
 
 The rest api service only return top objects, not return nested objects compared to the original monolith one.
 
@@ -118,9 +125,13 @@ If you repackaged any module, you should add `--build` option to enable the new 
 
 Then you can access all APIs at `http://localhost:8080`.
 
-## OAuth2 login
+## Integrate with OAuth2 Service
 
 This application also support OAuth2 login, you need switch to `oauth2` branch to enable this feature. We use [ORY/Hydra](https://github.com/ory/hydra) to run an OAuth2 server, and any OAuth2 client can use this service to authenticate and authorize users.
+
+### Architecture
+
+![spring-cloud-micro-service-with-oauth2-architecture](https://user-images.githubusercontent.com/1255011/80553605-0e6d5980-89fd-11ea-838e-b181658ef39f.png)
 
 ### Install hydra command
 

@@ -14,7 +14,7 @@ spring:
   config:
     import: "optional:consul:"
   datasource:
-    url: ${SCIP_SPRING_DATASOURCE_URL:jdbc:mysql://localhost/scip_user}
+    url: ${SCIP_SPRING_DATASOURCE_URL:jdbc:mysql://localhost/scip_auth}
     username: ${SCIP_SPRING_DATASOURCE_USERNAME:root}
     password: ${SCIP_SPRING_DATASOURCE_PASSWORD:}
   jpa:
