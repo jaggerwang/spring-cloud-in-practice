@@ -30,15 +30,29 @@ public class PostDTO {
 
     private LocalDateTime updatedAt;
 
-    public static PostDTO fromEntity(PostBO postBO) {
-        return PostDTO.builder().id(postBO.getId()).userId(postBO.getUserId())
-                .type(postBO.getType()).text(postBO.getText())
-                .imageIds(postBO.getImageIds()).videoId(postBO.getVideoId())
-                .createdAt(postBO.getCreatedAt()).updatedAt(postBO.getUpdatedAt()).build();
+    public static PostDTO fromBO(PostBO postBO) {
+        return PostDTO.builder()
+                .id(postBO.getId())
+                .userId(postBO.getUserId())
+                .type(postBO.getType())
+                .text(postBO.getText())
+                .imageIds(postBO.getImageIds())
+                .videoId(postBO.getVideoId())
+                .createdAt(postBO.getCreatedAt())
+                .updatedAt(postBO.getUpdatedAt())
+                .build();
     }
 
-    public PostBO toEntity() {
-        return PostBO.builder().id(id).userId(userId).type(type).text(text).imageIds(imageIds)
-                .videoId(videoId).createdAt(createdAt).updatedAt(updatedAt).build();
+    public PostBO toBO() {
+        return PostBO.builder()
+                .id(id)
+                .userId(userId)
+                .type(type)
+                .text(text)
+                .imageIds(imageIds)
+                .videoId(videoId)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 }

@@ -20,27 +20,27 @@ public class FileDAOImpl implements FileDAO {
 
     @Override
     public FileBO save(FileBO fileBO) {
-        return fileRepository.save(File.fromEntity(fileBO)).toEntity();
+        return fileRepository.save(File.fromBO(fileBO)).toBO();
     }
 
     @Override
     public Optional<FileBO> findById(Long id) {
-        return fileRepository.findById(id).map(file -> file.toEntity());
+        return fileRepository.findById(id).map(file -> file.toBO());
     }
 
     @Override
     public List<FileBO> findAllById(List<Long> ids) {
         var fileDos = fileRepository.findAllById(ids).stream()
-                .collect(Collectors.toMap(file -> file.getId(), file -> file.toEntity()));
+                .collect(Collectors.toMap(file -> file.getId(), file -> file.toBO()));
 
-        var fileEntities = new FileBO[ids.size()];
+        var fileBOs = new FileBO[ids.size()];
         IntStream.range(0, ids.size()).forEach(i -> {
             var id = ids.get(i);
             if (fileDos.containsKey(id)) {
-                fileEntities[i] = fileDos.get(id);
+                fileBOs[i] = fileDos.get(id);
             }
         });
 
-        return Arrays.asList(fileEntities);
+        return Arrays.asList(fileBOs);
     }
 }

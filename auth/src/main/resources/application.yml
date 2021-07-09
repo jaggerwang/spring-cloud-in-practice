@@ -2,17 +2,27 @@ debug: ${SCIP_DEBUG:false}
 
 logging:
   file:
-    path: ${SCIP_LOGGING_FILE_PATH:/tmp}
+    path: ${SCIP_LOGGING_FILE_PATH:./log}
 
 server:
   address: 0.0.0.0
-  port: 8081
+  port: 8080
 
 spring:
   application:
     name: spring-cloud-in-practice-auth
   config:
     import: "optional:consul:"
+  redis:
+    host: ${SCIP_SPRING_REDIS_HOST:localhost}
+    port: ${SCIP_SPRING_REDIS_PORT:6379}
+    password: ${SCIP_SPRING_REDIS_PASSWORD:}
+    connect-timeout: 5s
+  session:
+    store-type: redis
+    timeout: 7d
+    redis:
+      namespace: scip:session
   datasource:
     url: ${SCIP_SPRING_DATASOURCE_URL:jdbc:mysql://localhost/scip_auth}
     username: ${SCIP_SPRING_DATASOURCE_USERNAME:root}

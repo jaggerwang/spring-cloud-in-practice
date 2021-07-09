@@ -3,7 +3,7 @@ package net.jaggerwang.scip.common.adapter.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
-import net.jaggerwang.scip.common.usecase.port.service.UserSyncService;
+import net.jaggerwang.scip.common.usecase.port.service.UserService;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.web.client.RestTemplate;
@@ -13,9 +13,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-public class UserSyncServiceImpl extends InternalSyncService implements UserSyncService {
-    public UserSyncServiceImpl(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
-                               ObjectMapper objectMapper) {
+/**
+ * @author Jagger Wang
+ */
+public class UserServiceImpl extends InternalService implements UserService {
+    public UserServiceImpl(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
+                           ObjectMapper objectMapper) {
         super(restTemplate, cbFactory, objectMapper);
     }
 
@@ -29,6 +32,30 @@ public class UserSyncServiceImpl extends InternalSyncService implements UserSync
         var params = new HashMap<String, String>();
         params.put("id", id.toString());
         var response = getData("/user/info", params);
+        return objectMapper.convertValue(response.get("user"), UserDTO.class);
+    }
+
+    @Override
+    public UserDTO infoByUsername(String username) {
+        var params = new HashMap<String, String>();
+        params.put("username", username);
+        var response = getData("/user/infoByUsername", params);
+        return objectMapper.convertValue(response.get("user"), UserDTO.class);
+    }
+
+    @Override
+    public UserDTO infoByMobile(String mobile) {
+        var params = new HashMap<String, String>();
+        params.put("mobile", mobile);
+        var response = getData("/user/infoByMobile", params);
+        return objectMapper.convertValue(response.get("user"), UserDTO.class);
+    }
+
+    @Override
+    public UserDTO infoByEmail(String email) {
+        var params = new HashMap<String, String>();
+        params.put("email", email);
+        var response = getData("/user/infoByEmail", params);
         return objectMapper.convertValue(response.get("user"), UserDTO.class);
     }
 
@@ -52,13 +79,5 @@ public class UserSyncServiceImpl extends InternalSyncService implements UserSync
         params.put("userId", userId.toString());
         var response = getData("/user/followingCount", params);
         return objectMapper.convertValue(response.get("count"), Long.class);
-    }
-
-    @Override
-    public Boolean isFollowing(Long userId) {
-        var params = new HashMap<String, String>();
-        params.put("userId", userId.toString());
-        var response = getData("/user/isFollowing", params);
-        return objectMapper.convertValue(response.get("isFollowing"), Boolean.class);
     }
 }

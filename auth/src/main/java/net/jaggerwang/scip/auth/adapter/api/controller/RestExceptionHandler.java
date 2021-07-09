@@ -6,6 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+/**
+ * @author Jagger Wang
+ */
 @ControllerAdvice
 public class RestExceptionHandler {
     private RestExceptionConverter converter = new RestExceptionConverter();

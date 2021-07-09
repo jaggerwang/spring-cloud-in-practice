@@ -1,6 +1,6 @@
 package net.jaggerwang.scip.gateway.adapter.api.filter;
 
-import net.jaggerwang.scip.gateway.adapter.api.security.LoggedUser;
+import net.jaggerwang.scip.common.adapter.api.security.LoggedUser;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;

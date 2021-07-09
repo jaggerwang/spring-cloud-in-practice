@@ -3,7 +3,7 @@ package net.jaggerwang.scip.common.adapter.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.dto.PostStatDTO;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserStatDTO;
-import net.jaggerwang.scip.common.usecase.port.service.StatSyncService;
+import net.jaggerwang.scip.common.usecase.port.service.StatService;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.web.client.RestTemplate;
 
@@ -11,9 +11,9 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Optional;
 
-public class StatSyncServiceImpl extends InternalSyncService implements StatSyncService {
-    public StatSyncServiceImpl(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
-                               ObjectMapper objectMapper) {
+public class StatServiceImpl extends InternalService implements StatService {
+    public StatServiceImpl(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
+                           ObjectMapper objectMapper) {
         super(restTemplate, cbFactory, objectMapper);
     }
 

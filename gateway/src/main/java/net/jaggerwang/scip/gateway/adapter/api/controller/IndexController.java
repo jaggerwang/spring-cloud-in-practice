@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/")
-public class IndexController extends AbstractController {
+public class IndexController {
     @GetMapping("/")
     public Mono<RootDTO> index() {
         return ReactiveSecurityContextHolder.getContext()

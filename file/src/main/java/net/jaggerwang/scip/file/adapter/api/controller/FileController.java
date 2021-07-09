@@ -25,7 +25,7 @@ public class FileController extends AbstractController {
                           @RequestParam(defaultValue = "") String bucket,
                           @RequestParam(defaultValue = "") String path,
                           @RequestParam("file") List<MultipartFile> files) throws IOException {
-        var fileEntities = new ArrayList<FileBO>();
+        var fileBOs = new ArrayList<FileBO>();
         for (var file : files) {
             var content = file.getBytes();
 
@@ -34,38 +34,38 @@ public class FileController extends AbstractController {
                     .size(file.getSize())
                     .type(file.getContentType())
                     .build();
-            var fileEntity = FileBO.builder()
+            var fileBO = FileBO.builder()
                     .userId(loggedUserId())
                     .region(region)
                     .bucket(bucket)
                     .meta(meta).build();
 
-            fileEntity = fileUsecase.upload(path, content, fileEntity);
+            fileBO = fileUsecase.upload(path, content, fileBO);
 
-            fileEntities.add(fileEntity);
+            fileBOs.add(fileBO);
         }
 
-        return new RootDTO().addDataEntry("files", fileEntities.stream()
-                .map(FileDTO::fromEntity).collect(Collectors.toList()));
+        return new RootDTO().addDataEntry("files", fileBOs.stream()
+                .map(this::fullFileDto).collect(Collectors.toList()));
     }
 
     @GetMapping("/info")
     public RootDTO info(@RequestParam Long id) {
-        var fileEntity = fileUsecase.info(id);
-        if (fileEntity.isEmpty()) {
+        var fileBO = fileUsecase.info(id);
+        if (fileBO.isEmpty()) {
             throw new NotFoundException("文件未找到");
         }
 
-        return new RootDTO().addDataEntry("file", FileDTO.fromEntity(fileEntity.get()));
+        return new RootDTO().addDataEntry("file", fullFileDto(fileBO.get()));
     }
 
     @GetMapping("/infos")
     public RootDTO infos(@RequestParam String ids,
                          @RequestParam(defaultValue = "true") Boolean keepNull) {
         var idList = Arrays.stream(ids.split(",")).mapToLong(Long::parseLong).boxed().collect(Collectors.toList());
-        var fileEntities = fileUsecase.infos(idList, keepNull);
+        var fileBOs = fileUsecase.infos(idList, keepNull);
 
-        return new RootDTO().addDataEntry("files", fileEntities.stream()
-                .map(FileDTO::fromEntity).collect(Collectors.toList()));
+        return new RootDTO().addDataEntry("files", fileBOs.stream()
+                .map(this::fullFileDto).collect(Collectors.toList()));
     }
 }

@@ -13,6 +13,9 @@ import net.jaggerwang.scip.auth.adapter.dao.jpa.entity.Role;
 import net.jaggerwang.scip.common.entity.RoleBO;
 import net.jaggerwang.scip.auth.usecase.port.dao.RoleDAO;
 
+/**
+ * @author Jagger Wang
+ */
 @Component
 public class RoleDAOImpl implements RoleDAO {
     private JPAQueryFactory jpaQueryFactory;
@@ -25,17 +28,17 @@ public class RoleDAOImpl implements RoleDAO {
 
     @Override
     public RoleBO save(RoleBO roleBO) {
-        return roleRepository.save(Role.fromEntity(roleBO)).toEntity();
+        return roleRepository.save(Role.fromBO(roleBO)).toBO();
     }
 
     @Override
     public Optional<RoleBO> findById(Long id) {
-        return roleRepository.findById(id).map(Role::toEntity);
+        return roleRepository.findById(id).map(Role::toBO);
     }
 
     @Override
     public Optional<RoleBO> findByName(String name) {
-        return roleRepository.findByName(name).map(Role::toEntity);
+        return roleRepository.findByName(name).map(Role::toBO);
     }
 
     @Override
@@ -43,6 +46,6 @@ public class RoleDAOImpl implements RoleDAO {
         var query = jpaQueryFactory.selectFrom(QRole.role).join(QUserRole.userRole)
                 .on(QRole.role.id.eq(QUserRole.userRole.roleId))
                 .where(QUserRole.userRole.userId.eq(userId));
-        return query.fetch().stream().map(Role::toEntity).collect(Collectors.toList());
+        return query.fetch().stream().map(Role::toBO).collect(Collectors.toList());
     }
 }

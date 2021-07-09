@@ -31,24 +31,32 @@ public class UserDTO {
 
     private LocalDateTime updatedAt;
 
-    public static UserDTO fromEntity(UserBO userBO, Boolean withPassword) {
-        var builder = UserDTO.builder().id(userBO.getId()).username(userBO.getUsername())
-                .mobile(userBO.getMobile()).email(userBO.getEmail())
-                .avatarId(userBO.getAvatarId()).intro(userBO.getIntro())
-                .createdAt(userBO.getCreatedAt()).updatedAt(userBO.getUpdatedAt());
-
-        if (Boolean.TRUE.equals(withPassword)) builder.password(userBO.getPassword());
+    public static UserDTO fromBO(UserBO userBO) {
+        var builder = UserDTO.builder()
+                .id(userBO.getId())
+                .username(userBO.getUsername())
+                .password(userBO.getPassword())
+                .mobile(userBO.getMobile())
+                .email(userBO.getEmail())
+                .avatarId(userBO.getAvatarId())
+                .intro(userBO.getIntro())
+                .createdAt(userBO.getCreatedAt())
+                .updatedAt(userBO.getUpdatedAt());
 
         return builder.build();
     }
 
-    public static UserDTO fromEntity(UserBO userBO) {
-        return fromEntity(userBO, false);
-    }
-
-    public UserBO toEntity() {
-        return UserBO.builder().id(id).username(username).password(password).mobile(mobile)
-                .email(email).avatarId(avatarId).intro(intro).createdAt(createdAt)
-                .updatedAt(updatedAt).build();
+    public UserBO toBO() {
+        return UserBO.builder()
+                .id(id)
+                .username(username)
+                .password(password)
+                .mobile(mobile)
+                .email(email)
+                .avatarId(avatarId)
+                .intro(intro)
+                .createdAt(createdAt)
+                .updatedAt(updatedAt)
+                .build();
     }
 }

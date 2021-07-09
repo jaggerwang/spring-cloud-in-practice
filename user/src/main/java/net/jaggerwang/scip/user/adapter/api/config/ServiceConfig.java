@@ -3,14 +3,14 @@ package net.jaggerwang.scip.user.adapter.api.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
-import net.jaggerwang.scip.common.adapter.service.FileSyncServiceImpl;
-import net.jaggerwang.scip.common.adapter.service.StatSyncServiceImpl;
+import net.jaggerwang.scip.common.adapter.service.FileServiceImpl;
+import net.jaggerwang.scip.common.adapter.service.StatServiceImpl;
 import net.jaggerwang.scip.common.adapter.api.interceptor.HeadersRelayRequestInterceptor;
-import net.jaggerwang.scip.common.usecase.port.service.FileSyncService;
-import net.jaggerwang.scip.common.usecase.port.service.StatSyncService;
+import net.jaggerwang.scip.common.usecase.port.service.FileService;
+import net.jaggerwang.scip.common.usecase.port.service.StatService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory;
+import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.cloud.client.circuitbreaker.Customizer;
@@ -24,7 +24,7 @@ import java.time.Duration;
 @Configuration(proxyBeanMethods = false)
 public class ServiceConfig {
     @Bean
-    public Customizer<ReactiveResilience4JCircuitBreakerFactory> cbFactoryCustomizer() {
+    public Customizer<Resilience4JCircuitBreakerFactory> cbFactoryCustomizer() {
         return factory -> factory.configureDefault(id -> {
             var timeout = Duration.ofSeconds(2);
             if (id.equals("fast")) {
@@ -52,10 +52,10 @@ public class ServiceConfig {
     }
 
     @Bean
-    public FileSyncService fileSyncService(@Qualifier("fileServiceRestTemplate") RestTemplate restTemplate,
-                                           CircuitBreakerFactory cbFactory,
-                                           ObjectMapper objectMapper) {
-        return new FileSyncServiceImpl(restTemplate, cbFactory, objectMapper);
+    public FileService fileSyncService(@Qualifier("fileServiceRestTemplate") RestTemplate restTemplate,
+                                       CircuitBreakerFactory cbFactory,
+                                       ObjectMapper objectMapper) {
+        return new FileServiceImpl(restTemplate, cbFactory, objectMapper);
     }
 
     @LoadBalanced
@@ -68,9 +68,9 @@ public class ServiceConfig {
     }
 
     @Bean
-    public StatSyncService statSyncService(@Qualifier("statServiceRestTemplate") RestTemplate restTemplate,
-                                           CircuitBreakerFactory cbFactory,
-                                           ObjectMapper objectMapper) {
-        return new StatSyncServiceImpl(restTemplate, cbFactory, objectMapper);
+    public StatService statSyncService(@Qualifier("statServiceRestTemplate") RestTemplate restTemplate,
+                                       CircuitBreakerFactory cbFactory,
+                                       ObjectMapper objectMapper) {
+        return new StatServiceImpl(restTemplate, cbFactory, objectMapper);
     }
 }

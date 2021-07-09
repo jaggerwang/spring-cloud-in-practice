@@ -2,7 +2,7 @@ debug: ${SCIP_DEBUG:false}
 
 logging:
   file:
-    path: ${SCIP_LOGGING_FILE_PATH:/tmp}
+    path: ${SCIP_LOGGING_FILE_PATH:./log}
 
 server:
   address: 0.0.0.0
@@ -19,8 +19,8 @@ spring:
     password: ${SCIP_SPRING_REDIS_PASSWORD:}
     connect-timeout: 5s
   session:
-    timeout: 7d
     store-type: redis
+    timeout: 7d
     redis:
       namespace: scip:session
   cloud:
@@ -32,7 +32,7 @@ spring:
       port: ${SCIP_SPRING_CLOUD_CONSUL_PORT:8500}
       discovery:
         enabled: true
-        register: false
+        register: true
       config:
         enabled: true
         prefixes:
@@ -45,7 +45,3 @@ management:
     web:
       exposure:
         include: "*"
-
-service:
-  file:
-    base-url: ${SCIP_SERVICE_FILE_BASE_URL:http://localhost:8080/files}

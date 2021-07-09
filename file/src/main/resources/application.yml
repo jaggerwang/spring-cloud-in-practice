@@ -2,11 +2,11 @@ debug: ${SCIP_DEBUG:false}
 
 logging:
   file:
-    path: ${SCIP_LOGGING_FILE_PATH:/tmp}
+    path: ${SCIP_LOGGING_FILE_PATH:./log}
 
 server:
   address: 0.0.0.0
-  port: 8084
+  port: 8080
 
 spring:
   application:
@@ -50,3 +50,4 @@ management:
 
 file:
   upload-dir: ${SCIP_FILE_UPLOAD_DIR:/tmp}
+  base-url: ${SCIP_SERVICE_FILE_BASE_URL:http://localhost:8080/files}

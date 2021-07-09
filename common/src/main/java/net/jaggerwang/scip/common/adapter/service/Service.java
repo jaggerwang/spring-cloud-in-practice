@@ -12,11 +12,14 @@ import java.net.URI;
 import java.util.Optional;
 import java.util.function.Function;
 
-public abstract class SyncService {
+/**
+ * @author Jagger Wang
+ */
+public abstract class Service {
     private RestTemplate restTemplate;
     private CircuitBreakerFactory cbFactory;
 
-    public SyncService(RestTemplate restTemplate, CircuitBreakerFactory cbFactory) {
+    public Service(RestTemplate restTemplate, CircuitBreakerFactory cbFactory) {
         this.restTemplate = restTemplate;
         this.cbFactory = cbFactory;
     }

@@ -1,0 +1,138 @@
+2021-07-08 13:42:06.816  INFO 96371 --- [restartedMain] n.j.scip.auth.adapter.api.Application    : Starting Application using Java 11.0.10 on jagger-mbp with PID 96371 (/Users/jagger/projects/jaggerwang/spring-cloud-in-practice/auth/target/classes started by jagger in /Users/jagger/projects/jaggerwang/spring-cloud-in-practice/auth)
+2021-07-08 13:42:06.824  INFO 96371 --- [restartedMain] n.j.scip.auth.adapter.api.Application    : No active profile set, falling back to default profiles: default
+2021-07-08 13:42:06.917  INFO 96371 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-07-08 13:42:06.917  INFO 96371 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-07-08 13:42:07.977  INFO 96371 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-07-08 13:42:08.088  INFO 96371 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 97 ms. Found 2 JPA repository interfaces.
+2021-07-08 13:42:09.042  INFO 96371 --- [restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=0817d7f2-1a9e-358f-b38c-215a4b181747
+2021-07-08 13:42:09.487  INFO 96371 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-07-08 13:42:09.492  INFO 96371 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-07-08 13:42:09.496  INFO 96371 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-07-08 13:42:10.165  INFO 96371 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-07-08 13:42:10.184  INFO 96371 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-07-08 13:42:10.185  INFO 96371 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.48]
+2021-07-08 13:42:10.323  INFO 96371 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-07-08 13:42:10.323  INFO 96371 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3405 ms
+2021-07-08 13:42:10.825  INFO 96371 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-07-08 13:42:11.474  INFO 96371 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-07-08 13:42:11.534  INFO 96371 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-07-08 13:42:11.614  INFO 96371 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.32.Final
+2021-07-08 13:42:11.820  INFO 96371 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-07-08 13:42:11.996  INFO 96371 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2021-07-08 13:42:12.833  INFO 96371 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-07-08 13:42:12.846  INFO 96371 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-07-08 13:42:12.923  WARN 96371 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'securityConfig': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.springframework.security.config.annotation.ObjectPostProcessor<?>' available
+2021-07-08 13:42:12.923  INFO 96371 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-07-08 13:42:12.930  INFO 96371 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-07-08 13:42:13.006  INFO 96371 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-07-08 13:42:13.010  INFO 96371 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2021-07-08 13:42:13.038  INFO 96371 --- [restartedMain] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2021-07-08 13:42:13.078 ERROR 96371 --- [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+A component required a bean of type 'org.springframework.security.config.annotation.ObjectPostProcessor' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'org.springframework.security.config.annotation.ObjectPostProcessor' in your configuration.
+
+2021-07-08 14:54:38.777  INFO 97323 --- [restartedMain] n.j.scip.auth.adapter.api.Application    : Starting Application using Java 11.0.10 on jagger-mbp with PID 97323 (/Users/jagger/projects/jaggerwang/spring-cloud-in-practice/auth/target/classes started by jagger in /Users/jagger/projects/jaggerwang/spring-cloud-in-practice/auth)
+2021-07-08 14:54:38.781  INFO 97323 --- [restartedMain] n.j.scip.auth.adapter.api.Application    : No active profile set, falling back to default profiles: default
+2021-07-08 14:54:38.868  INFO 97323 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-07-08 14:54:38.868  INFO 97323 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-07-08 14:54:39.922  INFO 97323 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-07-08 14:54:40.059  INFO 97323 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 119 ms. Found 2 JPA repository interfaces.
+2021-07-08 14:54:40.961  INFO 97323 --- [restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=0817d7f2-1a9e-358f-b38c-215a4b181747
+2021-07-08 14:54:41.406  INFO 97323 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-07-08 14:54:41.411  INFO 97323 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-07-08 14:54:41.416  INFO 97323 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-07-08 14:54:42.068  INFO 97323 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-07-08 14:54:42.087  INFO 97323 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-07-08 14:54:42.087  INFO 97323 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.48]
+2021-07-08 14:54:42.249  INFO 97323 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-07-08 14:54:42.249  INFO 97323 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3379 ms
+2021-07-08 14:54:42.728  INFO 97323 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-07-08 14:54:43.221  INFO 97323 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-07-08 14:54:43.283  INFO 97323 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-07-08 14:54:43.366  INFO 97323 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.32.Final
+2021-07-08 14:54:43.582  INFO 97323 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-07-08 14:54:43.747  INFO 97323 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2021-07-08 14:54:44.639  INFO 97323 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-07-08 14:54:44.657  INFO 97323 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-07-08 14:54:44.746  WARN 97323 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'securityConfig': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.springframework.security.config.annotation.ObjectPostProcessor<?>' available
+2021-07-08 14:54:44.747  INFO 97323 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-07-08 14:54:44.754  INFO 97323 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-07-08 14:54:44.820  INFO 97323 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-07-08 14:54:44.823  INFO 97323 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2021-07-08 14:54:44.856  INFO 97323 --- [restartedMain] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2021-07-08 14:54:44.895 ERROR 97323 --- [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+A component required a bean of type 'org.springframework.security.config.annotation.ObjectPostProcessor' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'org.springframework.security.config.annotation.ObjectPostProcessor' in your configuration.
+
+2021-07-08 14:55:44.955  INFO 97382 --- [restartedMain] n.j.scip.auth.adapter.api.Application    : Starting Application using Java 11.0.10 on jagger-mbp with PID 97382 (/Users/jagger/projects/jaggerwang/spring-cloud-in-practice/auth/target/classes started by jagger in /Users/jagger/projects/jaggerwang/spring-cloud-in-practice/auth)
+2021-07-08 14:55:44.982  INFO 97382 --- [restartedMain] n.j.scip.auth.adapter.api.Application    : No active profile set, falling back to default profiles: default
+2021-07-08 14:55:45.272  INFO 97382 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-07-08 14:55:45.275  INFO 97382 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-07-08 14:55:48.576  INFO 97382 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-07-08 14:55:48.782  INFO 97382 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 187 ms. Found 2 JPA repository interfaces.
+2021-07-08 14:55:51.340  INFO 97382 --- [restartedMain] o.s.cloud.context.scope.GenericScope     : BeanFactory id=0817d7f2-1a9e-358f-b38c-215a4b181747
+2021-07-08 14:55:51.993  INFO 97382 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-07-08 14:55:51.999  INFO 97382 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-07-08 14:55:52.005  INFO 97382 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-07-08 14:55:52.941  INFO 97382 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-07-08 14:55:52.955  INFO 97382 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-07-08 14:55:52.956  INFO 97382 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.48]
+2021-07-08 14:55:53.098  INFO 97382 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-07-08 14:55:53.098  INFO 97382 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 7821 ms
+2021-07-08 14:55:53.680  INFO 97382 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-07-08 14:55:54.131  INFO 97382 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-07-08 14:55:54.204  INFO 97382 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-07-08 14:55:54.294  INFO 97382 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.32.Final
+2021-07-08 14:55:54.492  INFO 97382 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-07-08 14:55:54.629  INFO 97382 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2021-07-08 14:55:55.708  INFO 97382 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-07-08 14:55:55.720  INFO 97382 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-07-08 14:55:55.801  WARN 97382 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'securityConfig': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.springframework.security.config.annotation.ObjectPostProcessor<?>' available
+2021-07-08 14:55:55.802  INFO 97382 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-07-08 14:55:55.808  INFO 97382 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-07-08 14:55:55.859  INFO 97382 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-07-08 14:55:55.865  INFO 97382 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2021-07-08 14:55:55.899  INFO 97382 --- [restartedMain] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2021-07-08 14:55:55.946 ERROR 97382 --- [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+A component required a bean of type 'org.springframework.security.config.annotation.ObjectPostProcessor' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'org.springframework.security.config.annotation.ObjectPostProcessor' in your configuration.
+

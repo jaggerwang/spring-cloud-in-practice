@@ -2,8 +2,8 @@ package net.jaggerwang.scip.user.adapter.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
-import net.jaggerwang.scip.common.usecase.port.service.FileSyncService;
-import net.jaggerwang.scip.common.usecase.port.service.StatSyncService;
+import net.jaggerwang.scip.common.usecase.port.service.FileService;
+import net.jaggerwang.scip.common.usecase.port.service.StatService;
 import net.jaggerwang.scip.common.entity.UserBO;
 import net.jaggerwang.scip.user.usecase.UserUsecase;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,10 @@ abstract public class AbstractController {
     protected UserUsecase userUsecase;
 
     @Autowired
-    protected FileSyncService fileSyncService;
+    protected FileService fileService;
 
     @Autowired
-    protected StatSyncService statSyncService;
+    protected StatService statService;
 
     @Autowired
     protected HttpServletRequest request;
@@ -35,15 +35,15 @@ abstract public class AbstractController {
     }
 
     protected Map<String, Object> fullUserDto(UserBO userBO) {
-        var userDto = UserDTO.fromEntity(userBO);
+        var userDto = UserDTO.fromBO(userBO);
         var m = objectMapper.convertValue(userDto, Map.class);
 
         if (userDto.getAvatarId() != null) {
-            var avatar = fileSyncService.info(userDto.getAvatarId());
+            var avatar = fileService.info(userDto.getAvatarId());
             m.put("avatar", avatar);
         }
 
-        m.put("stat", statSyncService.ofUser(userDto.getId()));
+        m.put("stat", statService.ofUser(userDto.getId()));
 
         if (loggedUserId() != null) {
             m.put("following", userUsecase.isFollowing(loggedUserId(), userDto.getId()));

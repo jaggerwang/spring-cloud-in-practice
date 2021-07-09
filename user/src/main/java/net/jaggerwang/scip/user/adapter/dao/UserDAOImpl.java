@@ -31,27 +31,27 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public UserBO save(UserBO userBO) {
-        return userRepository.save(User.fromEntity(userBO)).toEntity();
+        return userRepository.save(User.fromBO(userBO)).toBO();
     }
 
     @Override
     public Optional<UserBO> findById(Long id) {
-        return userRepository.findById(id).map(User::toEntity);
+        return userRepository.findById(id).map(User::toBO);
     }
 
     @Override
     public Optional<UserBO> findByUsername(String username) {
-        return userRepository.findByUsername(username).map(User::toEntity);
+        return userRepository.findByUsername(username).map(User::toBO);
     }
 
     @Override
     public Optional<UserBO> findByEmail(String email) {
-        return userRepository.findByEmail(email).map(User::toEntity);
+        return userRepository.findByEmail(email).map(User::toBO);
     }
 
     @Override
     public Optional<UserBO> findByMobile(String mobile) {
-        return userRepository.findByMobile(mobile).map(User::toEntity);
+        return userRepository.findByMobile(mobile).map(User::toBO);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class UserDAOImpl implements UserDAO {
             query.offset(offset);
         }
 
-        return query.fetch().stream().map(User::toEntity).collect(Collectors.toList());
+        return query.fetch().stream().map(User::toBO).collect(Collectors.toList());
     }
 
     @Override
@@ -115,7 +115,7 @@ public class UserDAOImpl implements UserDAO {
             query.offset(offset);
         }
 
-        return query.fetch().stream().map(User::toEntity).collect(Collectors.toList());
+        return query.fetch().stream().map(User::toBO).collect(Collectors.toList());
     }
 
     @Override

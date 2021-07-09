@@ -16,6 +16,9 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.annotation.PostConstruct;
 
+/**
+ * @author Jagger Wang
+ */
 @Configuration(proxyBeanMethods = false)
 public class CommonConfig {
     @Autowired

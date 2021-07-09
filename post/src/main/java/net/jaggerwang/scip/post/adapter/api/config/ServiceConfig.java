@@ -3,12 +3,12 @@ package net.jaggerwang.scip.post.adapter.api.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
-import net.jaggerwang.scip.common.adapter.service.UserSyncServiceImpl;
+import net.jaggerwang.scip.common.adapter.service.UserServiceImpl;
 import net.jaggerwang.scip.common.adapter.api.interceptor.HeadersRelayRequestInterceptor;
-import net.jaggerwang.scip.common.usecase.port.service.UserSyncService;
+import net.jaggerwang.scip.common.usecase.port.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory;
+import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.cloud.client.circuitbreaker.Customizer;
@@ -22,7 +22,7 @@ import java.time.Duration;
 @Configuration(proxyBeanMethods = false)
 public class ServiceConfig {
     @Bean
-    public Customizer<ReactiveResilience4JCircuitBreakerFactory> cbFactoryCustomizer() {
+    public Customizer<Resilience4JCircuitBreakerFactory> cbFactoryCustomizer() {
         return factory -> factory.configureDefault(id -> {
             var timeout = Duration.ofSeconds(2);
             if (id.equals("fast")) {
@@ -50,9 +50,9 @@ public class ServiceConfig {
     }
 
     @Bean
-    public UserSyncService userSyncService(@Qualifier("userServiceRestTemplate") RestTemplate restTemplate,
-                                           CircuitBreakerFactory cbFactory,
-                                           ObjectMapper objectMapper) {
-        return new UserSyncServiceImpl(restTemplate, cbFactory, objectMapper);
+    public UserService userSyncService(@Qualifier("userServiceRestTemplate") RestTemplate restTemplate,
+                                       CircuitBreakerFactory cbFactory,
+                                       ObjectMapper objectMapper) {
+        return new UserServiceImpl(restTemplate, cbFactory, objectMapper);
     }
 }

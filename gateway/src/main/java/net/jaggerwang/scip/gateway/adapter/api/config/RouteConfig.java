@@ -10,17 +10,15 @@ public class RouteConfig {
     @Bean
     public RouteLocator routes(RouteLocatorBuilder builder) {
         return builder.routes()
+                .route(p -> p.path("/auth/**")
+                        .uri("lb://spring-cloud-in-practice-auth"))
                 .route(p -> p.path("/user/**")
-                        .filters(f -> f.removeRequestHeader("Cookie"))
                         .uri("lb://spring-cloud-in-practice-user"))
                 .route(p -> p.path("/post/**")
-                        .filters(f -> f.removeRequestHeader("Cookie"))
                         .uri("lb://spring-cloud-in-practice-post"))
                 .route(p -> p.path("/file/**", "/files/**")
-                        .filters(f -> f.removeRequestHeader("Cookie"))
                         .uri("lb://spring-cloud-in-practice-file"))
                 .route(p -> p.path("/stat/**")
-                        .filters(f -> f.removeRequestHeader("Cookie"))
                         .uri("lb://spring-cloud-in-practice-stat"))
                 .build();
     }

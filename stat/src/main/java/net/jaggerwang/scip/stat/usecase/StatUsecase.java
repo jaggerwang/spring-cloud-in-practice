@@ -20,8 +20,8 @@ public class StatUsecase {
     }
 
     public UserStatBO userStatInfoByUserId(Long userId) {
-        var userStatEntity = userStatDAO.findByUserId(userId);
-        return userStatEntity.orElseGet(() -> UserStatBO.builder()
+        var userStatBO = userStatDAO.findByUserId(userId);
+        return userStatBO.orElseGet(() -> UserStatBO.builder()
                 .id(0L)
                 .userId(userId)
                 .createdAt(LocalDateTime.now())
@@ -30,8 +30,8 @@ public class StatUsecase {
     }
 
     public PostStatBO postStatInfoByPostId(Long postId) {
-        var postStatEntity = postStatDAO.findByPostId(postId);
-        return postStatEntity.orElseGet(() -> PostStatBO.builder()
+        var postStatBO = postStatDAO.findByPostId(postId);
+        return postStatBO.orElseGet(() -> PostStatBO.builder()
                 .id(0L)
                 .postId(postId)
                 .createdAt(LocalDateTime.now())

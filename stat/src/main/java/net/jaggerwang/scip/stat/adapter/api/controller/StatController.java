@@ -15,13 +15,13 @@ public class StatController extends AbstractController {
     public RootDTO user(@RequestParam Long userId) {
         var userStat = statUsecase.userStatInfoByUserId(userId);
 
-        return new RootDTO().addDataEntry("userStat", UserStatDTO.fromEntity(userStat));
+        return new RootDTO().addDataEntry("userStat", UserStatDTO.fromBO(userStat));
     }
 
     @GetMapping("/ofPost")
     public RootDTO post(@RequestParam Long postId) {
         var postStat = statUsecase.postStatInfoByPostId(postId);
 
-        return new RootDTO().addDataEntry("postStat", PostStatDTO.fromEntity(postStat));
+        return new RootDTO().addDataEntry("postStat", PostStatDTO.fromBO(postStat));
     }
 }

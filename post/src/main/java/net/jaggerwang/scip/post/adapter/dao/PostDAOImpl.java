@@ -31,7 +31,7 @@ public class PostDAOImpl implements PostDAO {
 
     @Override
     public PostBO save(PostBO postBO) {
-        return postRepository.save(Post.fromEntity(postBO)).toEntity();
+        return postRepository.save(Post.fromBO(postBO)).toBO();
     }
 
     @Override
@@ -41,7 +41,7 @@ public class PostDAOImpl implements PostDAO {
 
     @Override
     public Optional<PostBO> findById(Long id) {
-        return postRepository.findById(id).map(post -> post.toEntity());
+        return postRepository.findById(id).map(post -> post.toBO());
     }
 
     private JPAQuery<Post> publishedQuery(Long userId) {
@@ -63,7 +63,7 @@ public class PostDAOImpl implements PostDAO {
             query.offset(offset);
         }
 
-        return query.fetch().stream().map(post -> post.toEntity()).collect(Collectors.toList());
+        return query.fetch().stream().map(post -> post.toBO()).collect(Collectors.toList());
     }
 
     @Override
@@ -101,7 +101,7 @@ public class PostDAOImpl implements PostDAO {
             query.offset(offset);
         }
 
-        return query.fetch().stream().map(post -> post.toEntity()).collect(Collectors.toList());
+        return query.fetch().stream().map(post -> post.toBO()).collect(Collectors.toList());
     }
 
     @Override
@@ -134,7 +134,7 @@ public class PostDAOImpl implements PostDAO {
             query.where(QPost.post.id.gt(afterId));
         }
 
-        return query.fetch().stream().map(post -> post.toEntity()).collect(Collectors.toList());
+        return query.fetch().stream().map(post -> post.toBO()).collect(Collectors.toList());
     }
 
     @Override

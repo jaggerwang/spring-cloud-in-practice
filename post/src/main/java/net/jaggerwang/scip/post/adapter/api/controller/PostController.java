@@ -21,20 +21,20 @@ public class PostController extends AbstractController {
     @PostMapping("/publish")
     public RootDTO publish(@RequestBody PostBO postInput) {
         postInput.setUserId(loggedUserId());
-        var postEntity = postUsecase.publish(postInput);
+        var postBO = postUsecase.publish(postInput);
 
-        return new RootDTO().addDataEntry("post", PostDTO.fromEntity(postEntity));
+        return new RootDTO().addDataEntry("post", PostDTO.fromBO(postBO));
     }
 
     @PostMapping("/delete")
     public RootDTO delete(@RequestBody Map<String, Object> input) {
         var id = objectMapper.convertValue(input.get("id"), Long.class);
 
-        var postEntity = postUsecase.info(id);
-        if (postEntity.isEmpty()) {
+        var postBO = postUsecase.info(id);
+        if (postBO.isEmpty()) {
             throw new NotFoundException("动态未找到");
         }
-        if (!Objects.equals(postEntity.get().getUserId(), loggedUserId())) {
+        if (!Objects.equals(postBO.get().getUserId(), loggedUserId())) {
             throw new NotFoundException("无权删除");
         }
 
@@ -45,22 +45,22 @@ public class PostController extends AbstractController {
 
     @GetMapping("/info")
     public RootDTO info(@RequestParam Long id) {
-        var postEntity = postUsecase.info(id);
-        if (postEntity.isEmpty()) {
+        var postBO = postUsecase.info(id);
+        if (postBO.isEmpty()) {
             throw new NotFoundException("动态未找到");
         }
 
-        return new RootDTO().addDataEntry("post", postEntity.map(PostDTO::fromEntity).get());
+        return new RootDTO().addDataEntry("post", postBO.map(PostDTO::fromBO).get());
     }
 
     @GetMapping("/published")
     public RootDTO published(@RequestParam(required = false) Long userId,
                              @RequestParam(defaultValue = "10") Long limit,
                              @RequestParam(defaultValue = "0") Long offset) {
-        var postEntities = postUsecase.published(userId, limit, offset);
+        var postBOs = postUsecase.published(userId, limit, offset);
 
-        return new RootDTO().addDataEntry("posts", postEntities.stream()
-                .map(PostDTO::fromEntity).collect(Collectors.toList()));
+        return new RootDTO().addDataEntry("posts", postBOs.stream()
+                .map(PostDTO::fromBO).collect(Collectors.toList()));
     }
 
     @GetMapping("/publishedCount")
@@ -99,10 +99,10 @@ public class PostController extends AbstractController {
     public RootDTO liked(@RequestParam(required = false) Long userId,
                          @RequestParam(defaultValue = "10") Long limit,
                          @RequestParam(defaultValue = "0") Long offset) {
-        var postEntities = postUsecase.liked(userId, limit, offset);
+        var postBOs = postUsecase.liked(userId, limit, offset);
 
-        return new RootDTO().addDataEntry("posts", postEntities.stream()
-                .map(PostDTO::fromEntity).collect(Collectors.toList()));
+        return new RootDTO().addDataEntry("posts", postBOs.stream()
+                .map(PostDTO::fromBO).collect(Collectors.toList()));
     }
 
     @GetMapping("/likedCount")
@@ -116,10 +116,10 @@ public class PostController extends AbstractController {
     public RootDTO following(@RequestParam(defaultValue = "10") Long limit,
                              @RequestParam(required = false) Long beforeId,
                              @RequestParam(required = false) Long afterId) {
-        var postEntities = postUsecase.following(loggedUserId(), limit, beforeId, afterId);
+        var postBOs = postUsecase.following(loggedUserId(), limit, beforeId, afterId);
 
-        return new RootDTO().addDataEntry("posts", postEntities.stream()
-                .map(PostDTO::fromEntity).collect(Collectors.toList()));
+        return new RootDTO().addDataEntry("posts", postBOs.stream()
+                .map(PostDTO::fromBO).collect(Collectors.toList()));
     }
 
     @GetMapping("/followingCount")

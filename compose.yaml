@@ -4,6 +4,8 @@ services:
     environment:
       TZ: Asia/Shanghai
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - 3316:3306
     volumes:
       - ~/data/spring-cloud-in-practice/mysql/data:/var/lib/mysql
       - ./db/migration/mysql:/docker-entrypoint-initdb.d:ro
@@ -19,6 +21,8 @@ services:
     image: redis:6.2
     environment:
       TZ: Asia/Shanghai
+    ports:
+      - 6389:6379
     volumes:
       - ~/data/spring-cloud-in-practice/redis/data:/data
     healthcheck:
@@ -29,12 +33,11 @@ services:
       retries: 10
   consul:
     image: consul:1.10
-    command: agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
+    command: agent -dev -client 0.0.0.0 -log-level info
     environment:
       TZ: Asia/Shanghai
     ports:
-      - 8500:8500
-      - 8600:8600
+      - 8510:8500
     volumes:
       - ~/data/spring-cloud-in-practice/consul/data:/consul/data
   gateway:
@@ -52,10 +55,36 @@ services:
       SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
       SCIP_SERVICE_FILE_BASE_URL: http://localhost:8080/files
     ports:
-      - 8080:8080
+      - 8090:8080
     volumes:
       - ~/data/spring-cloud-in-practice/gateway/data:/data
       - ~/data/spring-cloud-in-practice/gateway/config:/app/config:ro
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      consul:
+        condition: service_started
+  auth:
+    image: spring-cloud-in-practice-auth
+    build: ./auth
+    environment:
+      TZ: Asia/Shanghai
+      SCIP_DEBUG: "false"
+      SCIP_LOGGING_FILE_PATH: /data/log
+      SCIP_LOGGING_LEVEL_REQUEST: INFO
+      SCIP_SPRING_REDIS_HOST: redis
+      SCIP_SPRING_REDIS_PORT: 6379
+      SCIP_SPRING_REDIS_PASSWORD:
+      SCIP_SPRING_DATASOURCE_URL: jdbc:mysql://mysql/scip_auth
+      SCIP_SPRING_DATASOURCE_USERNAME: scip_auth
+      SCIP_SPRING_DATASOURCE_PASSWORD: 123456
+      SCIP_SPRING_CLOUD_CONSUL_HOST: consul
+      SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
+    volumes:
+      - ~/data/spring-cloud-in-practice/user/data:/data
+      - ~/data/spring-cloud-in-practice/user/config:/app/config:ro
     depends_on:
       mysql:
         condition: service_healthy

@@ -1,62 +1,7 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
-USE `scip_file`;
-
--- ----------------------------
--- Table structure for file
--- ----------------------------
-DROP TABLE IF EXISTS `file`;
-CREATE TABLE `file` (
-                        `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
-                        `user_id` bigint NOT NULL COMMENT '上传者 ID',
-                        `region` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '区域',
-                        `bucket` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '桶',
-                        `path` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '路径',
-                        `meta` json NOT NULL COMMENT '元信息',
-                        `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                        `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-                        PRIMARY KEY (`id`),
-                        KEY `idx_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='文件';
-
-USE `scip_post`;
-
--- ----------------------------
--- Table structure for post
--- ----------------------------
-DROP TABLE IF EXISTS `post`;
-CREATE TABLE `post` (
-                        `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
-                        `user_id` bigint NOT NULL COMMENT '发布者 ID',
-                        `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类型',
-                        `text` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文本内容',
-                        `image_ids` json DEFAULT NULL COMMENT '图片文件 ID 列表',
-                        `video_id` bigint DEFAULT NULL COMMENT '视频文件 ID',
-                        `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                        `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-                        PRIMARY KEY (`id`),
-                        KEY `idx_video_id` (`video_id`),
-                        KEY `idx_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='动态';
-
--- ----------------------------
--- Table structure for post_like
--- ----------------------------
-DROP TABLE IF EXISTS `post_like`;
-CREATE TABLE `post_like` (
-                             `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
-                             `post_id` bigint NOT NULL COMMENT '动态 ID',
-                             `user_id` bigint NOT NULL COMMENT '点赞用户 ID',
-                             `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                             `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-                             PRIMARY KEY (`id`),
-                             UNIQUE KEY `idx_user_id_post_id` (`user_id`,`post_id`),
-                             KEY `idx_user_id_created_at` (`user_id`,`created_at`),
-                             KEY `idx_post_id_created_at` (`post_id`,`created_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='动态点赞';
-
-USE `scip_user`;
+USE `scip_auth`;
 
 -- ----------------------------
 -- Table structure for role
@@ -70,6 +15,24 @@ CREATE TABLE `role` (
                         PRIMARY KEY (`id`),
                         UNIQUE KEY `idx_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='角色';
+
+-- ----------------------------
+-- Table structure for user_role
+-- ----------------------------
+DROP TABLE IF EXISTS `user_role`;
+CREATE TABLE `user_role` (
+                             `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
+                             `user_id` bigint NOT NULL COMMENT '用户 ID',
+                             `role_id` bigint NOT NULL COMMENT '角色 ID',
+                             `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                             `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                             PRIMARY KEY (`id`),
+                             UNIQUE KEY `idx_user_id_role_id` (`user_id`,`role_id`) USING BTREE,
+                             KEY `idx_role_id_created_at` (`role_id`,`created_at`) USING BTREE,
+                             KEY `idx_user_id_created_at` (`user_id`,`created_at`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户角色';
+
+USE `scip_user`;
 
 -- ----------------------------
 -- Table structure for user
@@ -107,21 +70,60 @@ CREATE TABLE `user_follow` (
                                KEY `idx_follower_id_created_at` (`follower_id`,`created_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户关注';
 
+USE `scip_post`;
+
 -- ----------------------------
--- Table structure for user_role
+-- Table structure for post
 -- ----------------------------
-DROP TABLE IF EXISTS `user_role`;
-CREATE TABLE `user_role` (
+DROP TABLE IF EXISTS `post`;
+CREATE TABLE `post` (
+                        `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
+                        `user_id` bigint NOT NULL COMMENT '发布者 ID',
+                        `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类型',
+                        `text` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文本内容',
+                        `image_ids` json DEFAULT NULL COMMENT '图片文件 ID 列表',
+                        `video_id` bigint DEFAULT NULL COMMENT '视频文件 ID',
+                        `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                        `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                        PRIMARY KEY (`id`),
+                        KEY `idx_video_id` (`video_id`),
+                        KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='动态';
+
+-- ----------------------------
+-- Table structure for post_like
+-- ----------------------------
+DROP TABLE IF EXISTS `post_like`;
+CREATE TABLE `post_like` (
                              `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
-                             `user_id` bigint NOT NULL COMMENT '用户 ID',
-                             `role_id` bigint NOT NULL COMMENT '角色 ID',
+                             `post_id` bigint NOT NULL COMMENT '动态 ID',
+                             `user_id` bigint NOT NULL COMMENT '点赞用户 ID',
                              `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                              `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
                              PRIMARY KEY (`id`),
-                             UNIQUE KEY `idx_user_id_role_id` (`user_id`,`role_id`) USING BTREE,
-                             KEY `idx_role_id_created_at` (`role_id`,`created_at`) USING BTREE,
-                             KEY `idx_user_id_created_at` (`user_id`,`created_at`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户角色';
+                             UNIQUE KEY `idx_user_id_post_id` (`user_id`,`post_id`),
+                             KEY `idx_user_id_created_at` (`user_id`,`created_at`),
+                             KEY `idx_post_id_created_at` (`post_id`,`created_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='动态点赞';
+
+USE `scip_file`;
+
+-- ----------------------------
+-- Table structure for file
+-- ----------------------------
+DROP TABLE IF EXISTS `file`;
+CREATE TABLE `file` (
+                        `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
+                        `user_id` bigint NOT NULL COMMENT '上传者 ID',
+                        `region` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '区域',
+                        `bucket` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '桶',
+                        `path` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '路径',
+                        `meta` json NOT NULL COMMENT '元信息',
+                        `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                        `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                        PRIMARY KEY (`id`),
+                        KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='文件';
 
 USE `scip_stat`;
 

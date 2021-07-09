@@ -49,14 +49,14 @@ public class Post {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static Post fromEntity(PostBO userEntity) {
+    public static Post fromBO(PostBO userEntity) {
         return Post.builder().id(userEntity.getId()).userId(userEntity.getUserId())
                 .type(userEntity.getType()).text(userEntity.getText())
                 .imageIds(userEntity.getImageIds()).videoId(userEntity.getVideoId())
                 .createdAt(userEntity.getCreatedAt()).updatedAt(userEntity.getUpdatedAt()).build();
     }
 
-    public PostBO toEntity() {
+    public PostBO toBO() {
         return PostBO.builder().id(id).userId(userId).type(type).text(text).imageIds(imageIds)
                 .videoId(videoId).createdAt(createdAt).updatedAt(updatedAt).build();
     }

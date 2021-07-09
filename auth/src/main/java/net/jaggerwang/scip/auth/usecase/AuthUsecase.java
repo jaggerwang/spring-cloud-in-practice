@@ -6,6 +6,9 @@ import net.jaggerwang.scip.common.entity.RoleBO;
 import net.jaggerwang.scip.auth.usecase.port.dao.RoleDAO;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Jagger Wang
+ */
 @Component
 public class AuthUsecase {
     private RoleDAO roleDAO;

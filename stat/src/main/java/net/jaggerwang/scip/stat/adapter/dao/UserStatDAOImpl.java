@@ -16,16 +16,16 @@ public class UserStatDAOImpl implements UserStatDAO {
 
     @Override
     public UserStatBO save(UserStatBO userStatBO) {
-        return userStatRepository.save(UserStat.fromEntity(userStatBO)).toEntity();
+        return userStatRepository.save(UserStat.fromBO(userStatBO)).toBO();
     }
 
     @Override
     public Optional<UserStatBO> findById(Long id) {
-        return userStatRepository.findById(id).map(userStat -> userStat.toEntity());
+        return userStatRepository.findById(id).map(userStat -> userStat.toBO());
     }
 
     @Override
     public Optional<UserStatBO> findByUserId(Long userId) {
-        return userStatRepository.findByUserId(userId).map(userStat -> userStat.toEntity());
+        return userStatRepository.findByUserId(userId).map(userStat -> userStat.toBO());
     }
 }

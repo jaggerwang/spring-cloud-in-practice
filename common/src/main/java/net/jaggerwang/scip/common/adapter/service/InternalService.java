@@ -19,11 +19,14 @@ import java.net.URI;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class InternalSyncService extends SyncService {
+/**
+ * @author Jagger Wang
+ */
+public abstract class InternalService extends Service {
     protected ObjectMapper objectMapper;
 
-    public InternalSyncService(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
-                               ObjectMapper objectMapper) {
+    public InternalService(RestTemplate restTemplate, CircuitBreakerFactory cbFactory,
+                           ObjectMapper objectMapper) {
         super(restTemplate, cbFactory);
         this.objectMapper = objectMapper;
     }

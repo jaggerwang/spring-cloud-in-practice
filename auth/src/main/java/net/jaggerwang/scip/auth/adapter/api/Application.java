@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+/**
+ * @author Jagger Wang
+ */
 @SpringBootApplication(scanBasePackages = "net.jaggerwang.scip.auth")
 @EntityScan("net.jaggerwang.scip.auth.adapter.dao.jpa.entity")
 @EnableJpaRepositories("net.jaggerwang.scip.auth.adapter.dao.jpa")

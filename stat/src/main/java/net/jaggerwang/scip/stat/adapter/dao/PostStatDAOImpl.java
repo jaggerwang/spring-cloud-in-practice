@@ -16,16 +16,16 @@ public class PostStatDAOImpl implements PostStatDAO {
 
     @Override
     public PostStatBO save(PostStatBO postStatBO) {
-        return postStatRepository.save(PostStat.fromEntity(postStatBO)).toEntity();
+        return postStatRepository.save(PostStat.fromBO(postStatBO)).toBO();
     }
 
     @Override
     public Optional<PostStatBO> findById(Long id) {
-        return postStatRepository.findById(id).map(postStat -> postStat.toEntity());
+        return postStatRepository.findById(id).map(postStat -> postStat.toBO());
     }
 
     @Override
     public Optional<PostStatBO> findByPostId(Long postId) {
-        return postStatRepository.findByPostId(postId).map(postStat -> postStat.toEntity());
+        return postStatRepository.findByPostId(postId).map(postStat -> postStat.toBO());
     }
 }

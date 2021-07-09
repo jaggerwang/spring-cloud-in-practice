@@ -46,7 +46,7 @@ public class UserStat {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static UserStat fromEntity(UserStatBO fileEntity) {
+    public static UserStat fromBO(UserStatBO fileEntity) {
         return UserStat.builder().id(fileEntity.getId()).userId(fileEntity.getUserId())
                 .postCount(fileEntity.getPostCount()).likeCount(fileEntity.getLikeCount())
                 .followingCount(fileEntity.getFollowingCount())
@@ -54,7 +54,7 @@ public class UserStat {
                 .updatedAt(fileEntity.getUpdatedAt()).build();
     }
 
-    public UserStatBO toEntity() {
+    public UserStatBO toBO() {
         return UserStatBO.builder().id(id).userId(userId).postCount(postCount)
                 .likeCount(likeCount).followingCount(followingCount).followerCount(followerCount)
                 .createdAt(createdAt).updatedAt(updatedAt).build();

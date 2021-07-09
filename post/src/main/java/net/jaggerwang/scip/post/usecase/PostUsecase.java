@@ -5,18 +5,18 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import net.jaggerwang.scip.common.entity.PostBO;
-import net.jaggerwang.scip.common.usecase.port.service.UserSyncService;
+import net.jaggerwang.scip.common.usecase.port.service.UserService;
 import net.jaggerwang.scip.post.usecase.port.dao.PostDAO;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PostUsecase {
     private PostDAO postDAO;
-    private UserSyncService userSyncService;
+    private UserService userService;
 
-    public PostUsecase(PostDAO postDAO, UserSyncService userSyncService) {
+    public PostUsecase(PostDAO postDAO, UserService userService) {
         this.postDAO = postDAO;
-        this.userSyncService = userSyncService;
+        this.userService = userService;
     }
 
     public PostBO publish(PostBO postBO) {
@@ -63,14 +63,14 @@ public class PostUsecase {
     }
 
     public List<PostBO> following(Long userId, Long limit, Long beforeId, Long afterId) {
-        var userIds = userSyncService.following(userId, null, null).stream()
+        var userIds = userService.following(userId, null, null).stream()
                 .map(userDto -> userDto.getId()).collect(Collectors.toList());
 
         return postDAO.following(userIds, limit, beforeId, afterId);
     }
 
     public Long followingCount(Long userId) {
-        var userIds = userSyncService.following(userId, null, null).stream()
+        var userIds = userService.following(userId, null, null).stream()
                 .map(userDto -> userDto.getId()).collect(Collectors.toList());
 
         return postDAO.followingCount(userIds);

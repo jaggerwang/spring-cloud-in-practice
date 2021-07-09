@@ -37,13 +37,13 @@ public class PostStat {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public static PostStat fromEntity(PostStatBO fileEntity) {
+    public static PostStat fromBO(PostStatBO fileEntity) {
         return PostStat.builder().id(fileEntity.getId()).postId(fileEntity.getPostId())
                 .likeCount(fileEntity.getLikeCount()).createdAt(fileEntity.getCreatedAt())
                 .updatedAt(fileEntity.getUpdatedAt()).build();
     }
 
-    public PostStatBO toEntity() {
+    public PostStatBO toBO() {
         return PostStatBO.builder().id(id).postId(postId).likeCount(likeCount)
                 .createdAt(createdAt).updatedAt(updatedAt).build();
     }

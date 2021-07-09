@@ -2,11 +2,11 @@ debug: ${SCIP_DEBUG:false}
 
 logging:
   file:
-    path: ${SCIP_LOGGING_FILE_PATH:/tmp}
+    path: ${SCIP_LOGGING_FILE_PATH:./log}
 
 server:
   address: 0.0.0.0
-  port: 8085
+  port: 8080
 
 spring:
   application:
