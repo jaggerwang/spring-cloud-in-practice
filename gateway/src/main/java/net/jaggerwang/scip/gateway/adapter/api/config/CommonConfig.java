@@ -1,4 +1,4 @@
-package net.jaggerwang.scip.auth.adapter.api.config;
+package net.jaggerwang.scip.gateway.adapter.api.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

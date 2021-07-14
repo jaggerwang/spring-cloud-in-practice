@@ -17,10 +17,10 @@ spring:
     host: ${SCIP_SPRING_REDIS_HOST:localhost}
     port: ${SCIP_SPRING_REDIS_PORT:6379}
     password: ${SCIP_SPRING_REDIS_PASSWORD:}
-    connect-timeout: 5s
+    connectTimeout: 5s
   session:
     store-type: redis
-    timeout: 7d
+    timeout: 8h
     redis:
       namespace: scip:session
   cloud:
@@ -39,6 +39,13 @@ spring:
           - spring-cloud-in-practice
         name: gateway
         format: YAML
+
+feign:
+  client:
+    config:
+      spring-cloud-in-practice-auth:
+        connectTimeout: 5000
+        readTimeout: 10000
 
 management:
   endpoints:

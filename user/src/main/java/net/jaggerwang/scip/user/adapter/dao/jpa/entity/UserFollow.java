@@ -13,6 +13,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author Jagger Wang
+ */
 @Entity
 @Table(name = "user_follow")
 @Data

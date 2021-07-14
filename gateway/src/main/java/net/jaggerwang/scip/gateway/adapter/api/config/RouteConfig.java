@@ -5,6 +5,9 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author Jagger Wang
+ */
 @Configuration(proxyBeanMethods = false)
 public class RouteConfig {
     @Bean

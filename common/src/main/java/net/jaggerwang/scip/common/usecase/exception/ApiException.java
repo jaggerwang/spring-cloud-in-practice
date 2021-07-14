@@ -1,18 +1,22 @@
 package net.jaggerwang.scip.common.usecase.exception;
 
+import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
 import org.springframework.http.HttpStatus;
 
 import java.util.Map;
 
-public class InternalApiException extends UsecaseException {
+/**
+ * @author Jagger Wang
+ */
+public class ApiException extends UsecaseException {
     private static final long serialVersionUID = 1L;
 
     private HttpStatus status;
-    private String code;
-    private Map<String, Object> data;
+    private ApiResult.Code code;
+    private Object data;
 
-    public InternalApiException(HttpStatus status, String code, String message,
-                                Map<String, Object> data) {
+    public ApiException(HttpStatus status, ApiResult.Code code, String message,
+                        Object data) {
         super(message);
 
         this.status = status;
@@ -20,11 +24,11 @@ public class InternalApiException extends UsecaseException {
         this.data = data;
     }
 
-    public InternalApiException(HttpStatus status, String code, String message) {
+    public ApiException(HttpStatus status, ApiResult.Code code, String message) {
         this(status, code, message, Map.of());
     }
 
-    public InternalApiException(String code, String message) {
+    public ApiException(ApiResult.Code code, String message) {
         this(HttpStatus.OK, code, message, Map.of());
     }
 
@@ -32,11 +36,11 @@ public class InternalApiException extends UsecaseException {
         return status;
     }
 
-    public String getCode() {
+    public ApiResult.Code getCode() {
         return code;
     }
 
-    public Map<String, Object> getData() {
+    public Object getData() {
         return data;
     }
 }

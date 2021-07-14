@@ -36,6 +36,13 @@ spring:
         name: post
         format: YAML
 
+feign:
+  client:
+    config:
+      spring-cloud-in-practice-user:
+        connectTimeout: 5000
+        readTimeout: 10000
+
 management:
   endpoints:
     web:

@@ -1,4 +1,4 @@
-package net.jaggerwang.scip.user.adapter.dao.jpa.entity;
+package net.jaggerwang.scip.auth.adapter.dao.jpa.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,9 @@ import net.jaggerwang.scip.common.entity.UserBO;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * @author Jagger Wang
+ */
 @Entity
 @Data
 @Builder

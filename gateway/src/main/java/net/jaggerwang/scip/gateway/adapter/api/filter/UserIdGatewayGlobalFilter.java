@@ -5,15 +5,20 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+/**
+ * @author Jagger Wang
+ */
 @Component
 public class UserIdGatewayGlobalFilter implements GlobalFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         return ReactiveSecurityContextHolder.getContext()
+                .switchIfEmpty(Mono.just(new SecurityContextImpl()))
                 .flatMap(securityContext -> {
                     var auth = securityContext.getAuthentication();
                     if (auth == null || auth instanceof AnonymousAuthenticationToken ||

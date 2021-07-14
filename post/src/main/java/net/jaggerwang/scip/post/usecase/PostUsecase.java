@@ -9,6 +9,9 @@ import net.jaggerwang.scip.common.usecase.port.service.UserService;
 import net.jaggerwang.scip.post.usecase.port.dao.PostDAO;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Jagger Wang
+ */
 @Component
 public class PostUsecase {
     private PostDAO postDAO;

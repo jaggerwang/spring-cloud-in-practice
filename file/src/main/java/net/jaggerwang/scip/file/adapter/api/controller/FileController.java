@@ -1,8 +1,8 @@
 package net.jaggerwang.scip.file.adapter.api.controller;
 
 import net.jaggerwang.scip.common.entity.FileBO;
+import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
 import net.jaggerwang.scip.common.usecase.port.service.dto.FileDTO;
-import net.jaggerwang.scip.common.usecase.port.service.dto.RootDTO;
 import net.jaggerwang.scip.common.usecase.exception.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,14 +17,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Jagger Wang
+ */
 @RestController
 @RequestMapping("/file")
 public class FileController extends AbstractController {
     @PostMapping("/upload")
-    public RootDTO upload(@RequestParam(defaultValue = "LOCAL") FileBO.Region region,
-                          @RequestParam(defaultValue = "") String bucket,
-                          @RequestParam(defaultValue = "") String path,
-                          @RequestParam("file") List<MultipartFile> files) throws IOException {
+    public ApiResult<List<FileDTO>> upload(@RequestParam(defaultValue = "LOCAL") FileBO.Region region,
+                                           @RequestParam(defaultValue = "") String bucket,
+                                           @RequestParam(defaultValue = "") String path,
+                                           @RequestParam("file") List<MultipartFile> files) throws IOException {
         var fileBOs = new ArrayList<FileBO>();
         for (var file : files) {
             var content = file.getBytes();
@@ -45,27 +48,25 @@ public class FileController extends AbstractController {
             fileBOs.add(fileBO);
         }
 
-        return new RootDTO().addDataEntry("files", fileBOs.stream()
-                .map(this::fullFileDto).collect(Collectors.toList()));
+        return new ApiResult(fileBOs.stream().map(this::fullFileDto).collect(Collectors.toList()));
     }
 
     @GetMapping("/info")
-    public RootDTO info(@RequestParam Long id) {
+    public ApiResult<FileDTO> info(@RequestParam Long id) {
         var fileBO = fileUsecase.info(id);
         if (fileBO.isEmpty()) {
             throw new NotFoundException("文件未找到");
         }
 
-        return new RootDTO().addDataEntry("file", fullFileDto(fileBO.get()));
+        return new ApiResult(fullFileDto(fileBO.get()));
     }
 
     @GetMapping("/infos")
-    public RootDTO infos(@RequestParam String ids,
-                         @RequestParam(defaultValue = "true") Boolean keepNull) {
+    public ApiResult<List<FileDTO>> infos(@RequestParam String ids,
+                                          @RequestParam(defaultValue = "true") Boolean keepNull) {
         var idList = Arrays.stream(ids.split(",")).mapToLong(Long::parseLong).boxed().collect(Collectors.toList());
         var fileBOs = fileUsecase.infos(idList, keepNull);
 
-        return new RootDTO().addDataEntry("files", fileBOs.stream()
-                .map(this::fullFileDto).collect(Collectors.toList()));
+        return new ApiResult(fileBOs.stream().map(this::fullFileDto).collect(Collectors.toList()));
     }
 }

@@ -13,6 +13,10 @@
     <name>spring-cloud-in-practice-gateway</name>
     <description>Spring cloud in practice gateway</description>
 
+    <properties>
+        <feign-reactor.version>3.0.3</feign-reactor.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -69,6 +73,12 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-consul-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.playtika.reactivefeign</groupId>
+            <artifactId>feign-reactor-spring-cloud-starter</artifactId>
+            <version>${feign-reactor.version}</version>
+            <type>pom</type>
         </dependency>
 
         <dependency>

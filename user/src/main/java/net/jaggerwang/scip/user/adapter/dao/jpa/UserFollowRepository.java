@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * @author Jagger Wang
+ */
 @Repository
 public interface UserFollowRepository
                 extends JpaRepository<UserFollow, Long>, QuerydslPredicateExecutor<UserFollow> {
