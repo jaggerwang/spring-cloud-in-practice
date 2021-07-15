@@ -1,6 +1,5 @@
 package net.jaggerwang.scip.auth.adapter.dao;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import net.jaggerwang.scip.common.entity.UserBO;
 import net.jaggerwang.scip.auth.adapter.dao.jpa.UserRepository;
 import net.jaggerwang.scip.auth.adapter.dao.jpa.entity.User;

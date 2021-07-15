@@ -15,7 +15,7 @@ import java.util.List;
  * @author Jagger Wang
  */
 @Component
-@ReactiveFeignClient(value = "spring-cloud-in-practice-user", path = "/auth",
+@ReactiveFeignClient(value = "spring-cloud-in-practice-auth", path = "/auth",
         configuration = ApiConfiguration.class)
 public interface ReactiveAuthService {
     @RequestMapping(method = RequestMethod.GET, value = "/info")

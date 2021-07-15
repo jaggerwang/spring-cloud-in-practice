@@ -41,6 +41,9 @@ spring:
         format: YAML
 
 feign:
+  autoconfiguration:
+    jackson:
+      enabled: true
   client:
     config:
       spring-cloud-in-practice-auth:
