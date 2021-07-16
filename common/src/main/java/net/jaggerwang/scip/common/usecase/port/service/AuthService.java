@@ -18,17 +18,17 @@ import java.util.List;
         configuration = ApiConfiguration.class)
 public interface AuthService {
     @RequestMapping(method = RequestMethod.GET, value = "/info")
-    UserDTO info(Long id);
+    ApiResult<UserDTO> info(Long id);
 
     @RequestMapping(method = RequestMethod.GET, value = "/infoByUsername")
-    UserDTO infoByUsername(String username);
+    ApiResult<UserDTO> infoByUsername(String username);
 
     @RequestMapping(method = RequestMethod.GET, value = "/infoByMobile")
-    UserDTO infoByMobile(String mobile);
+    ApiResult<UserDTO> infoByMobile(String mobile);
 
     @RequestMapping(method = RequestMethod.GET, value = "/infoByEmail")
-    UserDTO infoByEmail(String email);
+    ApiResult<UserDTO> infoByEmail(String email);
 
     @RequestMapping(method = RequestMethod.GET, value = "/rolesOfUser")
-    List<RoleDTO> rolesOfUser(Long userId);
+    ApiResult<List<RoleDTO>> rolesOfUser(Long userId);
 }

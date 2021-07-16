@@ -1,6 +1,7 @@
-package net.jaggerwang.scip.gateway.usercase.port.service;
+package net.jaggerwang.scip.gateway.usecase.port.service;
 
 import net.jaggerwang.scip.common.adapter.service.feign.ApiConfiguration;
+import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
 import net.jaggerwang.scip.common.usecase.port.service.dto.RoleDTO;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
 import org.springframework.stereotype.Component;
@@ -16,20 +17,20 @@ import java.util.List;
  */
 @Component
 @ReactiveFeignClient(value = "spring-cloud-in-practice-auth", path = "/auth",
-        configuration = ApiConfiguration.class)
+        configuration = ApiConfiguration.class, qualifier = "reactiveAuthService")
 public interface ReactiveAuthService {
     @RequestMapping(method = RequestMethod.GET, value = "/info")
-    Mono<UserDTO> info(Long id);
+    Mono<ApiResult<UserDTO>> info(Long id);
 
     @RequestMapping(method = RequestMethod.GET, value = "/infoByUsername")
-    Mono<UserDTO> infoByUsername(String username);
+    Mono<ApiResult<UserDTO>> infoByUsername(String username);
 
     @RequestMapping(method = RequestMethod.GET, value = "/infoByMobile")
-    Mono<UserDTO> infoByMobile(String mobile);
+    Mono<ApiResult<UserDTO>> infoByMobile(String mobile);
 
     @RequestMapping(method = RequestMethod.GET, value = "/infoByEmail")
-    Mono<UserDTO> infoByEmail(String email);
+    Mono<ApiResult<UserDTO>> infoByEmail(String email);
 
     @RequestMapping(method = RequestMethod.GET, value = "/rolesOfUser")
-    Mono<List<RoleDTO>> rolesOfUser(Long userId);
+    Mono<ApiResult<List<RoleDTO>>> rolesOfUser(Long userId);
 }

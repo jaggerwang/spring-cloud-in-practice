@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -17,8 +18,10 @@ import java.util.List;
         configuration = ApiConfiguration.class)
 public interface UserService {
     @RequestMapping(method = RequestMethod.GET, value = "/following")
-    List<UserDTO> following(Long userId, Long limit, Long offset);
+    ApiResult<List<UserDTO>> following(@RequestParam("userId") Long userId,
+                                       @RequestParam("limit") Long limit,
+                                       @RequestParam("offset") Long offset);
 
     @RequestMapping(method = RequestMethod.GET, value = "/followingCount")
-    Long followingCount(Long userId);
+    ApiResult<Long> followingCount(Long userId);
 }

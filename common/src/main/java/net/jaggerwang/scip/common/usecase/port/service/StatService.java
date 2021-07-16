@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
         configuration = ApiConfiguration.class)
 public interface StatService {
     @RequestMapping(method = RequestMethod.GET, value = "/ofUser")
-    UserStatDTO ofUser(Long userId);
+    ApiResult<UserStatDTO> ofUser(Long userId);
 
     @RequestMapping(method = RequestMethod.GET, value = "/ofPost")
-    PostStatDTO ofPost(Long postId);
+    ApiResult<PostStatDTO> ofPost(Long postId);
 }

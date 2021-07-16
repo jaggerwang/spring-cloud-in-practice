@@ -3,6 +3,13 @@ SET NAMES utf8mb4;
 USE `scip_auth`;
 
 -- ----------------------------
+-- Records of user
+-- ----------------------------
+BEGIN;
+INSERT INTO `user` VALUES (1, 'jaggerwang', '$2a$10$M4c3efK.JQ0OI1ZLoDtkueJw501GUFE3/fZHDf9umGKmiRmZ5by0m', '18600000000', NULL, NULL, '', '2020-01-31 01:24:24', '2020-03-05 17:34:26');
+COMMIT;
+
+-- ----------------------------
 -- Records of role
 -- ----------------------------
 BEGIN;
@@ -15,13 +22,6 @@ BEGIN;
 COMMIT;
 
 USE `scip_user`;
-
--- ----------------------------
--- Records of user
--- ----------------------------
-BEGIN;
-INSERT INTO `user` VALUES (1, 'jaggerwang', '$2a$10$M4c3efK.JQ0OI1ZLoDtkueJw501GUFE3/fZHDf9umGKmiRmZ5by0m', '18600000000', NULL, NULL, '', '2020-01-31 01:24:24', '2020-03-05 17:34:26');
-COMMIT;
 
 -- ----------------------------
 -- Records of user_follow

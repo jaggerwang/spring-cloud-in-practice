@@ -15,5 +15,5 @@ import org.springframework.web.bind.annotation.RequestMethod;
         configuration = ApiConfiguration.class)
 public interface PostService {
     @RequestMapping(method = RequestMethod.GET, value = "/info")
-    PostDTO info(Long id);
+    ApiResult<PostDTO> info(Long id);
 }

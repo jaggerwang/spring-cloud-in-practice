@@ -17,8 +17,8 @@ import java.util.List;
         configuration = ApiConfiguration.class)
 public interface FileService {
     @RequestMapping(method = RequestMethod.GET, value = "/info")
-    FileDTO info(Long id);
+    ApiResult<FileDTO> info(Long id);
 
     @RequestMapping(method = RequestMethod.GET, value = "/infos")
-    List<FileDTO> infos(List<Long> ids, Boolean keepNull);
+    ApiResult<List<FileDTO>> infos(List<Long> ids, Boolean keepNull);
 }

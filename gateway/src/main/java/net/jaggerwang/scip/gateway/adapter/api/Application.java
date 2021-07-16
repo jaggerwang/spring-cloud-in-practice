@@ -10,7 +10,7 @@ import reactivefeign.spring.config.EnableReactiveFeignClients;
  */
 @SpringBootApplication(scanBasePackages = "net.jaggerwang.scip.gateway")
 @EnableDiscoveryClient
-@EnableReactiveFeignClients
+@EnableReactiveFeignClients(basePackages = "net.jaggerwang.scip.gateway.usecase.port.service")
 public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);

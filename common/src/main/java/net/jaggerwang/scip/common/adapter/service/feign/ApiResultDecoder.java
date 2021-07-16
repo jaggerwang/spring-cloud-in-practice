@@ -33,6 +33,6 @@ public class ApiResultDecoder implements Decoder {
             throw new ApiException(apiResult.getCode(), apiResult.getMessage());
         }
 
-        return apiResult.getData();
+        return apiResult;
     }
 }

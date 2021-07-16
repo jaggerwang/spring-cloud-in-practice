@@ -66,16 +66,13 @@ public class PostUsecase {
     }
 
     public List<PostBO> following(Long userId, Long limit, Long beforeId, Long afterId) {
-        var userIds = userService.following(userId, null, null).stream()
+        var userIds = userService.following(userId, null, null).getData().stream()
                 .map(userDto -> userDto.getId()).collect(Collectors.toList());
 
         return postDAO.following(userIds, limit, beforeId, afterId);
     }
 
     public Long followingCount(Long userId) {
-        var userIds = userService.following(userId, null, null).stream()
-                .map(userDto -> userDto.getId()).collect(Collectors.toList());
-
-        return postDAO.followingCount(userIds);
+        return userService.followingCount(userId).getData();
     }
 }

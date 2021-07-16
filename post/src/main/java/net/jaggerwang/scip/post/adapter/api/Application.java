@@ -10,12 +10,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 /**
  * @author Jagger Wang
  */
-@SpringBootApplication(scanBasePackages = {"net.jaggerwang.scip.post",
-		"net.jaggerwang.scip.common.usecase.port.service"})
+@SpringBootApplication(scanBasePackages = "net.jaggerwang.scip.post")
 @EntityScan("net.jaggerwang.scip.post.adapter.dao.jpa.entity")
 @EnableJpaRepositories("net.jaggerwang.scip.post.adapter.dao.jpa")
 @EnableDiscoveryClient
-@EnableFeignClients
+@EnableFeignClients(basePackages = "net.jaggerwang.scip.common.usecase.port.service")
 public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
