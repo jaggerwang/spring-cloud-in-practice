@@ -1,6 +1,7 @@
-package net.jaggerwang.scip.common.adapter.service.feign;
+package net.jaggerwang.scip.gateway.adapter.service.feign;
 
 import feign.codec.Decoder;
+import net.jaggerwang.scip.common.adapter.service.feign.ApiResultDecoder;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -13,7 +14,7 @@ public class ApiConfiguration {
     }
 
     @Bean
-    public UserIdRequestInterceptor userIdRequestInterceptor() {
+    public  UserIdRequestInterceptor userIdRequestInterceptor() {
         return new UserIdRequestInterceptor();
     }
 }

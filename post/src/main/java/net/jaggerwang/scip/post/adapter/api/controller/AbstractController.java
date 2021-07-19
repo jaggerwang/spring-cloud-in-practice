@@ -7,6 +7,9 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author Jagger Wang
+ */
 abstract public class AbstractController {
     @Autowired
     protected ObjectMapper objectMapper;

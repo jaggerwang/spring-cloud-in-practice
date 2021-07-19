@@ -1,9 +1,9 @@
 package net.jaggerwang.scip.gateway.usecase.port.service;
 
-import net.jaggerwang.scip.common.adapter.service.feign.ApiConfiguration;
 import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
 import net.jaggerwang.scip.common.usecase.port.service.dto.RoleDTO;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
+import net.jaggerwang.scip.gateway.adapter.service.feign.ApiConfiguration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
