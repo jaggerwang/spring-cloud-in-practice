@@ -16,7 +16,7 @@ import java.util.List;
 @Component
 @FeignClient(value = "spring-cloud-in-practice-file", path = "/file",
         configuration = ApiConfiguration.class)
-public interface FileService {
+public interface FileFileService {
     @RequestMapping(method = RequestMethod.GET, value = "/info")
     ApiResult<FileDTO> info(@RequestParam Long id);
 
