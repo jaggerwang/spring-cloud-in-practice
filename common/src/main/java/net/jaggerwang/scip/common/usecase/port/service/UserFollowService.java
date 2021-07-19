@@ -14,14 +14,13 @@ import java.util.List;
  * @author Jagger Wang
  */
 @Component
-@FeignClient(value = "spring-cloud-in-practice-user", path = "/user",
+@FeignClient(value = "spring-cloud-in-practice-user", path = "/follow",
         configuration = ApiConfiguration.class)
-public interface UserService {
+public interface UserFollowService {
     @RequestMapping(method = RequestMethod.GET, value = "/following")
-    ApiResult<List<UserDTO>> following(@RequestParam("userId") Long userId,
-                                       @RequestParam("limit") Long limit,
-                                       @RequestParam("offset") Long offset);
+    ApiResult<List<Long>> following(@RequestParam Long userId, @RequestParam Long limit,
+                                       @RequestParam Long offset);
 
     @RequestMapping(method = RequestMethod.GET, value = "/followingCount")
-    ApiResult<Long> followingCount(Long userId);
+    ApiResult<Long> followingCount(@RequestParam Long userId);
 }

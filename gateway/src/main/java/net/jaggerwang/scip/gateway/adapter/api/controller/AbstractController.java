@@ -1,6 +1,7 @@
 package net.jaggerwang.scip.gateway.adapter.api.controller;
 
 import net.jaggerwang.scip.common.adapter.api.security.LoggedUser;
+import net.jaggerwang.scip.gateway.usecase.port.service.AuthUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
@@ -17,6 +18,9 @@ import static org.springframework.security.web.server.context.WebSessionServerSe
  */
 abstract public class AbstractController {
     @Autowired
+    protected AuthUserService authUserService;
+
+    @Autowired
     private ReactiveAuthenticationManager authenticationManager;
 
     protected Mono<LoggedUser> loginUser(ServerWebExchange exchange, String username,
@@ -24,6 +28,7 @@ abstract public class AbstractController {
         return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password))
                 .flatMap(auth -> ReactiveSecurityContextHolder.getContext()
+                        .defaultIfEmpty(new SecurityContextImpl())
                         .flatMap(securityContext -> exchange.getSession()
                                 .map(session -> {
                                     securityContext.setAuthentication(auth);
@@ -34,33 +39,34 @@ abstract public class AbstractController {
                                 })));
     }
 
-    protected Mono<Void> logoutUser(ServerWebExchange exchange) {
+    protected Mono<LoggedUser> logoutUser(ServerWebExchange exchange) {
         return ReactiveSecurityContextHolder.getContext()
-                .switchIfEmpty(Mono.just(new SecurityContextImpl()))
-                .doOnSuccess(securityContext -> exchange.getSession()
-                        .doOnSuccess(session -> {
+                .defaultIfEmpty(new SecurityContextImpl())
+                .flatMap(securityContext -> exchange.getSession()
+                        .flatMap(session -> {
+                            var auth = securityContext.getAuthentication();
                             securityContext.setAuthentication(null);
                             session.getAttributes().remove(
                                     DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME);
-                        }))
-                .then();
+
+                            if (auth == null || auth instanceof AnonymousAuthenticationToken ||
+                                    !auth.isAuthenticated()) {
+                                return Mono.empty();
+                            }
+                            return Mono.just((LoggedUser) auth.getPrincipal());
+                        }));
     }
 
     protected Mono<LoggedUser> loggedUser() {
         return ReactiveSecurityContextHolder.getContext()
-                .switchIfEmpty(Mono.just(new SecurityContextImpl()))
-                .map(securityContext -> {
+                .defaultIfEmpty(new SecurityContextImpl())
+                .flatMap(securityContext -> {
                     var auth = securityContext.getAuthentication();
                     if (auth == null || auth instanceof AnonymousAuthenticationToken ||
                             !auth.isAuthenticated()) {
-                        return null;
+                        return Mono.empty();
                     }
-                    return (LoggedUser) auth.getPrincipal();
+                    return Mono.just((LoggedUser) auth.getPrincipal());
                 });
-    }
-
-    protected Mono<Long> loggedUserId() {
-        return loggedUser()
-                .map(loggedUser -> loggedUser.getId());
     }
 }

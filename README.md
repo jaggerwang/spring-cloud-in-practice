@@ -1,6 +1,6 @@
 # Spring Cloud in Practice
 
-This project can be used as a starter for spring cloud microservices development. It is the microservices version of [Spring Boot in Practice](https://github.com/jaggerwang/spring-boot-in-practice). It uses [Spring Cloud Consul](https://cloud.spring.io/spring-cloud-consul/reference/html/) for service discovery and config management, [Spring Cloud Gateway](https://cloud.spring.io/spring-cloud-gateway/reference/html/) to implement api gateway, and [ORY/Hydra](https://github.com/ory/hydra) for running an optional OAuth2 server. There is an article [Spring Cloud 微服务开发指南](https://blog.jaggerwang.net/spring-cloud-micro-service-develop-tour/) for learning this project.
+This project can be used as a starter for spring cloud microservices development. It uses [Spring Cloud Consul](https://cloud.spring.io/spring-cloud-consul/reference/html/) for service discovery and config management, [Spring Cloud Gateway](https://cloud.spring.io/spring-cloud-gateway/reference/html/) to implement api gateway, and [ORY/Hydra](https://github.com/ory/hydra) for running an optional OAuth2 server. There is an article [Spring Cloud 微服务开发指南](https://blog.jaggerwang.net/spring-cloud-micro-service-develop-tour/) for learning this project.
 
 ## Dependent frameworks and packages
 
@@ -21,42 +21,43 @@ This project can be used as a starter for spring cloud microservices development
 
 | Name  | Description |
 | ------------- | ------------- |
-| Auth | Authentication and authorization |
-| User | User management, follow relationship |
-| Post | Post management |
-| File | File management |
-| Stat | Stat of user and post |
+| Gateway | Request routing, authentication and authorization checking |
+| Auth | Authentication and authorization implementing, including users and roles management |
+| User | User related business, such as follow relationship |
+| Post | Post related business |
+| File | File related business |
+| Stat | Stat related business |
 
 ## APIs
 
 | Path  | Method | Description |
 | ------------- | ------------- | ------------- |
-| /auth/login | POST | Login |
-| /auth/logout | GET | Logout |
-| /auth/logged | GET | Get logged user |
-| /user/register | POST | Register user |
-| /user/modify | POST | Modify logged user |
-| /user/info | GET | Get user info |
-| /user/sendMobileVerifyCode | POST | Send mobile verify code |
-| /user/sendEmailVerifyCode | POST | Send email verify code |
-| /user/follow | POST | Follow user |
-| /user/unfollow | POST | Unfollow user |
-| /user/following | GET | Following users of someone |
-| /user/follower | GET | Fans of some user |
-| /post/publish | POST | Publish post |
-| /post/delete | POST | Delete post |
-| /post/info | GET | Get post info |
-| /post/published | GET | Get published posts of some user |
-| /post/like | POST | Like post |
-| /post/unlike | POST | Unlike post |
-| /post/liked | GET | Liked posts of some user |
-| /post/following | GET | Posts published by following users of someone |
-| /file/upload | POST | Upload file |
-| /file/info | GET | Get file meta info |
-| /stat/ofUser | GET | Get user stat info |
-| /stat/ofPost | GET | Get post stat info |
+| /login | POST | Login |
+| /logout | GET | Logout |
+| /logged | GET | Get logged user |
+| /auth/user/register | POST | Register user |
+| /auth/user/modify | POST | Modify logged user |
+| /auth/user/info | GET | Get user info |
+| /auth/user/sendMobileVerifyCode | POST | Send mobile verify code |
+| /auth/user/sendEmailVerifyCode | POST | Send email verify code |
+| /user/follow/follow | POST | Follow user |
+| /user/follow/unfollow | POST | Unfollow user |
+| /user/follow/following | GET | Following users of someone |
+| /user/follow/follower | GET | Fans of some user |
+| /post/post/publish | POST | Publish post |
+| /post/post/delete | POST | Delete post |
+| /post/post/info | GET | Get post info |
+| /post/post/published | GET | Get published posts of some user |
+| /post/post/like | POST | Like post |
+| /post/post/unlike | POST | Unlike post |
+| /post/post/liked | GET | Liked posts of some user |
+| /post/post/following | GET | Posts published by following users of someone |
+| /file/file/upload | POST | Upload file |
+| /file/file/info | GET | Get file meta info |
+| /stat/stat/ofUser | GET | Get user stat info |
+| /stat/stat/ofPost | GET | Get post stat info |
 
-The rest api service only return top objects, not return nested objects compared to the original monolith one.
+The path is following the format `/<service>/<module>/<operation>`, and the `/<service>` prefix will be stripped when gateway forwarding request to backend services.
 
 ## How to run
 

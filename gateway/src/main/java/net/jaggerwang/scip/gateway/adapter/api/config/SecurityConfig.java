@@ -42,7 +42,8 @@ public class SecurityConfig {
                                 HttpStatus.UNAUTHORIZED))
                 )
                 .authorizeExchange(authorizeExchange -> authorizeExchange
-                        .pathMatchers("/", "/actuator/**", "/files/**").permitAll()
+                        .pathMatchers("/", "/login", "/logout", "/logged", "/actuator/**",
+                                "/files/**").permitAll()
                         .anyExchange().authenticated())
                 .build();
     }

@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
  * @author Jagger Wang
  */
 @RestController
-@RequestMapping("/auth")
-public class AuthController extends AbstractController {
+@RequestMapping("/user")
+public class UserController extends AbstractController {
     @PostMapping("/register")
     public ApiResult<UserDTO> register(@RequestBody UserDTO userDto) {
         var userBO = authUsecase.register(userDto.toBO());

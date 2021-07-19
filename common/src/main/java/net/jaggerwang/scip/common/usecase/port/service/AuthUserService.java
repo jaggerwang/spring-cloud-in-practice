@@ -7,6 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -14,21 +15,21 @@ import java.util.List;
  * @author Jagger Wang
  */
 @Component
-@FeignClient(value = "spring-cloud-in-practice-auth", path = "/auth",
+@FeignClient(value = "spring-cloud-in-practice-auth", path = "/user",
         configuration = ApiConfiguration.class)
-public interface AuthService {
+public interface AuthUserService {
     @RequestMapping(method = RequestMethod.GET, value = "/info")
-    ApiResult<UserDTO> info(Long id);
+    ApiResult<UserDTO> info(@RequestParam Long id);
 
     @RequestMapping(method = RequestMethod.GET, value = "/infoByUsername")
-    ApiResult<UserDTO> infoByUsername(String username);
+    ApiResult<UserDTO> infoByUsername(@RequestParam String username);
 
     @RequestMapping(method = RequestMethod.GET, value = "/infoByMobile")
-    ApiResult<UserDTO> infoByMobile(String mobile);
+    ApiResult<UserDTO> infoByMobile(@RequestParam String mobile);
 
     @RequestMapping(method = RequestMethod.GET, value = "/infoByEmail")
-    ApiResult<UserDTO> infoByEmail(String email);
+    ApiResult<UserDTO> infoByEmail(@RequestParam String email);
 
     @RequestMapping(method = RequestMethod.GET, value = "/rolesOfUser")
-    ApiResult<List<RoleDTO>> rolesOfUser(Long userId);
+    ApiResult<List<RoleDTO>> rolesOfUser(@RequestParam Long userId);
 }

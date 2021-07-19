@@ -4,9 +4,9 @@ import net.jaggerwang.scip.common.adapter.api.security.LoggedUser;
 import net.jaggerwang.scip.common.usecase.exception.ApiException;
 import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
-import net.jaggerwang.scip.gateway.usecase.port.service.ReactiveAuthService;
+import net.jaggerwang.scip.gateway.usecase.port.service.AuthUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
@@ -24,20 +24,19 @@ import java.util.stream.Collectors;
 @Service
 public class ReactiveUserDetailsServiceImpl implements ReactiveUserDetailsService {
     @Autowired
-    private ApplicationContext applicationContext;
+    @Lazy
+    private AuthUserService authUserService;
 
     @Override
     public Mono<UserDetails> findByUsername(String username) {
-        var reactiveAuthService = (ReactiveAuthService) applicationContext.getBean(
-                "reactiveAuthService");
         Mono<ApiResult<UserDTO>> infoRequest;
         try {
             if (username.matches("[0-9]+")) {
-                infoRequest = reactiveAuthService.infoByMobile(username);
+                infoRequest = authUserService.infoByMobile(username);
             } else if (username.matches("[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+")) {
-                infoRequest = reactiveAuthService.infoByEmail(username);
+                infoRequest = authUserService.infoByEmail(username);
             } else {
-                infoRequest = reactiveAuthService.infoByUsername(username);
+                infoRequest = authUserService.infoByUsername(username);
             }
         } catch (ApiException e) {
             if (e.getCode() == ApiResult.Code.NOT_FOUND) {
@@ -48,7 +47,7 @@ public class ReactiveUserDetailsServiceImpl implements ReactiveUserDetailsServic
         }
 
         return infoRequest
-                .flatMap(infoResult ->  reactiveAuthService
+                .flatMap(infoResult ->  authUserService
                         .rolesOfUser(infoResult.getData().getId())
                         .map(rolesResult -> {
                             var userDTO = infoResult.getData();

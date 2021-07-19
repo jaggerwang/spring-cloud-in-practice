@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -17,8 +18,8 @@ import java.util.List;
         configuration = ApiConfiguration.class)
 public interface FileService {
     @RequestMapping(method = RequestMethod.GET, value = "/info")
-    ApiResult<FileDTO> info(Long id);
+    ApiResult<FileDTO> info(@RequestParam Long id);
 
     @RequestMapping(method = RequestMethod.GET, value = "/infos")
-    ApiResult<List<FileDTO>> infos(List<Long> ids, Boolean keepNull);
+    ApiResult<List<FileDTO>> infos(@RequestParam List<Long> ids, @RequestParam Boolean keepNull);
 }

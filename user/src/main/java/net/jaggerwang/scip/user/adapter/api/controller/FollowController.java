@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
  * @author Jagger Wang
  */
 @RestController
-@RequestMapping("/user")
-public class UserController extends AbstractController {
+@RequestMapping("/follow")
+public class FollowController extends AbstractController {
     @PostMapping("/follow")
     public ApiResult follow(@RequestBody Map<String, Object> input) {
         var userId = objectMapper.convertValue(input.get("userId"), Long.class);

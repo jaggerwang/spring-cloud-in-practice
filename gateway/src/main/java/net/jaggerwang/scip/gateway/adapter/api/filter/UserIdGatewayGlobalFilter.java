@@ -18,7 +18,7 @@ public class UserIdGatewayGlobalFilter implements GlobalFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         return ReactiveSecurityContextHolder.getContext()
-                .switchIfEmpty(Mono.just(new SecurityContextImpl()))
+                .defaultIfEmpty(new SecurityContextImpl())
                 .flatMap(securityContext -> {
                     var auth = securityContext.getAuthentication();
                     if (auth == null || auth instanceof AnonymousAuthenticationToken ||

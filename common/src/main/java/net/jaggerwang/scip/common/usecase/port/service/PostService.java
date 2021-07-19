@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Jagger Wang
@@ -15,5 +16,5 @@ import org.springframework.web.bind.annotation.RequestMethod;
         configuration = ApiConfiguration.class)
 public interface PostService {
     @RequestMapping(method = RequestMethod.GET, value = "/info")
-    ApiResult<PostDTO> info(Long id);
+    ApiResult<PostDTO> info(@RequestParam Long id);
 }

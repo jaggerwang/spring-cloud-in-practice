@@ -7,6 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Jagger Wang
@@ -16,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
         configuration = ApiConfiguration.class)
 public interface StatService {
     @RequestMapping(method = RequestMethod.GET, value = "/ofUser")
-    ApiResult<UserStatDTO> ofUser(Long userId);
+    ApiResult<UserStatDTO> ofUser(@RequestParam Long userId);
 
     @RequestMapping(method = RequestMethod.GET, value = "/ofPost")
-    ApiResult<PostStatDTO> ofPost(Long postId);
+    ApiResult<PostStatDTO> ofPost(@RequestParam Long postId);
 }
