@@ -37,10 +37,6 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         return http
                 .csrf().disable()
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .authenticationEntryPoint(new HttpStatusServerEntryPoint(
-                                HttpStatus.UNAUTHORIZED))
-                )
                 .authorizeExchange(authorizeExchange -> authorizeExchange
                         .pathMatchers("/", "/login", "/logout", "/logged", "/actuator/**",
                                 "/files/**").permitAll()

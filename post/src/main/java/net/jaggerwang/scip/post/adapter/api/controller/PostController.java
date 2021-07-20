@@ -5,9 +5,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.jaggerwang.scip.common.adapter.api.controller.BaseController;
 import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
 import net.jaggerwang.scip.common.usecase.port.service.dto.PostDTO;
 import net.jaggerwang.scip.common.usecase.exception.*;
+import net.jaggerwang.scip.post.usecase.PostUsecase;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,12 +19,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import net.jaggerwang.scip.common.entity.PostBO;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Jagger Wang
  */
 @RestController
 @RequestMapping("/post")
-public class PostController extends AbstractController {
+public class PostController extends BaseController {
+    protected PostUsecase postUsecase;
+
+    public  PostController(HttpServletRequest request, ObjectMapper objectMapper,
+                           PostUsecase postUsecase) {
+        super(request, objectMapper);
+
+        this.postUsecase = postUsecase;
+    }
+
     @PostMapping("/publish")
     public ApiResult<PostDTO> publish(@RequestBody PostBO postInput) {
         postInput.setUserId(loggedUserId());

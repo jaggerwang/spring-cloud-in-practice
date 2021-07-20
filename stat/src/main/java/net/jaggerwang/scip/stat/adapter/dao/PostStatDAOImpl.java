@@ -3,16 +3,21 @@ package net.jaggerwang.scip.stat.adapter.dao;
 import java.util.Optional;
 
 import net.jaggerwang.scip.stat.adapter.dao.jpa.entity.PostStat;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import net.jaggerwang.scip.stat.adapter.dao.jpa.PostStatRepository;
 import net.jaggerwang.scip.common.entity.PostStatBO;
 import net.jaggerwang.scip.stat.usecase.port.dao.PostStatDAO;
 
+/**
+ * @author Jagger Wang
+ */
 @Component
 public class PostStatDAOImpl implements PostStatDAO {
-    @Autowired
     private PostStatRepository postStatRepository;
+
+    public PostStatDAOImpl(PostStatRepository postStatRepository) {
+        this.postStatRepository = postStatRepository;
+    }
 
     @Override
     public PostStatBO save(PostStatBO postStatBO) {

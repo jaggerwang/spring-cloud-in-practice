@@ -6,6 +6,9 @@ import org.springframework.security.core.userdetails.User;
 import java.util.Collection;
 
 
+/**
+ * @author Jagger Wang
+ */
 public class LoggedUser extends User {
     private static final long serialVersionUID = 1L;
 

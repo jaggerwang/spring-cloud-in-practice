@@ -1,8 +1,6 @@
 package net.jaggerwang.scip.gateway.adapter.api.controller;
 
 import net.jaggerwang.scip.common.adapter.api.security.LoggedUser;
-import net.jaggerwang.scip.gateway.usecase.port.service.AuthUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,12 +14,12 @@ import static org.springframework.security.web.server.context.WebSessionServerSe
 /**
  * @author Jagger Wang
  */
-abstract public class AbstractController {
-    @Autowired
-    protected AuthUserService authUserService;
-
-    @Autowired
+abstract public class BaseController {
     private ReactiveAuthenticationManager authenticationManager;
+
+    public BaseController(ReactiveAuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
 
     protected Mono<LoggedUser> loginUser(ServerWebExchange exchange, String username,
                                          String password) {

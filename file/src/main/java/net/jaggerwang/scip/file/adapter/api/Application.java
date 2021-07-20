@@ -7,8 +7,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication(scanBasePackages = {"net.jaggerwang.scip.file",
-		"net.jaggerwang.scip.common.usecase.port.service"})
+@SpringBootApplication(scanBasePackages = "net.jaggerwang.scip.file")
 @EntityScan("net.jaggerwang.scip.file.adapter.dao.jpa.entity")
 @EnableJpaRepositories("net.jaggerwang.scip.file.adapter.dao.jpa")
 @EnableDiscoveryClient

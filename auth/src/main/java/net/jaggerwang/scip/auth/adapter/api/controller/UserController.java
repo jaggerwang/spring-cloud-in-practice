@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.jaggerwang.scip.auth.usecase.AuthUsecase;
+import net.jaggerwang.scip.common.adapter.api.controller.BaseController;
 import net.jaggerwang.scip.common.entity.UserBO;
 import net.jaggerwang.scip.common.usecase.exception.NotFoundException;
 import net.jaggerwang.scip.common.usecase.exception.UsecaseException;
@@ -13,12 +16,23 @@ import net.jaggerwang.scip.common.usecase.port.service.dto.RoleDTO;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Jagger Wang
  */
 @RestController
 @RequestMapping("/user")
-public class UserController extends AbstractController {
+public class UserController extends BaseController {
+    private AuthUsecase authUsecase;
+
+    public UserController(HttpServletRequest request, ObjectMapper objectMapper,
+                          AuthUsecase authUsecase) {
+        super(request, objectMapper);
+
+        this.authUsecase = authUsecase;
+    }
+
     @PostMapping("/register")
     public ApiResult<UserDTO> register(@RequestBody UserDTO userDto) {
         var userBO = authUsecase.register(userDto.toBO());

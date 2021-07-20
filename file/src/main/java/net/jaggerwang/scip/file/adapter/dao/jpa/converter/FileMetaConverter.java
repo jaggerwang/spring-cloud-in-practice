@@ -5,12 +5,17 @@ import javax.persistence.Converter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.entity.FileBO;
-import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * @author Jagger Wang
+ */
 @Converter
 public class FileMetaConverter implements AttributeConverter<FileBO.Meta, String> {
-    @Autowired
     private ObjectMapper objectMapper;
+
+    public FileMetaConverter(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public String convertToDatabaseColumn(FileBO.Meta attribute) {

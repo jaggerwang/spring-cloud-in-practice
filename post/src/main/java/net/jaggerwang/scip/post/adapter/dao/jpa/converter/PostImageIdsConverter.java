@@ -6,12 +6,17 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * @author Jagger Wang
+ */
 @Converter
 public class PostImageIdsConverter implements AttributeConverter<List<Long>, String> {
-    @Autowired
     private ObjectMapper objectMapper;
+
+    public PostImageIdsConverter(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public String convertToDatabaseColumn(List<Long> attribute) {

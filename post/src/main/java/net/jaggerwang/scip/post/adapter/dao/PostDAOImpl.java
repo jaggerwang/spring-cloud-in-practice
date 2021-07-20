@@ -8,7 +8,6 @@ import com.querydsl.jpa.impl.JPAQuery;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import net.jaggerwang.scip.post.adapter.dao.jpa.entity.PostLike;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import net.jaggerwang.scip.post.adapter.dao.jpa.PostRepository;
 import net.jaggerwang.scip.post.adapter.dao.jpa.entity.Post;
@@ -20,14 +19,18 @@ import net.jaggerwang.scip.post.usecase.port.dao.PostDAO;
 
 @Component
 public class PostDAOImpl implements PostDAO {
-    @Autowired
     private PostRepository postRepository;
 
-    @Autowired
     private PostLikeRepository postLikeRepository;
 
-    @Autowired
     protected JPAQueryFactory jpaQueryFactory;
+
+    public PostDAOImpl(PostRepository postRepository, PostLikeRepository postLikeRepository,
+                       JPAQueryFactory jpaQueryFactory) {
+        this.postRepository = postRepository;
+        this.postLikeRepository = postLikeRepository;
+        this.jpaQueryFactory = jpaQueryFactory;
+    }
 
     @Override
     public PostBO save(PostBO postBO) {

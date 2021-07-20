@@ -1,9 +1,13 @@
 package net.jaggerwang.scip.file.adapter.api.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.jaggerwang.scip.common.adapter.api.controller.BaseController;
 import net.jaggerwang.scip.common.entity.FileBO;
 import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
 import net.jaggerwang.scip.common.usecase.port.service.dto.FileDTO;
 import net.jaggerwang.scip.common.usecase.exception.*;
+import net.jaggerwang.scip.file.usecase.FileUsecase;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +29,44 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/file")
-public class FileController extends AbstractController {
+public class FileController extends BaseController {
+    @Value("${file.base-url}")
+    protected String baseUrl;
+
+    protected FileUsecase fileUsecase;
+
+    public FileController(HttpServletRequest request, ObjectMapper objectMapper,
+                          FileUsecase fileUsecase) {
+        super(request, objectMapper);
+
+        this.fileUsecase = fileUsecase;
+    }
+
+    protected FileDTO fullFileDto(FileBO fileBO) {
+        var fileDto = FileDTO.fromBO(fileBO);
+
+        var url = "";
+        if (fileDto.getRegion() == FileBO.Region.LOCAL) {
+            url = baseUrl + Paths.get("/", fileDto.getBucket(), fileDto.getPath()).toString();
+        }
+        fileDto.setUrl(url);
+
+        if (fileDto.getMeta().getType().startsWith("image/")) {
+            var thumbs = new HashMap<FileBO.ThumbType, String>(8);
+            thumbs.put(FileBO.ThumbType.SMALL,
+                    String.format("%s?process=%s", url, "thumb-small"));
+            thumbs.put(FileBO.ThumbType.MIDDLE,
+                    String.format("%s?process=%s", url, "thumb-middle"));
+            thumbs.put(FileBO.ThumbType.LARGE,
+                    String.format("%s?process=%s", url, "thumb-large"));
+            thumbs.put(FileBO.ThumbType.HUGE,
+                    String.format("%s?process=%s", url, "thumb-huge"));
+            fileDto.setThumbs(thumbs);
+        }
+
+        return fileDto;
+    }
+
     @PostMapping("/upload")
     public ApiResult<List<FileDTO>> upload(@RequestParam(defaultValue = "LOCAL") FileBO.Region region,
                                            @RequestParam(defaultValue = "") String bucket,

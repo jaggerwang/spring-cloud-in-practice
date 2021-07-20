@@ -5,7 +5,6 @@ import net.jaggerwang.scip.common.usecase.exception.ApiException;
 import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
 import net.jaggerwang.scip.gateway.usecase.port.service.AuthUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,9 +22,11 @@ import java.util.stream.Collectors;
  */
 @Service
 public class ReactiveUserDetailsServiceImpl implements ReactiveUserDetailsService {
-    @Autowired
-    @Lazy
     private AuthUserService authUserService;
+
+    public ReactiveUserDetailsServiceImpl(@Lazy AuthUserService authUserService) {
+        this.authUserService = authUserService;
+    }
 
     @Override
     public Mono<UserDetails> findByUsername(String username) {

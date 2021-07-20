@@ -3,19 +3,33 @@ package net.jaggerwang.scip.user.adapter.api.controller;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.jaggerwang.scip.common.adapter.api.controller.BaseController;
 import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
+import net.jaggerwang.scip.user.usecase.FollowUsecase;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Jagger Wang
  */
 @RestController
 @RequestMapping("/follow")
-public class FollowController extends AbstractController {
+public class FollowController extends BaseController {
+    protected FollowUsecase followUsecase;
+
+    public FollowController(HttpServletRequest request, ObjectMapper objectMapper,
+                            FollowUsecase followUsecase) {
+        super(request, objectMapper);
+
+        this.followUsecase = followUsecase;
+    }
+
     @PostMapping("/follow")
     public ApiResult follow(@RequestBody Map<String, Object> input) {
         var userId = objectMapper.convertValue(input.get("userId"), Long.class);
-        userUsecase.follow(loggedUserId(), userId);
+        followUsecase.follow(loggedUserId(), userId);
 
         return new ApiResult();
     }
@@ -23,14 +37,14 @@ public class FollowController extends AbstractController {
     @PostMapping("/unfollow")
     public ApiResult unfollow(@RequestBody Map<String, Object> input) {
         var userId = objectMapper.convertValue(input.get("userId"), Long.class);
-        userUsecase.unfollow(loggedUserId(), userId);
+        followUsecase.unfollow(loggedUserId(), userId);
 
         return new ApiResult();
     }
 
     @GetMapping("/isFollowing")
     public ApiResult<Boolean> isFollowing(@RequestParam Long userId) {
-        var isFollowing = userUsecase.isFollowing(loggedUserId(), userId);
+        var isFollowing = followUsecase.isFollowing(loggedUserId(), userId);
 
         return new ApiResult(isFollowing);
     }
@@ -39,14 +53,14 @@ public class FollowController extends AbstractController {
     public ApiResult<List<Long>> following(@RequestParam(required = false) Long userId,
                                            @RequestParam(defaultValue = "20") Long limit,
                                            @RequestParam(defaultValue = "0") Long offset) {
-        var userIds = userUsecase.following(userId, limit, offset);
+        var userIds = followUsecase.following(userId, limit, offset);
 
         return new ApiResult(userIds);
     }
 
     @GetMapping("/followingCount")
     public ApiResult<Long> followingCount(@RequestParam(required = false) Long userId) {
-        var count = userUsecase.followingCount(userId);
+        var count = followUsecase.followingCount(userId);
 
         return new ApiResult(count);
     }
@@ -55,14 +69,14 @@ public class FollowController extends AbstractController {
     public ApiResult<List<Long>> follower(@RequestParam(required = false) Long userId,
                                           @RequestParam(defaultValue = "20") Long limit,
                                           @RequestParam(defaultValue = "0") Long offset) {
-        var userIds = userUsecase.follower(userId, limit, offset);
+        var userIds = followUsecase.follower(userId, limit, offset);
 
         return new ApiResult(userIds);
     }
 
     @GetMapping("/followerCount")
     public ApiResult<Long> followerCount(@RequestParam(required = false) Long userId) {
-        var count = userUsecase.followerCount(userId);
+        var count = followUsecase.followerCount(userId);
 
         return new ApiResult(count);
     }

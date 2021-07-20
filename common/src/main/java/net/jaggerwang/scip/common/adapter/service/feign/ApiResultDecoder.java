@@ -6,7 +6,6 @@ import feign.Response;
 import feign.codec.Decoder;
 import net.jaggerwang.scip.common.usecase.exception.ApiException;
 import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
@@ -17,8 +16,11 @@ import java.nio.charset.StandardCharsets;
  * @author Jagger Wang
  */
 public class ApiResultDecoder implements Decoder {
-    @Autowired
     ObjectMapper objectMapper;
+
+    public ApiResultDecoder(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public Object decode(Response response, Type type) throws IOException, FeignException {

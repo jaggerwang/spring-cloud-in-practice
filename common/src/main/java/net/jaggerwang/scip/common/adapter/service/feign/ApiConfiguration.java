@@ -1,5 +1,6 @@
 package net.jaggerwang.scip.common.adapter.service.feign;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.codec.Decoder;
 import org.springframework.context.annotation.Bean;
 
@@ -8,8 +9,8 @@ import org.springframework.context.annotation.Bean;
  */
 public class ApiConfiguration {
     @Bean
-    public Decoder apiResultDecoder() {
-        return new ApiResultDecoder();
+    public Decoder apiResultDecoder(ObjectMapper objectMapper) {
+        return new ApiResultDecoder(objectMapper);
     }
 
     @Bean

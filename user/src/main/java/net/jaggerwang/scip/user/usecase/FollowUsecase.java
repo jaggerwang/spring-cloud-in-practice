@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
  * @author Jagger Wang
  */
 @Component
-public class UserUsecase {
+public class FollowUsecase {
     private UserFollowDAO userFollowDAO;
 
-    public UserUsecase(UserFollowDAO userFollowDAO) {
+    public FollowUsecase(UserFollowDAO userFollowDAO) {
         this.userFollowDAO = userFollowDAO;
     }
 
