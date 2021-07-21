@@ -15,9 +15,12 @@ This project can be used as a starter for spring cloud microservice application 
 
 ## Architecture
 
-![spring-cloud-micro-service-architecture](https://user-images.githubusercontent.com/1255011/80553599-06adb500-89fd-11ea-9cf8-f887e156e51b.png)
+![spring-cloud-microservice-architecture](https://user-images.githubusercontent.com/1255011/126436826-9699a641-1d64-4262-aa32-bcfed99c5b5c.png)
 
-## Microservices
+1. Authentication checked and implemented in gateway, it will request user info from auth service.
+1. Gateway will pass current user identity through header `X-User-Id`, and it will be passed between microservices.
+
+### Microservices
 
 | Name  | Description |
 | ------------- | ------------- |
@@ -81,13 +84,13 @@ If you use macOS, you can use `brew install redis` to install redis, and use `br
 
 If you use macOS, you can use `brew install consul` to install consul, and use `brew services start consul` to start service at port `8500`.
 
-#### Package all services
+#### Package all microservices
 
 ```bash
 ./mvnw package
 ```
 
-#### Start gateway and all backend services
+#### Start all microservices
 
 ```bash
 java -jar gateway/target/spring-cloud-in-practice-gateway-1.0.0-SNAPSHOT.jar
@@ -124,7 +127,10 @@ This application also support login with OAuth2 protocol, you need switch to `oa
 
 ### Architecture
 
-![spring-cloud-micro-service-with-oauth2-architecture](https://user-images.githubusercontent.com/1255011/80553605-0e6d5980-89fd-11ea-838e-b181658ef39f.png)
+![spring-cloud-microservice-architecture-with-oauth2](https://user-images.githubusercontent.com/1255011/126439917-13fb74a6-a2c3-4646-81fd-e222ba06dc83.png)
+
+1. Gateway will request oauth2 service to authenticate user when needed.
+1. Hydra oauth2 service need auth service (through gateway) to manage user, this allows you to use your own user management. If you use other oauth2 service with user management like [Keycloak](https://www.keycloak.org/), you can remove auth service.
 
 ### Install hydra command
 
