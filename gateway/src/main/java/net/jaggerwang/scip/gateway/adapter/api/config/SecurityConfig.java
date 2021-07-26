@@ -25,7 +25,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public ReactiveAuthenticationManager authenticationManager(
+    public ReactiveAuthenticationManager reactiveAuthenticationManager(
             ReactiveUserDetailsService userDetailsService) {
         var authenticationManager = new UserDetailsRepositoryReactiveAuthenticationManager(
                 userDetailsService);
@@ -34,12 +34,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
                 .csrf().disable()
                 .authorizeExchange(authorizeExchange -> authorizeExchange
                         .pathMatchers("/", "/login", "/logout", "/logged", "/actuator/**",
-                                "/files/**").permitAll()
+                                "/user/user/register", "/file/files/**").permitAll()
                         .anyExchange().authenticated())
                 .build();
     }

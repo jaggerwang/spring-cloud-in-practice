@@ -3,7 +3,7 @@ package net.jaggerwang.scip.gateway.adapter.api.controller;
 import net.jaggerwang.scip.common.usecase.exception.UsecaseException;
 import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
-import net.jaggerwang.scip.gateway.usecase.port.service.AuthUserService;
+import net.jaggerwang.scip.gateway.usecase.port.service.UserService;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +16,13 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/")
 public class IndexController extends BaseController {
-    private AuthUserService authUserService;
+    private UserService userService;
 
     public  IndexController(ReactiveAuthenticationManager authenticationManager,
-                            AuthUserService authUserService) {
+                            UserService userService) {
         super(authenticationManager);
 
-        this.authUserService = authUserService;
+        this.userService = userService;
     }
 
     @PostMapping("/login")
@@ -45,20 +45,20 @@ public class IndexController extends BaseController {
         }
 
         return loginUser(exchange, username, password)
-                .flatMap(loggedUser -> authUserService.info(loggedUser.getId()));
+                .flatMap(loggedUser -> userService.userInfo(loggedUser.getId()));
     }
 
     @GetMapping("/logout")
     public Mono<ApiResult<UserDTO>> logout(ServerWebExchange exchange) {
         return logoutUser(exchange)
-                .flatMap(loggedUser -> authUserService.info(loggedUser.getId()))
+                .flatMap(loggedUser -> userService.userInfo(loggedUser.getId()))
                 .defaultIfEmpty(new ApiResult<>());
     }
 
     @GetMapping("/logged")
     public Mono<ApiResult<UserDTO>> logged() {
         return loggedUser()
-                .flatMap(loggedUser -> authUserService.info(loggedUser.getId()))
+                .flatMap(loggedUser -> userService.userInfo(loggedUser.getId()))
                 .defaultIfEmpty(new ApiResult<>());
     }
 }

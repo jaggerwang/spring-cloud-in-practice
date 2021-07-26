@@ -25,8 +25,7 @@ This project can be used as a starter for spring cloud microservice application 
 | Name  | Description |
 | ------------- | ------------- |
 | Gateway | Request routing, authentication and authorization checking |
-| Auth | Authentication and authorization implementing, including users and roles management |
-| User | User related business, such as following relationship |
+| User | User related business, including users management, roles management and following relationship |
 | Post | Post related business |
 | File | File related business |
 | Stat | Stat related business |
@@ -38,11 +37,11 @@ This project can be used as a starter for spring cloud microservice application 
 | /login | POST | Login user |
 | /logout | GET | Logout user |
 | /logged | GET | Logged user |
-| /auth/user/register | POST | Register user |
-| /auth/user/modify | POST | Modify logged user |
-| /auth/user/info | GET | Get user info |
-| /auth/user/sendMobileVerifyCode | POST | Send mobile verify code |
-| /auth/user/sendEmailVerifyCode | POST | Send email verify code |
+| /user/user/register | POST | Register user |
+| /user/user/modify | POST | Modify logged user |
+| /user/user/info | GET | Get user info |
+| /user/user/sendMobileVerifyCode | POST | Send mobile verify code |
+| /user/user/sendEmailVerifyCode | POST | Send email verify code |
 | /user/follow/follow | POST | Follow user |
 | /user/follow/unfollow | POST | Unfollow user |
 | /user/follow/following | GET | Following users of someone |
@@ -94,7 +93,6 @@ If you use macOS, you can use `brew install consul` to install consul, and use `
 
 ```bash
 java -jar gateway/target/spring-cloud-in-practice-gateway-1.0.0-SNAPSHOT.jar
-java -jar auth/target/spring-cloud-in-practice-auth-1.0.0-SNAPSHOT.jar
 java -jar user/target/spring-cloud-in-practice-user-1.0.0-SNAPSHOT.jar
 java -jar post/target/spring-cloud-in-practice-post-1.0.0-SNAPSHOT.jar
 java -jar file/target/spring-cloud-in-practice-file-1.0.0-SNAPSHOT.jar
@@ -121,9 +119,9 @@ If you repackaged services, you should add `--build` option to rebuild images.
 
 Then you can access all apis at `http://localhost:8080`.
 
-## Login with OAuth2 protocol
+## Login with OAuth2 Service
 
-This application also support login with OAuth2 protocol, you need switch to `oauth2` branch to experience this feature. It uses [ORY/Hydra](https://github.com/ory/hydra) to running an OAuth2 server, any OAuth2 client can use this service to authenticate and authorize users.
+This application also support login with OAuth2 service, you need switch to `oauth2` branch to experience this feature. In the following, we will use [ORY/Hydra](https://github.com/ory/hydra) to running an OAuth2 service.
 
 ### Architecture
 
@@ -132,36 +130,34 @@ This application also support login with OAuth2 protocol, you need switch to `oa
 1. Gateway will request oauth2 service to authenticate user when needed.
 1. Hydra oauth2 service need auth service (through gateway) to manage user, this allows you to use your own user management. If you use other oauth2 service with user management like [Keycloak](https://www.keycloak.org/), you can remove auth service.
 
-### Install hydra command
+### Install hydra
 
-You need install `hydra` command first. You can use the following commands to install hydra on macOS:
+You need install `hydra` first. You can use the following commands to install hydra on macOS:
 
 ```bash
 brew tap ory/hydra
 brew install ory/hydra/hydra
 ``` 
 
-### Prepare database and start hydra server
+### Prepare database and start hydra service
 
-Connect to your local mysql server and create a database for hydra.
+Connect to your mysql service and create a database for hydra.
 
 ```sql
 CREATE DATABASE `scip_hydra`;
 ```
 
-Then use the following commands to init database and run an OAuth2 server. 
+Then use the following commands to init database and run hydra service.
 
 ```bash
 DSN=mysql://root:@tcp(localhost:3306)/scip_hydra hydra migrate sql -e --yes
 
-STRATEGIES_ACCESS_TOKEN=jwt LOG_LEVEL=info SECRETS_SYSTEM=a2N4m0XL659TIrB2V3fJBxUED5Zv5zUQ DSN=mysql://scip_hydra:123456@tcp(localhost:3306)/scip_hydra URLS_SELF_ISSUER=http://localhost:4444/ URLS_LOGIN=http://localhost:8080/auth/hydra/login URLS_CONSENT=http://localhost:8080/auth/hydra/consent URLS_LOGOUT=http://localhost:8080/auth/hydra/logout TTL_ACCESS_TOKEN=12h TTL_REFRESH_TOKEN=720h hydra serve all --dangerous-force-http --dangerous-allow-insecure-redirect-urls 'http://localhost:8080/auth/hydra/login,http://localhost:8080/auth/hydra/consent,http://localhost:8080/auth/hydra/logout'
+STRATEGIES_ACCESS_TOKEN=jwt LOG_LEVEL=info SECRETS_SYSTEM=a2N4m0XL659TIrB2V3fJBxUED5Zv5zUQ DSN=mysql://scip_hydra:123456@tcp(localhost:3306)/scip_hydra URLS_SELF_ISSUER=http://localhost:4444/ URLS_LOGIN=http://localhost:8080/auth/hydra/login URLS_CONSENT=http://localhost:8080/auth/hydra/consent URLS_LOGOUT=http://localhost:8080/auth/hydra/logout TTL_ACCESS_TOKEN=8h TTL_REFRESH_TOKEN=720h hydra serve all --dangerous-force-http --dangerous-allow-insecure-redirect-urls 'http://localhost:8080/auth/hydra/login,http://localhost:8080/auth/hydra/consent,http://localhost:8080/auth/hydra/logout'
 ```
-
-> You can skip this step when run by docker compose.
 
 ### Create OAuth2 clients
 
-We will create two clients, one is for hydra's builtin client, and the other is for the gateway service which can be used as an OAuth2 client.
+We will create two clients, one is for hydra's builtin client, and the other is for this project.
 
 ```bash
 hydra --endpoint 'http://localhost:4445/' clients create --id test --name 'Test' --secret E0g8oR7m711bGcvy --grant-types authorization_code,refresh_token,client_credentials,implicit --response-types token,code,id_token --scope openid,offline,profile --callbacks 'http://localhost:4446/callback'
@@ -177,6 +173,6 @@ hydra token user --auth-url 'http://localhost:4444/oauth2/auth' --token-url 'htt
 
 It will auto open `http://localhost:4446` to commence OAuth2 authorize flow.
 
-### Test OAuth2 login with gateway
+### Test OAuth2 login with scip client
 
-The gateway can be used as an OAuth2 client, open login page at `http://localhost:8080/login` to commence an OAuth2 authorization flow.
+Open `http://localhost:8080/login` to commence OAuth2 authorization flow.

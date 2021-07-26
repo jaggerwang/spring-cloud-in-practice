@@ -18,7 +18,6 @@
     <modules>
         <module>common</module>
         <module>gateway</module>
-        <module>auth</module>
         <module>user</module>
         <module>post</module>
         <module>file</module>

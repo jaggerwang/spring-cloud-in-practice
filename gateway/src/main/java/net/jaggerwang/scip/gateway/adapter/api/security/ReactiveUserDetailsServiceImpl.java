@@ -4,7 +4,7 @@ import net.jaggerwang.scip.common.adapter.api.security.LoggedUser;
 import net.jaggerwang.scip.common.usecase.exception.ApiException;
 import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
-import net.jaggerwang.scip.gateway.usecase.port.service.AuthUserService;
+import net.jaggerwang.scip.gateway.usecase.port.service.UserService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
  */
 @Service
 public class ReactiveUserDetailsServiceImpl implements ReactiveUserDetailsService {
-    private AuthUserService authUserService;
+    private UserService userService;
 
-    public ReactiveUserDetailsServiceImpl(@Lazy AuthUserService authUserService) {
-        this.authUserService = authUserService;
+    public ReactiveUserDetailsServiceImpl(@Lazy UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -33,11 +33,11 @@ public class ReactiveUserDetailsServiceImpl implements ReactiveUserDetailsServic
         Mono<ApiResult<UserDTO>> infoRequest;
         try {
             if (username.matches("[0-9]+")) {
-                infoRequest = authUserService.infoByMobile(username);
+                infoRequest = userService.userInfoByMobile(username);
             } else if (username.matches("[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+")) {
-                infoRequest = authUserService.infoByEmail(username);
+                infoRequest = userService.userInfoByEmail(username);
             } else {
-                infoRequest = authUserService.infoByUsername(username);
+                infoRequest = userService.userInfoByUsername(username);
             }
         } catch (ApiException e) {
             if (e.getCode() == ApiResult.Code.NOT_FOUND) {
@@ -48,7 +48,7 @@ public class ReactiveUserDetailsServiceImpl implements ReactiveUserDetailsServic
         }
 
         return infoRequest
-                .flatMap(infoResult ->  authUserService
+                .flatMap(infoResult ->  userService
                         .rolesOfUser(infoResult.getData().getId())
                         .map(rolesResult -> {
                             var userDTO = infoResult.getData();

@@ -1,6 +1,6 @@
 SET NAMES utf8mb4;
 
-USE `scip_auth`;
+USE `scip_user`;
 
 -- ----------------------------
 -- Records of user
@@ -20,8 +20,6 @@ COMMIT;
 -- ----------------------------
 BEGIN;
 COMMIT;
-
-USE `scip_user`;
 
 -- ----------------------------
 -- Records of user_follow

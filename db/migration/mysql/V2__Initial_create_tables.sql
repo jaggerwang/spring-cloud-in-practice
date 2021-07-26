@@ -1,7 +1,7 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
-USE `scip_auth`;
+USE `scip_user`;
 
 -- ----------------------------
 -- Table structure for user
@@ -51,8 +51,6 @@ CREATE TABLE `user_role` (
                              KEY `idx_role_id_created_at` (`role_id`,`created_at`) USING BTREE,
                              KEY `idx_user_id_created_at` (`user_id`,`created_at`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户角色';
-
-USE `scip_user`;
 
 -- ----------------------------
 -- Table structure for user_follow

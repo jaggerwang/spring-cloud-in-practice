@@ -8,6 +8,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author Jagger Wang
+ */
 @Configuration(proxyBeanMethods = false)
 public class JpaConfig {
     @PersistenceContext
