@@ -6,7 +6,7 @@ logging:
 
 server:
   address: 0.0.0.0
-  port: 8084
+  port: 8083
 
 spring:
   application:

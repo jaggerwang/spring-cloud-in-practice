@@ -15,10 +15,11 @@ This project can be used as a starter for spring cloud microservice application 
 
 ## Architecture
 
-![spring-cloud-microservice-architecture](https://user-images.githubusercontent.com/1255011/126436826-9699a641-1d64-4262-aa32-bcfed99c5b5c.png)
+![spring-cloud-microservice-architecture](https://user-images.githubusercontent.com/1255011/126946605-973ec47b-3b64-403c-9647-d6a932b23164.png)
 
-1. Authentication checked and implemented in gateway, it will request user info from auth service.
-1. Gateway will pass current user identity through header `X-User-Id`, and it will be passed between microservices.
+1. Authentication checked and implemented in gateway, it will request user info from user service to verify username and password, and write logged user info into session storage.
+1. Gateway will pass logged user id through header `X-User-Id`, and it will be passed between microservices.
+1. Gateway also support login with thirdparty OAuth2 service, after successfully completed the OAuth2 authentication flow, it will request user service to bind thirdparty user to an inner user. Other microservices only knows about the inner user, this makes user related logic keeps the same for all microservices.  
 
 ### Microservices
 
@@ -34,9 +35,9 @@ This project can be used as a starter for spring cloud microservice application 
 
 | Path  | Method | Description |
 | ------------- | ------------- | ------------- |
-| /login | POST | Login user |
-| /logout | GET | Logout user |
-| /logged | GET | Logged user |
+| /auth/login | POST | Login user |
+| /auth/logout | GET | Logout user |
+| /auth/logged | GET | Logged user |
 | /user/user/register | POST | Register user |
 | /user/user/modify | POST | Modify logged user |
 | /user/user/info | GET | Get user info |
@@ -59,7 +60,7 @@ This project can be used as a starter for spring cloud microservice application 
 | /stat/stat/ofUser | GET | Get user stat info |
 | /stat/stat/ofPost | GET | Get post stat info |
 
-The path is following the format `/<service>/<module>/<operation>`, and the `/<service>` prefix will be stripped when gateway forwarding request to backend services.
+The path is following the format `/<service>/<module>/<operation>`, and the `/<service>` prefix will be stripped away when gateway forwarding request to microservices.
 
 ## How to run
 
@@ -119,60 +120,12 @@ If you repackaged services, you should add `--build` option to rebuild images.
 
 Then you can access all apis at `http://localhost:8080`.
 
-## Login with OAuth2 Service
+## Login with OAuth2 service
 
-This application also support login with OAuth2 service, you need switch to `oauth2` branch to experience this feature. In the following, we will use [ORY/Hydra](https://github.com/ory/hydra) to running an OAuth2 service.
+### Choose an OAuth2 service and register a client
 
-### Architecture
+You can choose any OAuth2 service like [GitHub](https://github.com/settings/developers) or [Google](https://developers.google.com/identity/protocols/OpenIDConnect), or you can start your own OAuth2 service using open source software like [Keycloak](https://www.baeldung.com/spring-boot-keycloak), you can even [Embed Keycloak in a Spring Boot Application](https://www.baeldung.com/keycloak-embedded-in-spring-boot-app). Here we choose to using Keycloak, and register a client in consistent with configuration at `spring.security.oauth2.client` in `gateway/src/main/resources/application.yml`.
 
-![spring-cloud-microservice-architecture-with-oauth2](https://user-images.githubusercontent.com/1255011/126439917-13fb74a6-a2c3-4646-81fd-e222ba06dc83.png)
+### Configure spring security
 
-1. Gateway will request oauth2 service to authenticate user when needed.
-1. Hydra oauth2 service need auth service (through gateway) to manage user, this allows you to use your own user management. If you use other oauth2 service with user management like [Keycloak](https://www.keycloak.org/), you can remove auth service.
-
-### Install hydra
-
-You need install `hydra` first. You can use the following commands to install hydra on macOS:
-
-```bash
-brew tap ory/hydra
-brew install ory/hydra/hydra
-``` 
-
-### Prepare database and start hydra service
-
-Connect to your mysql service and create a database for hydra.
-
-```sql
-CREATE DATABASE `scip_hydra`;
-```
-
-Then use the following commands to init database and run hydra service.
-
-```bash
-DSN=mysql://root:@tcp(localhost:3306)/scip_hydra hydra migrate sql -e --yes
-
-STRATEGIES_ACCESS_TOKEN=jwt LOG_LEVEL=info SECRETS_SYSTEM=a2N4m0XL659TIrB2V3fJBxUED5Zv5zUQ DSN=mysql://scip_hydra:123456@tcp(localhost:3306)/scip_hydra URLS_SELF_ISSUER=http://localhost:4444/ URLS_LOGIN=http://localhost:8080/auth/hydra/login URLS_CONSENT=http://localhost:8080/auth/hydra/consent URLS_LOGOUT=http://localhost:8080/auth/hydra/logout TTL_ACCESS_TOKEN=8h TTL_REFRESH_TOKEN=720h hydra serve all --dangerous-force-http --dangerous-allow-insecure-redirect-urls 'http://localhost:8080/auth/hydra/login,http://localhost:8080/auth/hydra/consent,http://localhost:8080/auth/hydra/logout'
-```
-
-### Create OAuth2 clients
-
-We will create two clients, one is for hydra's builtin client, and the other is for this project.
-
-```bash
-hydra --endpoint 'http://localhost:4445/' clients create --id test --name 'Test' --secret E0g8oR7m711bGcvy --grant-types authorization_code,refresh_token,client_credentials,implicit --response-types token,code,id_token --scope openid,offline,profile --callbacks 'http://localhost:4446/callback'
-
-hydra --endpoint 'http://localhost:4445/' clients create --id scip --name 'Spring Cloud in Practice' --secret ilxzM0AdA7BVaL7c --grant-types authorization_code,refresh_token,client_credentials,implicit --response-types token,code,id_token --scope offline,user,post,file,stat --callbacks 'http://localhost:8080/login/oauth2/code/hydra'
-```
-
-### Test OAuth2 login with hydra's builtin client
-
-```bash
-hydra token user --auth-url 'http://localhost:4444/oauth2/auth' --token-url 'http://localhost:4444/oauth2/token' --client-id test --client-secret E0g8oR7m711bGcvy --scope openid,offline,profile --redirect 'http://localhost:4446/callback'
-```
-
-It will auto open `http://localhost:4446` to commence OAuth2 authorize flow.
-
-### Test OAuth2 login with scip client
-
-Open `http://localhost:8080/login` to commence OAuth2 authorization flow.
+### Initiate OAuth2 flow

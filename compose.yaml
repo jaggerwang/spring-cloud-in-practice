@@ -66,32 +66,6 @@ services:
         condition: service_healthy
       consul:
         condition: service_started
-  auth:
-    image: spring-cloud-in-practice-auth
-    build: ./auth
-    environment:
-      TZ: Asia/Shanghai
-      SCIP_DEBUG: "false"
-      SCIP_LOGGING_FILE_PATH: /data/log
-      SCIP_LOGGING_LEVEL_REQUEST: INFO
-      SCIP_SPRING_REDIS_HOST: redis
-      SCIP_SPRING_REDIS_PORT: 6379
-      SCIP_SPRING_REDIS_PASSWORD:
-      SCIP_SPRING_DATASOURCE_URL: jdbc:mysql://mysql/scip_auth
-      SCIP_SPRING_DATASOURCE_USERNAME: scip_auth
-      SCIP_SPRING_DATASOURCE_PASSWORD: 123456
-      SCIP_SPRING_CLOUD_CONSUL_HOST: consul
-      SCIP_SPRING_CLOUD_CONSUL_PORT: 8500
-    volumes:
-      - ~/data/spring-cloud-in-practice/user/data:/data
-      - ~/data/spring-cloud-in-practice/user/config:/app/config:ro
-    depends_on:
-      mysql:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      consul:
-        condition: service_started
   user:
     image: spring-cloud-in-practice-user
     build: ./user

@@ -14,12 +14,12 @@ import reactor.core.publisher.Mono;
  * @author Jagger Wang
  */
 @RestController
-@RequestMapping("/")
-public class IndexController extends BaseController {
+@RequestMapping("/auth")
+public class AuthController extends BaseController {
     private UserService userService;
 
-    public  IndexController(ReactiveAuthenticationManager authenticationManager,
-                            UserService userService) {
+    public AuthController(ReactiveAuthenticationManager authenticationManager,
+                          UserService userService) {
         super(authenticationManager);
 
         this.userService = userService;
