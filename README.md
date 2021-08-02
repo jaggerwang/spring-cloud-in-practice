@@ -124,8 +124,16 @@ Then you can access all apis at `http://localhost:8080`.
 
 ### Choose an OAuth2 service and register a client
 
-You can choose any OAuth2 service like [GitHub](https://github.com/settings/developers) or [Google](https://developers.google.com/identity/protocols/OpenIDConnect), or you can start your own OAuth2 service using open source software like [Keycloak](https://www.baeldung.com/spring-boot-keycloak), you can even [Embed Keycloak in a Spring Boot Application](https://www.baeldung.com/keycloak-embedded-in-spring-boot-app). Here we choose to using Keycloak, and register a client in consistent with configuration at `spring.security.oauth2.client` in `gateway/src/main/resources/application.yml`.
+You can choose any OAuth2 service like [GitHub](https://github.com/settings/developers) or [Google](https://developers.google.com/identity/protocols/OpenIDConnect), or you can start your own OAuth2 service using open source software like [Keycloak](https://www.baeldung.com/spring-boot-keycloak), you can even [Embed Keycloak in a Spring Boot Application](https://www.baeldung.com/keycloak-embedded-in-spring-boot-app). Here we choose to using Keycloak, and register a client in consistent with configuration at `spring.security.oauth2.client` in `gateway/src/main/resources/application.yml`, under realm `JW`. 
 
-### Configure spring security
+Some import attributes of the registered client are as follows:
+- Client ID: scip
+- Client Protocol: openid-connect
+- Access Type: confidential
+- Client Roles: user post file stat
 
-### Initiate OAuth2 flow
+Create a user named `jaggerwang` with password `123456` for testing, and given all roles of client `scip`.
+
+### Initiate an OAuth2 authentication flow
+
+You can now open `http://localhost:8080/login` to initiate an OAuth2 authorization code flow and logout at endpoint `/logout`.

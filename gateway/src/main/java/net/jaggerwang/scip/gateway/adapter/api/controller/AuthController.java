@@ -4,7 +4,7 @@ import net.jaggerwang.scip.common.usecase.exception.UsecaseException;
 import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
 import net.jaggerwang.scip.gateway.usecase.port.service.UserService;
-import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
@@ -16,14 +16,8 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/auth")
 public class AuthController extends BaseController {
+    @Autowired
     private UserService userService;
-
-    public AuthController(ReactiveAuthenticationManager authenticationManager,
-                          UserService userService) {
-        super(authenticationManager);
-
-        this.userService = userService;
-    }
 
     @PostMapping("/login")
     public Mono<ApiResult<UserDTO>> login(ServerWebExchange exchange,
