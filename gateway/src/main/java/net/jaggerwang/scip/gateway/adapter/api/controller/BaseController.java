@@ -8,7 +8,6 @@ import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
