@@ -1,12 +1,14 @@
 package net.jaggerwang.scip.gateway.adapter.api.controller;
 
-import net.jaggerwang.scip.common.adapter.api.security.LoggedUser;
+import net.jaggerwang.scip.gateway.adapter.api.security.BindedOidcUser;
+import net.jaggerwang.scip.gateway.adapter.api.security.LoggedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -62,7 +64,15 @@ abstract public class BaseController {
                             !auth.isAuthenticated()) {
                         return Mono.empty();
                     }
-                    return Mono.just((LoggedUser) auth.getPrincipal());
+                    var principal = auth.getPrincipal();
+                    if (principal instanceof BindedOidcUser) {
+                        var bindedOidcUser = (BindedOidcUser) principal;
+                        return Mono.just(bindedOidcUser.getLoggedUser());
+                    } else if (principal instanceof LoggedUser) {
+                        return Mono.just((LoggedUser) auth.getPrincipal());
+                    } else {
+                        return Mono.empty();
+                    }
                 });
     }
 }

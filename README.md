@@ -1,6 +1,6 @@
 # Spring Cloud in Practice
 
-This project can be used as a starter for spring cloud microservice application developing. It uses [Spring Cloud Consul](https://cloud.spring.io/spring-cloud-consul/reference/html/) for service discovery and config management, [Spring Cloud Gateway](https://cloud.spring.io/spring-cloud-gateway/reference/html/) to implement api gateway, and [ORY/Hydra](https://github.com/ory/hydra) for running an optional OAuth2 server. There is also an article [Spring Cloud 微服务开发指南](https://blog.jaggerwang.net/spring-cloud-micro-service-develop-tour/) for learning this project.
+This project can be used as a starter for spring cloud microservice application developing. It uses [Spring Cloud Consul](https://cloud.spring.io/spring-cloud-consul/reference/html/) for service discovery and config management, [Spring Cloud Gateway](https://cloud.spring.io/spring-cloud-gateway/reference/html/) to implement api gateway, and [Keycloak](https://www.keycloak.org/) for running an optional OAuth2 service. There is also an article [Spring Cloud 微服务开发指南](https://blog.jaggerwang.net/spring-cloud-micro-service-develop-tour/) for learning this project.
 
 ## Dependent frameworks and packages
 
@@ -11,7 +11,6 @@ This project can be used as a starter for spring cloud microservice application 
 1. [Spring Cloud Gateway](https://spring.io/projects/spring-cloud-gateway) Api gateway
 1. [Spring Cloud Consul](https://spring.io/projects/spring-cloud-consul) Service discovery
 1. [Spring Cloud OpenFeign](https://spring.io/projects/spring-cloud-openfeign) Declarative rest client
-1. [ORY/Hydra](https://github.com/ory/hydra) OAuth2 server
 
 ## Architecture
 

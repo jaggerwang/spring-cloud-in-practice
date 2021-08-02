@@ -1,6 +1,5 @@
 package net.jaggerwang.scip.gateway.adapter.api.security;
 
-import net.jaggerwang.scip.common.adapter.api.security.LoggedUser;
 import net.jaggerwang.scip.common.usecase.exception.ApiException;
 import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
 import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;

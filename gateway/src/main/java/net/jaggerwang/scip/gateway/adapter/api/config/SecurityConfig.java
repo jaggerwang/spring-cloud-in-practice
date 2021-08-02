@@ -1,5 +1,7 @@
 package net.jaggerwang.scip.gateway.adapter.api.config;
 
+import net.jaggerwang.scip.gateway.adapter.api.security.BindedOidcUser;
+import net.jaggerwang.scip.gateway.adapter.api.security.LoggedUser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +26,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import reactor.core.publisher.Mono;
 
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * @author Jagger Wang
@@ -79,14 +82,13 @@ public class SecurityConfig {
         return userRequest -> delegate
                 .loadUser(userRequest)
                 .map(oidcUser -> {
-                    var accessToken = userRequest.getAccessToken();
-                    var mappedAuthorities = new HashSet<GrantedAuthority>();
-
                     // TODO
                     // 1) Bind user from OAuth2 provider to a client's inner user.
                     // 2) Get authorities from this inner user.
+                    var authorities = oidcUser.getAuthorities();
+                    var loggedUser = new LoggedUser(0L, "", "", authorities);
 
-                    return new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(),
+                    return new BindedOidcUser(loggedUser, authorities, oidcUser.getIdToken(),
                             oidcUser.getUserInfo());
                 });
     }

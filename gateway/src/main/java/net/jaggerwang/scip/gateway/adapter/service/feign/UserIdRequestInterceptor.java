@@ -1,6 +1,6 @@
 package net.jaggerwang.scip.gateway.adapter.service.feign;
 
-import net.jaggerwang.scip.common.adapter.api.security.LoggedUser;
+import net.jaggerwang.scip.gateway.adapter.api.security.LoggedUser;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;

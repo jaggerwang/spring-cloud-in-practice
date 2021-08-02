@@ -1,6 +1,6 @@
 package net.jaggerwang.scip.gateway.adapter.api.controller;
 
-import net.jaggerwang.scip.common.adapter.api.security.LoggedUser;
+import net.jaggerwang.scip.gateway.adapter.api.security.LoggedUser;
 import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
