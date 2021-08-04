@@ -1,5 +1,6 @@
 package net.jaggerwang.scip.gateway.adapter.api.filter;
 
+import net.jaggerwang.scip.gateway.adapter.api.security.BindedOidcUser;
 import net.jaggerwang.scip.gateway.adapter.api.security.LoggedUser;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -26,7 +27,14 @@ public class UserIdGatewayGlobalFilter implements GlobalFilter {
                         return chain.filter(exchange);
                     }
 
-                    var loggedUser = (LoggedUser) auth.getPrincipal();
+                    LoggedUser loggedUser;
+                    var principal = auth.getPrincipal();
+                    if (principal instanceof BindedOidcUser) {
+                        var bindedOidcUser = (BindedOidcUser) principal;
+                        loggedUser = bindedOidcUser.getLoggedUser();
+                    } else {
+                        loggedUser = (LoggedUser) principal;
+                    }
                     return chain.filter(exchange.mutate()
                             .request(exchange.getRequest()
                                     .mutate()

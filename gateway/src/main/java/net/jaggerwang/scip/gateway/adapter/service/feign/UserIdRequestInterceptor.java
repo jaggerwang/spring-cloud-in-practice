@@ -1,5 +1,6 @@
 package net.jaggerwang.scip.gateway.adapter.service.feign;
 
+import net.jaggerwang.scip.gateway.adapter.api.security.BindedOidcUser;
 import net.jaggerwang.scip.gateway.adapter.api.security.LoggedUser;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -25,7 +26,14 @@ public class UserIdRequestInterceptor implements ReactiveHttpRequestInterceptor 
                         return reactiveHttpRequest;
                     }
 
-                    var loggedUser = (LoggedUser) auth.getPrincipal();
+                    LoggedUser loggedUser;
+                    var principal = auth.getPrincipal();
+                    if (principal instanceof BindedOidcUser) {
+                        var bindedOidcUser = (BindedOidcUser) principal;
+                        loggedUser = bindedOidcUser.getLoggedUser();
+                    } else {
+                        loggedUser = (LoggedUser) principal;
+                    }
                     reactiveHttpRequest.headers().put("X-User-Id",
                             List.of(loggedUser.getId().toString()));
                     return reactiveHttpRequest;

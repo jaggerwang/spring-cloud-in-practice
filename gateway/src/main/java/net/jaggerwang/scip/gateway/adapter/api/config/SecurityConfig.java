@@ -8,6 +8,7 @@ import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +18,13 @@ import org.springframework.security.oauth2.client.userinfo.ReactiveOAuth2UserSer
 import org.springframework.security.oauth2.client.web.server.ServerOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.server.WebSessionServerOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Jagger Wang
@@ -58,11 +65,29 @@ public class SecurityConfig {
                 .loadUser(userRequest)
                 .map(oidcUser -> {
                     // TODO
-                    // 1) Bind user from OAuth2 provider to a client's inner user.
-                    // 2) Get authorities of this inner user.
-                    var authorities = oidcUser.getAuthorities();
-                    var loggedUser = new LoggedUser(0L, oidcUser.getName(), "", authorities);
+                    // Bind OAuth2 provider's user to client's inner user
 
+                    // Extract client roles in access token
+                    var authorities = oidcUser.getAuthorities();
+                    var clientRegistration = userRequest.getClientRegistration();
+                    var jwtDecoder = NimbusJwtDecoder.withJwkSetUri(
+                            clientRegistration.getProviderDetails().getJwkSetUri()).build();
+                    var jwt = jwtDecoder.decode(userRequest.getAccessToken().getTokenValue());
+                    var resourceAccess = jwt.getClaimAsMap("resource_access");
+                    if (resourceAccess != null) {
+                        var resource = (Map<String, Object>) resourceAccess.get(
+                                clientRegistration.getClientId());
+                        if (resource != null) {
+                            var roles = (Collection<String>) resource.get("roles");
+                            if (roles != null) {
+                                authorities = Stream.concat(authorities.stream(), roles.stream()
+                                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role)))
+                                        .collect(Collectors.toList());
+                            }
+                        }
+                    }
+
+                    var loggedUser = new LoggedUser(0L, oidcUser.getName(), "", authorities);
                     return new BindedOidcUser(loggedUser, authorities, oidcUser.getIdToken(),
                             oidcUser.getUserInfo());
                 });
