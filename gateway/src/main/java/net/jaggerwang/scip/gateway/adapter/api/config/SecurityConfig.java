@@ -43,7 +43,7 @@ public class SecurityConfig {
      * Store access token in session.
      */
     @Bean
-    ServerOAuth2AuthorizedClientRepository authorizedClientRepository() {
+    ServerOAuth2AuthorizedClientRepository serverOAuth2AuthorizedClientRepository() {
         return new WebSessionServerOAuth2AuthorizedClientRepository();
     }
 
@@ -61,7 +61,7 @@ public class SecurityConfig {
                     // 1) Bind user from OAuth2 provider to a client's inner user.
                     // 2) Get authorities of this inner user.
                     var authorities = oidcUser.getAuthorities();
-                    var loggedUser = new LoggedUser(0L, "", "", authorities);
+                    var loggedUser = new LoggedUser(0L, oidcUser.getName(), "", authorities);
 
                     return new BindedOidcUser(loggedUser, authorities, oidcUser.getIdToken(),
                             oidcUser.getUserInfo());

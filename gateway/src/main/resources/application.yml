@@ -30,6 +30,7 @@ spring:
           keycloak:
             clientId: scip
             clientSecret: 42f9a259-5b5e-40b4-ad84-dfa2e18e2df4
+            scope: openid
             authorizationGrantType: authorization_code
             redirectUri: '{baseUrl}/login/oauth2/code/{registrationId}'
         provider:
@@ -37,6 +38,7 @@ spring:
             authorizationUri: ${SCIP_SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_AUTHORIZATION_URI:http://localhost:8180/auth/realms/JW/protocol/openid-connect/auth}
             tokenUri: ${SCIP_SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI:http://localhost:8180/auth/realms/JW/protocol/openid-connect/token}
             userInfoUri: ${SCIP_SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_USER_INFO_URI:http://localhost:8180/auth/realms/JW/protocol/openid-connect/userinfo}
+            jwkSetUri: ${SCIP_SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_JWT_JWK_SET_URI:http://localhost:8180/auth/realms/JW/protocol/openid-connect/certs}
             userNameAttribute: sub
   cloud:
     loadbalancer:
