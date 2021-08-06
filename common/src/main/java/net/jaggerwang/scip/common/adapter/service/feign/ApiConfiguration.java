@@ -1,6 +1,7 @@
 package net.jaggerwang.scip.common.adapter.service.feign;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.RequestInterceptor;
 import feign.codec.Decoder;
 import org.springframework.context.annotation.Bean;
 
@@ -14,7 +15,7 @@ public class ApiConfiguration {
     }
 
     @Bean
-    public UserIdRequestInterceptor userIdRequestInterceptor() {
+    public RequestInterceptor requestInterceptor() {
         return new UserIdRequestInterceptor();
     }
 }
