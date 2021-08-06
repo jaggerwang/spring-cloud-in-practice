@@ -14,7 +14,7 @@ This project can be used as a starter for spring cloud microservice application 
 
 ## Architecture
 
-![spring-cloud-microservice-architecture](https://user-images.githubusercontent.com/1255011/126946605-973ec47b-3b64-403c-9647-d6a932b23164.png)
+![spring-cloud-microservice-architecture](https://user-images.githubusercontent.com/1255011/128450568-40931a62-f4c5-4e80-afd4-89a383d857f6.png)
 
 1. Authentication checked and implemented in gateway, it will request user info from user service to verify username and password, and write logged user info into session storage.
 1. Gateway will pass logged user id through header `X-User-Id`, and it will be passed between microservices.
