@@ -1,7 +1,11 @@
 package net.jaggerwang.scip.gateway.adapter.api.config;
 
+import net.jaggerwang.scip.common.usecase.port.service.dto.UserDTO;
+import net.jaggerwang.scip.common.usecase.port.service.dto.user.UserBindRequestDTO;
 import net.jaggerwang.scip.gateway.adapter.api.security.BindedOidcUser;
 import net.jaggerwang.scip.gateway.adapter.api.security.LoggedUser;
+import net.jaggerwang.scip.gateway.usecase.port.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
@@ -32,6 +36,9 @@ import java.util.stream.Stream;
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityConfig {
+    @Autowired
+    private UserService userService;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -56,40 +63,60 @@ public class SecurityConfig {
 
     /**
      * Customize OAuth2User (or OidcUser if using OpendID Connect protocol), such as bind user from
-     * OAuth2 provider to a client's inner user, and get authorities of this inner user.
+     * OAuth2 provider to a client's internal user, and get authorities of this internal user.
      */
     @Bean
     public ReactiveOAuth2UserService<OidcUserRequest, OidcUser> reactiveOAuth2UserService() {
         var delegate = new OidcReactiveOAuth2UserService();
         return userRequest -> delegate
                 .loadUser(userRequest)
-                .map(oidcUser -> {
-                    // TODO
-                    // Bind OAuth2 provider's user to client's inner user
-
-                    // Extract client roles in access token
-                    var authorities = oidcUser.getAuthorities();
+                .flatMap(oidcUser -> {
+                    // Bind OAuth2 provider's user to client's internal user
                     var clientRegistration = userRequest.getClientRegistration();
-                    var jwtDecoder = NimbusJwtDecoder.withJwkSetUri(
-                            clientRegistration.getProviderDetails().getJwkSetUri()).build();
-                    var jwt = jwtDecoder.decode(userRequest.getAccessToken().getTokenValue());
-                    var resourceAccess = jwt.getClaimAsMap("resource_access");
-                    if (resourceAccess != null) {
-                        var resource = (Map<String, Object>) resourceAccess.get(
-                                clientRegistration.getClientId());
-                        if (resource != null) {
-                            var roles = (Collection<String>) resource.get("roles");
-                            if (roles != null) {
-                                authorities = Stream.concat(authorities.stream(), roles.stream()
-                                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role)))
-                                        .collect(Collectors.toList());
-                            }
-                        }
-                    }
+                    var userInfo = oidcUser.getUserInfo();
+                    var userDTO = UserDTO.builder()
+                            .username(clientRegistration.getRegistrationId() + "_" +
+                                    userInfo.getPreferredUsername())
+                            .password("")
+                            .email(userInfo.getEmail())
+                            .build();
+                    return userService.bind(UserBindRequestDTO.builder()
+                            .externalAuthProvider(clientRegistration.getRegistrationId())
+                            .externalUserId(userInfo.getSubject())
+                            .internalUser(userDTO)
+                            .build())
+                            .map(apiResult -> {
+                                var bindedUserDTO = apiResult.getData();
 
-                    var loggedUser = new LoggedUser(0L, oidcUser.getName(), "", authorities);
-                    return new BindedOidcUser(loggedUser, authorities, oidcUser.getIdToken(),
-                            oidcUser.getUserInfo());
+                                // Extract client roles in access token
+                                var authorities = oidcUser.getAuthorities();
+                                var jwtDecoder = NimbusJwtDecoder.withJwkSetUri(
+                                        clientRegistration.getProviderDetails().getJwkSetUri())
+                                        .build();
+                                var jwt = jwtDecoder.decode(userRequest.getAccessToken()
+                                        .getTokenValue());
+                                var resourceAccess = jwt.getClaimAsMap("resource_access");
+                                if (resourceAccess != null) {
+                                    var resource = (Map<String, Object>) resourceAccess.get(
+                                            clientRegistration.getClientId());
+                                    if (resource != null) {
+                                        var roles = (Collection<String>) resource.get("roles");
+                                        if (roles != null) {
+                                            authorities = Stream.concat(authorities.stream(),
+                                                    roles.stream()
+                                                            .map(role -> new SimpleGrantedAuthority(
+                                                                    "ROLE_" + role)))
+                                                    .collect(Collectors.toList());
+                                        }
+                                    }
+                                }
+
+                                var loggedUser = new LoggedUser(bindedUserDTO.getId(),
+                                        bindedUserDTO.getUsername(), bindedUserDTO.getPassword(),
+                                        authorities);
+                                return new BindedOidcUser(loggedUser, authorities,
+                                        oidcUser.getIdToken(), oidcUser.getUserInfo());
+                            });
                 });
     }
 

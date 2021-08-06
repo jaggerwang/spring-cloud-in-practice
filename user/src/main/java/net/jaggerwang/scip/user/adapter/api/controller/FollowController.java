@@ -6,6 +6,8 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jaggerwang.scip.common.adapter.api.controller.BaseController;
 import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
+import net.jaggerwang.scip.common.usecase.port.service.dto.user.UserFollowRequestDTO;
+import net.jaggerwang.scip.common.usecase.port.service.dto.user.UserUnfollowRequestDTO;
 import net.jaggerwang.scip.user.usecase.FollowUsecase;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,17 +29,15 @@ public class FollowController extends BaseController {
     }
 
     @PostMapping("/follow")
-    public ApiResult follow(@RequestBody Map<String, Object> input) {
-        var userId = objectMapper.convertValue(input.get("userId"), Long.class);
-        followUsecase.follow(loggedUserId(), userId);
+    public ApiResult follow(@RequestBody UserFollowRequestDTO requestDTO) {
+        followUsecase.follow(loggedUserId(), requestDTO.getUserId());
 
         return new ApiResult();
     }
 
     @PostMapping("/unfollow")
-    public ApiResult unfollow(@RequestBody Map<String, Object> input) {
-        var userId = objectMapper.convertValue(input.get("userId"), Long.class);
-        followUsecase.unfollow(loggedUserId(), userId);
+    public ApiResult unfollow(@RequestBody UserUnfollowRequestDTO requestDTO) {
+        followUsecase.unfollow(loggedUserId(), requestDTO.getUserId());
 
         return new ApiResult();
     }

@@ -9,6 +9,9 @@ import net.jaggerwang.scip.common.entity.PostBO;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * @author Jagger Wang
+ */
 @Data
 @Builder
 @NoArgsConstructor

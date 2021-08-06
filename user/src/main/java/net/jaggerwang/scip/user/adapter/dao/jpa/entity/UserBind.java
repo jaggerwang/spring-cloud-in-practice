@@ -1,34 +1,35 @@
-package net.jaggerwang.scip.post.adapter.dao.jpa.entity;
+package net.jaggerwang.scip.user.adapter.dao.jpa.entity;
 
-import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+/**
+ * @author Jagger Wang
+ */
 @Entity
-@Table(name = "user_follow")
+@Table(name = "user_bind")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserFollow {
+public class UserBind {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "following_id")
-    private Long followingId;
+    @Column(name = "external_auth_provider")
+    private String externalAuthProvider;
 
-    @Column(name = "follower_id")
-    private Long followerId;
+    @Column(name = "external_user_id")
+    private String externalUserId;
+
+    @Column(name = "internal_user_id")
+    private Long internalUserId;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

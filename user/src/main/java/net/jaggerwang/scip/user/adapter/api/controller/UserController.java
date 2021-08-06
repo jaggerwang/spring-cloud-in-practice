@@ -1,9 +1,12 @@
 package net.jaggerwang.scip.user.adapter.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.jaggerwang.scip.common.usecase.port.service.dto.user.UserBindRequestDTO;
+import net.jaggerwang.scip.common.usecase.port.service.dto.user.UserModifyRequestDTO;
+import net.jaggerwang.scip.common.usecase.port.service.dto.user.UserSendEmailVerifyCodeRequestDTO;
+import net.jaggerwang.scip.common.usecase.port.service.dto.user.UserSendMobileVerifyCodeRequestDTO;
 import net.jaggerwang.scip.user.usecase.UserUsecase;
 import net.jaggerwang.scip.common.adapter.api.controller.BaseController;
-import net.jaggerwang.scip.common.entity.UserBO;
 import net.jaggerwang.scip.common.usecase.exception.NotFoundException;
 import net.jaggerwang.scip.common.usecase.exception.UsecaseException;
 import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
@@ -14,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -33,25 +35,32 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/register")
-    public ApiResult<UserDTO> register(@RequestBody UserDTO userDto) {
-        var userBO = userUsecase.register(userDto.toBO());
+    public ApiResult<UserDTO> register(@RequestBody UserDTO userDTO) {
+        var userBO = userUsecase.register(userDTO.toBO());
+
+        return new ApiResult(UserDTO.fromBO(userBO));
+    }
+
+    @PostMapping("/bind")
+    public ApiResult<UserDTO> bind(@RequestBody UserBindRequestDTO requestDTO) {
+        var userBO = userUsecase.bind(requestDTO.getExternalAuthProvider(),
+                requestDTO.getExternalUserId(), requestDTO.getInternalUser().toBO());
 
         return new ApiResult(UserDTO.fromBO(userBO));
     }
 
     @PostMapping("/modify")
-    public ApiResult<UserDTO> modify(@RequestBody Map<String, Object> input) {
-        var userDTO = objectMapper.convertValue(input.get("user"), UserDTO.class);
-        var code = objectMapper.convertValue(input.get("code"), String.class);
-
-        if ((userDTO.getMobile() != null
-                && !userUsecase.checkMobileVerifyCode("modify", userDTO.getMobile(), code))
-                || userDTO.getEmail() != null
-                && !userUsecase.checkEmailVerifyCode("modify", userDTO.getEmail(), code)) {
+    public ApiResult<UserDTO> modify(@RequestBody UserModifyRequestDTO requestDTO) {
+        if ((requestDTO.getUser().getMobile() != null
+                && !userUsecase.checkMobileVerifyCode("modify", requestDTO.getUser().getMobile(),
+                requestDTO.getCode()))
+                || requestDTO.getUser().getEmail() != null
+                && !userUsecase.checkEmailVerifyCode("modify", requestDTO.getUser().getEmail(),
+                requestDTO.getCode())) {
             throw new UsecaseException("验证码错误");
         }
 
-        var userBO = userUsecase.modify(loggedUserId(), userDTO.toBO());
+        var userBO = userUsecase.modify(loggedUserId(), requestDTO.getUser().toBO());
 
         return new ApiResult(UserDTO.fromBO(userBO));
     }
@@ -97,21 +106,19 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/sendMobileVerifyCode")
-    public ApiResult<String> sendMobileVerifyCode(@RequestBody Map<String, Object> input) {
-        var type = objectMapper.convertValue(input.get("type"), String.class);
-        var mobile = objectMapper.convertValue(input.get("mobile"), String.class);
-
-        var verifyCode = userUsecase.sendMobileVerifyCode(type, mobile);
+    public ApiResult<String> sendMobileVerifyCode(
+            @RequestBody UserSendMobileVerifyCodeRequestDTO requestDTO) {
+        var verifyCode = userUsecase.sendMobileVerifyCode(requestDTO.getType(),
+                requestDTO.getMobile());
 
         return new ApiResult(verifyCode);
     }
 
     @PostMapping("/sendEmailVerifyCode")
-    public ApiResult<String> sendEmailVerifyCode(@RequestBody Map<String, Object> input) {
-        var type = objectMapper.convertValue(input.get("type"), String.class);
-        var email = objectMapper.convertValue(input.get("email"), String.class);
-
-        var verifyCode = userUsecase.sendEmailVerifyCode(type, email);
+    public ApiResult<String> sendEmailVerifyCode(
+            @RequestBody UserSendEmailVerifyCodeRequestDTO requestDTO) {
+        var verifyCode = userUsecase.sendEmailVerifyCode(requestDTO.getType(),
+                requestDTO.getEmail());
 
         return new ApiResult(verifyCode);
     }

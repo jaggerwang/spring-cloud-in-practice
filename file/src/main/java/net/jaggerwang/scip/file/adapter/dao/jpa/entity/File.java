@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,9 @@ import lombok.NoArgsConstructor;
 import net.jaggerwang.scip.file.adapter.dao.jpa.converter.FileMetaConverter;
 import net.jaggerwang.scip.common.entity.FileBO;
 
+/**
+ * @author Jagger Wang
+ */
 @Entity
 @Data
 @Builder

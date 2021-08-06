@@ -8,6 +8,9 @@ import net.jaggerwang.scip.common.entity.UserStatBO;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author Jagger Wang
+ */
 @Data
 @Builder
 @NoArgsConstructor

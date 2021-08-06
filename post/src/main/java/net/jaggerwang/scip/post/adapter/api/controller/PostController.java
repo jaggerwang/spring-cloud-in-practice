@@ -10,6 +10,9 @@ import net.jaggerwang.scip.common.adapter.api.controller.BaseController;
 import net.jaggerwang.scip.common.usecase.port.service.ApiResult;
 import net.jaggerwang.scip.common.usecase.port.service.dto.PostDTO;
 import net.jaggerwang.scip.common.usecase.exception.*;
+import net.jaggerwang.scip.common.usecase.port.service.dto.post.PostDeleteRequestDTO;
+import net.jaggerwang.scip.common.usecase.port.service.dto.post.PostLikeRequestDTO;
+import net.jaggerwang.scip.common.usecase.port.service.dto.post.PostUnlikeRequestDTO;
 import net.jaggerwang.scip.post.usecase.PostUsecase;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,10 +48,8 @@ public class PostController extends BaseController {
     }
 
     @PostMapping("/delete")
-    public ApiResult delete(@RequestBody Map<String, Object> input) {
-        var id = objectMapper.convertValue(input.get("id"), Long.class);
-
-        var postBO = postUsecase.info(id);
+    public ApiResult delete(@RequestBody PostDeleteRequestDTO requestDTO) {
+        var postBO = postUsecase.info(requestDTO.getId());
         if (postBO.isEmpty()) {
             throw new NotFoundException("动态未找到");
         }
@@ -56,7 +57,7 @@ public class PostController extends BaseController {
             throw new NotFoundException("无权删除");
         }
 
-        postUsecase.delete(id);
+        postUsecase.delete(requestDTO.getId());
 
         return new ApiResult();
     }
@@ -88,19 +89,15 @@ public class PostController extends BaseController {
     }
 
     @PostMapping("/like")
-    public ApiResult like(@RequestBody Map<String, Object> input) {
-        var postId = objectMapper.convertValue(input.get("postId"), Long.class);
-
-        postUsecase.like(loggedUserId(), postId);
+    public ApiResult like(@RequestBody PostLikeRequestDTO requestDTO) {
+        postUsecase.like(loggedUserId(), requestDTO.getPostId());
 
         return new ApiResult();
     }
 
     @PostMapping("/unlike")
-    public ApiResult unlike(@RequestBody Map<String, Object> input) {
-        var postId = objectMapper.convertValue(input.get("postId"), Long.class);
-
-        postUsecase.unlike(loggedUserId(), postId);
+    public ApiResult unlike(@RequestBody PostUnlikeRequestDTO requestDTO) {
+        postUsecase.unlike(loggedUserId(), requestDTO.getPostId());
 
         return new ApiResult();
     }

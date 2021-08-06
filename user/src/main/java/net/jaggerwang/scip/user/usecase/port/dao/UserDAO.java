@@ -17,4 +17,8 @@ public interface UserDAO {
     Optional<UserBO> findByMobile(String mobile);
 
     Optional<UserBO> findByEmail(String email);
+
+    UserBO bindInternalUser(String externalAuthProvider, String externalUserId, UserBO userBO);
+
+    Optional<UserBO> findInternalUser(String externalAuthProvider, String externalUserId);
 }

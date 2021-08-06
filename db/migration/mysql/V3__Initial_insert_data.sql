@@ -13,12 +13,20 @@ COMMIT;
 -- Records of role
 -- ----------------------------
 BEGIN;
+INSERT INTO `role` VALUES (1, 'user', '2020-03-28 03:16:10', NULL);
+INSERT INTO `role` VALUES (2, 'post', '2020-03-28 03:16:10', NULL);
+INSERT INTO `role` VALUES (3, 'file', '2020-03-28 03:16:10', NULL);
+INSERT INTO `role` VALUES (4, 'stat', '2020-03-28 03:16:10', NULL);
 COMMIT;
 
 -- ----------------------------
 -- Records of user_role
 -- ----------------------------
 BEGIN;
+INSERT INTO `user_role` VALUES (1, 1, 1, '2020-03-28 03:16:10', NULL);
+INSERT INTO `user_role` VALUES (2, 1, 2, '2020-03-28 03:16:10', NULL);
+INSERT INTO `user_role` VALUES (3, 1, 3, '2020-03-28 03:16:10', NULL);
+INSERT INTO `user_role` VALUES (4, 1, 4, '2020-03-28 03:16:10', NULL);
 COMMIT;
 
 -- ----------------------------

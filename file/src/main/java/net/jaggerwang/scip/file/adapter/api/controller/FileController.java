@@ -42,16 +42,16 @@ public class FileController extends BaseController {
         this.fileUsecase = fileUsecase;
     }
 
-    protected FileDTO fullFileDto(FileBO fileBO) {
-        var fileDto = FileDTO.fromBO(fileBO);
+    protected FileDTO fullFileDTO(FileBO fileBO) {
+        var fileDTO = FileDTO.fromBO(fileBO);
 
         var url = "";
-        if (fileDto.getRegion() == FileBO.Region.LOCAL) {
-            url = baseUrl + Paths.get("/", fileDto.getBucket(), fileDto.getPath()).toString();
+        if (fileDTO.getRegion() == FileBO.Region.LOCAL) {
+            url = baseUrl + Paths.get("/", fileDTO.getBucket(), fileDTO.getPath()).toString();
         }
-        fileDto.setUrl(url);
+        fileDTO.setUrl(url);
 
-        if (fileDto.getMeta().getType().startsWith("image/")) {
+        if (fileDTO.getMeta().getType().startsWith("image/")) {
             var thumbs = new HashMap<FileBO.ThumbType, String>(8);
             thumbs.put(FileBO.ThumbType.SMALL,
                     String.format("%s?process=%s", url, "thumb-small"));
@@ -61,10 +61,10 @@ public class FileController extends BaseController {
                     String.format("%s?process=%s", url, "thumb-large"));
             thumbs.put(FileBO.ThumbType.HUGE,
                     String.format("%s?process=%s", url, "thumb-huge"));
-            fileDto.setThumbs(thumbs);
+            fileDTO.setThumbs(thumbs);
         }
 
-        return fileDto;
+        return fileDTO;
     }
 
     @PostMapping("/upload")
@@ -92,7 +92,7 @@ public class FileController extends BaseController {
             fileBOs.add(fileBO);
         }
 
-        return new ApiResult(fileBOs.stream().map(this::fullFileDto).collect(Collectors.toList()));
+        return new ApiResult(fileBOs.stream().map(this::fullFileDTO).collect(Collectors.toList()));
     }
 
     @GetMapping("/info")
@@ -102,7 +102,7 @@ public class FileController extends BaseController {
             throw new NotFoundException("文件未找到");
         }
 
-        return new ApiResult(fullFileDto(fileBO.get()));
+        return new ApiResult(fullFileDTO(fileBO.get()));
     }
 
     @GetMapping("/infos")
@@ -111,6 +111,6 @@ public class FileController extends BaseController {
         var idList = Arrays.stream(ids.split(",")).mapToLong(Long::parseLong).boxed().collect(Collectors.toList());
         var fileBOs = fileUsecase.infos(idList, keepNull);
 
-        return new ApiResult(fileBOs.stream().map(this::fullFileDto).collect(Collectors.toList()));
+        return new ApiResult(fileBOs.stream().map(this::fullFileDTO).collect(Collectors.toList()));
     }
 }

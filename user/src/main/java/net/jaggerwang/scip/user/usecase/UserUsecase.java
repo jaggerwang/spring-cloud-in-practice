@@ -1,5 +1,6 @@
 package net.jaggerwang.scip.user.usecase;
 
+import net.jaggerwang.scip.user.adapter.dao.jpa.entity.UserBind;
 import net.jaggerwang.scip.user.usecase.port.dao.RoleDAO;
 import net.jaggerwang.scip.user.usecase.port.dao.UserDAO;
 import net.jaggerwang.scip.common.entity.RoleBO;
@@ -43,8 +44,8 @@ public class UserUsecase {
         return userDAO.save(user);
     }
 
-    public Boolean matchPassword(String rawPassword, String encodedPassword) {
-        return passwordEncoder.matches(rawPassword, encodedPassword);
+    public UserBO bind(String externalAuthProvider, String externalUserId, UserBO userBO) {
+        return userDAO.bindInternalUser(externalAuthProvider, externalUserId, userBO);
     }
 
     public UserBO modify(Long id, UserBO userBO) {

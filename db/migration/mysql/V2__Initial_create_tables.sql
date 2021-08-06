@@ -24,6 +24,22 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户';
 
 -- ----------------------------
+-- Table structure for user_bind
+-- ----------------------------
+DROP TABLE IF EXISTS `user_bind`;
+CREATE TABLE `user_bind` (
+                             `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
+                             `external_auth_provider` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '外部认证提供商',
+                             `external_user_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '外部用户 ID',
+                             `internal_user_id` bigint NOT NULL COMMENT '内部用户 ID',
+                             `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                             `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                             PRIMARY KEY (`id`),
+                             UNIQUE KEY `idx_external_auth_provider_external_user_id` (`external_auth_provider`,`external_user_id`) USING BTREE,
+                             KEY `idx_internal_user_id` (`internal_user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='内外部用户绑定';
+
+-- ----------------------------
 -- Table structure for role
 -- ----------------------------
 DROP TABLE IF EXISTS `role`;

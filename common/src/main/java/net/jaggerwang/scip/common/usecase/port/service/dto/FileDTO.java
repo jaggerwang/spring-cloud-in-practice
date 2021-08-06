@@ -2,12 +2,16 @@ package net.jaggerwang.scip.common.usecase.port.service.dto;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.jaggerwang.scip.common.entity.FileBO;
 
+/**
+ * @author Jagger Wang
+ */
 @Data
 @Builder
 @NoArgsConstructor

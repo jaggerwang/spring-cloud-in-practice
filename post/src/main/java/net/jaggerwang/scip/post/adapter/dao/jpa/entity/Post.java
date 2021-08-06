@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,9 @@ import lombok.NoArgsConstructor;
 import net.jaggerwang.scip.post.adapter.dao.jpa.converter.PostImageIdsConverter;
 import net.jaggerwang.scip.common.entity.PostBO;
 
+/**
+ * @author Jagger Wang
+ */
 @Entity
 @Data
 @Builder

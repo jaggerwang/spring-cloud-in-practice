@@ -32,19 +32,19 @@ public class AuthController extends BaseController {
 
     @PostMapping("/login")
     public Mono<ApiResult<UserDTO>> login(ServerWebExchange exchange,
-                                          @RequestBody UserDTO userDto) {
+                                          @RequestBody UserDTO userDTO) {
         String username = null;
-        if (userDto.getUsername() != null)  {
-            username = userDto.getUsername();
-        } else if (userDto.getMobile() != null) {
-            username = userDto.getMobile();
-        } else if (userDto.getEmail() != null) {
-            username = userDto.getEmail();
+        if (userDTO.getUsername() != null)  {
+            username = userDTO.getUsername();
+        } else if (userDTO.getMobile() != null) {
+            username = userDTO.getMobile();
+        } else if (userDTO.getEmail() != null) {
+            username = userDTO.getEmail();
         }
         if (!StringUtils.hasText(username)) {
             throw new UsecaseException("用户名、手机或邮箱不能都为空");
         }
-        var password = userDto.getPassword();
+        var password = userDTO.getPassword();
         if (!StringUtils.hasText(password)) {
             throw new UsecaseException("密码不能为空");
         }
