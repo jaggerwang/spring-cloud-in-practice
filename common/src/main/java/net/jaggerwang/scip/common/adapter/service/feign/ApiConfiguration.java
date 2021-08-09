@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
  */
 public class ApiConfiguration {
     @Bean
-    public Decoder apiResultDecoder(ObjectMapper objectMapper) {
+    public Decoder decoder(ObjectMapper objectMapper) {
         return new ApiResultDecoder(objectMapper);
     }
 
